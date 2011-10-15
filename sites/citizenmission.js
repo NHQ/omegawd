@@ -15,5 +15,7 @@ var server = connect();
 		res.writeHead('200', {'Content-Type': 'text/html'});
 		res.end('<h2>Howdy!</h2>'+req.session.cookie.maxAge)
 	});
+
+console.log(req.subdomains)
 	
 module.exports = server; 
