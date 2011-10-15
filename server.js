@@ -9,14 +9,12 @@ var server = connect();
 	server.use(connect.session({secret: 'keyboard cat' }));
 	domani.forEach(function (domain) {
 		server.use(connect.vhost(domain, 
-			connect().use(function (req,res){
-				res.writeHead('200')
-				res.end('<h2>Yodal!</h2>')
-			})
+			require('./sites/citizenmission')
 		))
 	});
 	server.use(function (req,res){
 		res.writeHead('200', {'Content-Type': 'text/html'});
-		res.end('<h2>Howdy!</h2>')
+		res.end('<h2>Howdy!</h2>'+req.session.cookie.maxAge)
 	});
-	server.listen(3000);
+	server.listen(process.env.NODE_ENV === 'production' ? 80 : 8000);
+	console.log('Listening on ' + server.address().port);
