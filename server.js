@@ -1,8 +1,9 @@
 var connect = require('connect')
-,		sys = require('sys');
+,		vhost = require('./lib/subDomani.js')
+,		_ = require('underscore');
 
 var domani = ['citizenmission.com'];
-var subDomani = ['rhetoric-report.citizenmission.com'];
+var subs = ['rhetoric-report'];
 
 var server = connect();
 	server.use(connect.logger());
@@ -15,12 +16,7 @@ var server = connect();
 		next();
 	});
 	domani.forEach(function (domain) {
-		server.use(connect.vhost(domain, 
-			require('./sites/citizenmission')
-		))
-	});
-	subDomani.forEach(function (domain) {
-		server.use(connect.vhost(domain, 
+		server.use(vhost(domain, subs,
 			require('./sites/citizenmission')
 		))
 	});
