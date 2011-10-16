@@ -6,6 +6,7 @@ var domani = ['citizenmission.com'];
 var subs = ['rhetoric-report'];
 
 var server = connect();
+		server.use(connect.profiler());
 		server.use(connect.logger());
 		server.use(connect.favicon());
 		server.use(connect.cookieParser());
@@ -15,9 +16,6 @@ var server = connect();
 				require('./sites/citizenmission')(connect)
 			))
 		});
-		server.use(function (req,res){
-			res.writeHead('200', {'Content-Type': 'text/html'});
-			res.end('<h2>Howdy!</h2>'+req.session.cookie.maxAge);
-		});
+		server.use(require('./sites/citizenmission')(connect));
 		server.listen(process.env.NODE_ENV === 'production' ? 80 : 8000);
 		console.log('Listening on ' + server.address().port);
