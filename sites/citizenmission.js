@@ -13,7 +13,7 @@ var server = connect();
 	});
 	server.use(function (req,res){
 		res.writeHead('200', {'Content-Type': 'text/html'});
-		res.end('<h2>Howdy!</h2>'+req.session.cookie.maxAge);
+		res.end('<h2>Boo!</h2>'+req.session.cookie.maxAge);
 		console.log(req.subdomains)
 	});
 
