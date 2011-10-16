@@ -17,7 +17,7 @@ var server = connect();
 		                        catch ( error ) {
 		                                ip_address = req.connection.remoteAddress;
 		                        }
-		                        sys.puts( ip_address );
+		                        console.log( ip_address );
 		console.log(req.headers);
 		next();
 	});
