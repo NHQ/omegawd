@@ -16,7 +16,7 @@ var server = connect();
 		next();
 	});
 	domani.forEach(function (domain) {
-		server.use(vhost(domain, subs,
+		server.use(vhost(domain, subs, _,
 			require('./sites/citizenmission')
 		))
 	});
