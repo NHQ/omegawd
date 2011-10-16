@@ -10,14 +10,7 @@ var server = connect();
 	server.use(connect.cookieParser());
 	server.use(connect.session({secret: 'keyboard cat' }));
 	server.use(function(req,res, next){
-		                        var ip_address = null;
-		                        try {
-		                                ip_address = req.headers['x-forwarded-for'];
-		                        }
-		                        catch ( error ) {
-		                                ip_address = req.connection.remoteAddress;
-		                        }
-		                        console.log( ip_address );
+		console.log( req.connection );
 		console.log(req.headers);
 		next();
 	});
