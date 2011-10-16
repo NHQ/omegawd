@@ -11,7 +11,7 @@ var server = connect();
 	server.use(connect.session({secret: 'keyboard cat' }));
 	server.use(function(req,res, next){
 		console.log( req.connection );
-		console.log(req.headers);
+		console.log(req.pathname);
 		next();
 	});
 	domani.forEach(function (domain) {
