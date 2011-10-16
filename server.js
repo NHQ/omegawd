@@ -10,6 +10,7 @@ var server = connect();
 	server.use(connect.session({secret: 'keyboard cat' }));
 	server.use(function(req,res){
 		console.log(req.headers.host);
+		next();
 	});
 	domani.forEach(function (domain) {
 		server.use(connect.vhost(domain, 
