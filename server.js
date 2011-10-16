@@ -1,5 +1,5 @@
 var connect = require('connect')
-,		vhost = require('./lib/subDomani.js')
+,		vhost = require('./lib/subDomani')
 ,		_ = require('underscore');
 
 var domani = ['citizenmission.com'];
@@ -10,13 +10,13 @@ var server = connect();
 	server.use(connect.favicon());
 	server.use(connect.cookieParser());
 	server.use(connect.session({secret: 'keyboard cat' }));
-	server.use(function(req,res, next){
+	server.use(function(req, res, next){
 		console.log( req.connection );
 		console.log(req.pathname);
 		next();
 	});
 	domani.forEach(function (domain) {
-		server.use(vhost(domain, subs,
+		server.use(vhost(domain, subs, _,
 			require('./sites/citizenmission')
 		))
 	});
