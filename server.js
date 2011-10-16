@@ -1,7 +1,7 @@
 var connect = require('connect');
 
 var domani = ['citizenmission.com'];
-var subDomani = ['rhetoric-report'];
+var subDomani = ['rhetoric-report.citizenmission.com'];
 
 var server = connect();
 	server.use(connect.logger());
