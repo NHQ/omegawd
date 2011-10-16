@@ -9,7 +9,15 @@ var server = connect();
 	server.use(connect.cookieParser());
 	server.use(connect.session({secret: 'keyboard cat' }));
 	server.use(function(req,res, next){
-		console.log(req.headers.host);
+		                        var ip_address = null;
+		                        try {
+		                                ip_address = req.headers['x-forwarded-for'];
+		                        }
+		                        catch ( error ) {
+		                                ip_address = req.connection.remoteAddress;
+		                        }
+		                        sys.puts( ip_address );
+		console.log(req.headers);
 		next();
 	});
 	domani.forEach(function (domain) {
@@ -25,8 +33,6 @@ var server = connect();
 	server.use(function (req,res){
 		res.writeHead('200', {'Content-Type': 'text/html'});
 		res.end('<h2>Howdy!</h2>'+req.session.cookie.maxAge);
-		console.log(req.headers);
-		console.log(req.subdomains)
 	});
 	server.listen(process.env.NODE_ENV === 'production' ? 80 : 8000);
 	console.log('Listening on ' + server.address().port);
