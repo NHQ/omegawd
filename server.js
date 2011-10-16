@@ -9,15 +9,10 @@ var server = connect();
 	server.use(connect.logger());
 	server.use(connect.favicon());
 	server.use(connect.cookieParser());
-	server.use(connect.session({secret: 'keyboard cat' }));
-	server.use(function(req, res, next){
-		console.log( req.connection );
-		console.log(req.pathname);
-		next();
-	});
+	server.use(connect.session({secret: 'giddy gato' }));
 	domani.forEach(function (domain) {
 		server.use(vhost(domain, subs, _,
-			require('./sites/citizenmission')
+			require('./sites/citizenmission')(connect)
 		))
 	});
 	server.use(function (req,res){
