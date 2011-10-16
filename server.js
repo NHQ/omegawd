@@ -8,7 +8,7 @@ var server = connect();
 	server.use(connect.favicon());
 	server.use(connect.cookieParser());
 	server.use(connect.session({secret: 'keyboard cat' }));
-	server.use(function(req,res){
+	server.use(function(req,res, next){
 		console.log(req.headers.host);
 		next();
 	});
