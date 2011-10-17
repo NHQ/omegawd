@@ -1,4 +1,3 @@
-module.exports = function(connect){
-	console.log(this.connect)
-	console.log(connect);
-};
+var obj  = module.exports = {}
+console.log(this.wad)
+obj.dog = 'woof'
