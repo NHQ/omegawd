@@ -6,7 +6,9 @@ var twitter = require('twitter');
 		    access_token_secret: 'MSY57uqMaIMOtsRSWLvNDfL9DxaZXbrXGFak679tA78'
 		});
 
-		twit.stream('statuses/filter', {track: 'nodejs'}, function(stream) {
+var track = ['occupyla', 'ows', 'occupydc', occupychicago, occupychi, occupysf, occupysd, occupyaustin, occupy]
+
+		twit.stream('statuses/filter', {track: 'occupy'}, function(stream) {
 		    stream.on('data', function (data) {
 						console.log(data)
 		    });
