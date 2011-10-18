@@ -128,13 +128,11 @@ var track = {
 		mapper[hash].key = key;
 		mapper[hash].latest = [];
 		mapper[hash].tps = new tps(key);
-		tracklist.push(one);
-		mapper[key].tags.push(one)
+		tracklist.push(hash);
 		if (value){
 			var hash2 = '#occupy'+value;
 			tracklist.push(hash2);
-			mapper[hash2].tags.push(two);
-			mapper[hash2].name = key;
+			mapper[hash2].key = key;
 			mapper[hash2].latest = [];
 			mapper[hash2].tps = new tps(key);
 		}
