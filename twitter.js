@@ -162,7 +162,7 @@ var track = {
 					if(_.contains(tracklist, tag)){
 											console.log('down the hole!')
 						mapper[tag].latest.unshift(this.corral[data[0]])
-						console.log(mapper[hash].latest.length)
+						console.log(mapper[tag].latest.length)
 					//	++mapper[hash].tps.tick
 					}
 				})
