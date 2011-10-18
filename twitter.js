@@ -1,6 +1,7 @@
 var twitter = require('twitter'),
 		_ = require('underscore'),
-		client = require('redis');
+		redis = require('redis'),
+		client = redis.createClient();
 
 var twit = new twitter({
     consumer_key: 'mw6Dw4adevPW0l67wHk3hw',
@@ -172,7 +173,8 @@ var track = {
 							tags: parsed.entities.hashtags, 
 							links: parsed.entities.urls, 
 							pic: parsed.user.profile_image_url || parsed.user.profile_image_url_https, 
-							time: parsed.created_at };
+							time: parsed.created_at,
+							score: new Date().getTime() };
 				if(parsed.entities.hashtags.length){
 					this.process([parsed.id_str, parsed.entities.hashtags]);
 				}
@@ -184,20 +186,25 @@ var track = {
 				_.each(data[1], function(hash){
 					var tag = hash.text.toLowerCase()
 					,		_id = data[0];
-					console.log(tag);
 					if(_.contains(this.tracklist, '#'+tag)){
-						this.mapper[tag].latest.unshift(this.corral[_id])
+						this.mapper[tag].latest.unshift(this.corral[_id]);
+						this.mapper[tag].latest.splice(500, this.mapper[tag].latest.length - 1);
+						this.file(_id);
 						console.log(this.mapper[tag].latest.length)
-					//	++mapper[hash].tps.tick
 					}
 				},this)
+			},
+			file: function(_id){
+				client.zadd(_id, this.corral[_id].score, JSON.stringify(this.corral[_id]))
+				client.expire(_id, 259200);
+				delete this.corral[_id]
 			},
 			lingoProcess: function(date){
 				
 			}
 		};switchBoard.init(track);
 
-		twit.stream('statuses/filter', {track: '#ows'}, function(stream) {
+		twit.stream('statuses/filter', {track: switchBoard.tracklist.join()}, function(stream) {
 		    stream.on('data', function (data) {
 					  switchBoard.parse(data);
 		    });
