@@ -190,14 +190,13 @@ var track = {
 						this.mapper[tag].latest.unshift(this.corral[_id]);
 						this.mapper[tag].latest.splice(500, this.mapper[tag].latest.length - 1);
 						this.file(_id);
-						console.log(this.mapper[tag].latest.length)
+						console.log(tag, this.mapper[tag].latest.length)
 					}
 				},this)
 			},
 			file: function(_id){
-				client.zadd(_id, this.corral[_id].score, JSON.stringify(this.corral[_id]))
+				client.zadd(_id, this.corral[_id].score, JSON.stringify(this.corral[_id]). function(){delete this.corral[_id]})
 				client.expire(_id, 259200);
-				delete this.corral[_id]
 			},
 			lingoProcess: function(date){
 				
