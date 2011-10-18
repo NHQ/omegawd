@@ -105,9 +105,7 @@ var track = {
 	Olympia: null,
 	Charleston: null
 	};
-	
-	var tracklist = ['#ows', '#occupy'];
-	var mapper = {};
+
 	var t = new RegExp(/#occupy*/);
 	var tps = function(key){
 		this.name = key;
@@ -120,25 +118,45 @@ var track = {
 		};
 		this.tick = 0
 	}
-	
+/*	
 	_.map(track, function(value, key, list){
-		var hash = '#occupy'+key.replace(/\s/g,"").toLowerCase();
+		var hash = 'occupy'+key.replace(/\s/g,"").toLowerCase();
 		mapper[hash] = {};
 		mapper[hash].key = key;
 		mapper[hash].latest = [];
 		//mapper[hash].tps = new tps(key);
-		tracklist.push(hash);
+		tracklist.push('#'+hash);
 		if (value){
-			var hash2 = '#occupy'+value.toLowerCase();
-			tracklist.push(hash2);
+			var hash2 = 'occupy'+value.toLowerCase();
+			tracklist.push('#'+hash2);
 			mapper[hash2] = {};
 			mapper[hash2].key = key;
 			mapper[hash2].latest = [];
 			//mapper[hash2].tps = new tps(key);
 		}
 	})
-
+*/
 		var switchBoard = {
+			mapper: {},
+			tracklist: ['#ows', '#occupy'],
+			init: function(track){
+				_.map(track, function(value, key, list){
+					var hash = 'occupy'+key.replace(/\s/g,"").toLowerCase();
+					this.mapper[hash] = {};
+					this.mapper[hash].key = key;
+					this.mapper[hash].latest = [];
+					//mapper[hash].tps = new tps(key);
+					this.tracklist.push('#'+hash);
+					if (value){
+						var hash2 = 'occupy'+value.toLowerCase();
+						this.tracklist.push('#'+hash2);
+						this.mapper[hash2] = {};
+						this.mapper[hash2].key = key;
+						this.mapper[hash2].latest = [];
+						//mapper[hash2].tps = new tps(key);
+					}
+				}, this)
+			},
 			corral: {},
 			parse: function(data){
 				var parsed = JSON.parse(data);
@@ -158,19 +176,20 @@ var track = {
 			},
 			process: function(data){
 				_.each(data[1], function(hash){
-					var tag = '#'+hash.text.toLowerCase();
+					var tag = hash.text.toLowerCase()
+					,		_id = data[0];
+					console.log(tag);
 					if(_.contains(tracklist, tag)){
-											console.log('down the hole!')
-						mapper[tag].latest.unshift(this.corral[data[0]])
-						console.log(mapper[tag].latest.length)
+						this.mapper[tag].latest.unshift(this.corral[_id])
+						console.log(this.mapper[tag].latest.length)
 					//	++mapper[hash].tps.tick
 					}
-				})
+				},this)
 			},
 			lingoProcess: function(date){
 				
 			}
-		};
+		};switchBoard.init(track);
 
 		twit.stream('statuses/filter', {track: '#ows'}, function(stream) {
 		    stream.on('data', function (data) {
