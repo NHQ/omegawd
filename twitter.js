@@ -1,4 +1,4 @@
-var fs = requie('fs'),
+var fs = require('fs'),
 		twitter = require('twitter'),
 		_ = require('underscore'),
 		redis = require('redis'),
