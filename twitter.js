@@ -6,8 +6,8 @@ var twit = new twitter({
     consumer_key: 'mw6Dw4adevPW0l67wHk3hw',
     consumer_secret: 'iW0KQprGmvzpTvY0KZuLONdHrdYi9FBErBRIZGH0CM',
     access_token_key: '46961216-ns6DWzNaAUDnKkVUZQTkqQgXfa0Z4SGss1ElQfafA',
-    access_token_secret: 'MSY57uqMaIMOtsRSWLvNDfL9DxaZXbrXGFak679tA78'
-//		authorize_callback: 'http://74.207.246.247:8000'
+    access_token_secret: 'MSY57uqMaIMOtsRSWLvNDfL9DxaZXbrXGFak679tA78',
+		authorize_callback: 'http://74.207.246.247:8000'
 });
 
 var track = {
