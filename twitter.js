@@ -195,7 +195,7 @@ var track = {
 				},this)
 			},
 			file: function(_id){
-				client.zadd(_id, this.corral[_id].score, JSON.stringify(this.corral[_id]). function(){delete this.corral[_id]})
+				client.zadd(_id, this.corral[_id].score, JSON.stringify(this.corral[_id]), function(){delete this.corral[_id]})
 				client.expire(_id, 259200);
 			},
 			lingoProcess: function(date){
