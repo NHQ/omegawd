@@ -122,14 +122,14 @@ var track = {
 	}
 	
 	_.map(track, function(value, key, list){
-		var hash = '#occupy'+key.replace(/\s/g,"");
+		var hash = '#occupy'+key.replace(/\s/g,"").toLowerCase();
 		mapper[hash] = {};
 		mapper[hash].key = key;
 		mapper[hash].latest = [];
 		//mapper[hash].tps = new tps(key);
 		tracklist.push(hash);
 		if (value){
-			var hash2 = '#occupy'+value;
+			var hash2 = '#occupy'+value.toLowerCase();
 			tracklist.push(hash2);
 			mapper[hash2] = {};
 			mapper[hash2].key = key;
@@ -158,7 +158,7 @@ var track = {
 			},
 			process: function(data){
 				_.each(data[1], function(hash){
-					if(_.contains(tracklist, hash)){
+					if(_.contains(tracklist, hash.toLowerCase())){
 											console.log('down the hole!')
 						mapper[hash].latest.unshift(this.corral[data[0]])
 						console.log(mapper[hash].latest.length)
