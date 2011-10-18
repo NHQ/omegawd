@@ -121,17 +121,20 @@ var track = {
 	}
 	
 	_.map(track, function(value, key, list){
-		mapper[key] = {};
-		mapper[key].tags = [],
-		mapper[key].latest = [];
-		mapper[key].tps = new tps(key);
-		var one = '#occupy'+key.replace(/\s/g,"");
+		var hash = '#occupy'+key.replace(/\s/g,"");
+		mapper[hash] = {};
+		mapper[hash].key = key;
+		mapper[hash].latest = [];
+		mapper[hash].tps = new tps(key);
 		tracklist.push(one);
 		mapper[key].tags.push(one)
 		if (value){
-			two = '#occupy'+value;
-			tracklist.push(two);
-			mapper[key].tags.push(two)
+			var hash2 = '#occupy'+value;
+			tracklist.push(hash2);
+			mapper[hash2].tags.push(two);
+			mapper[hash2].name = key;
+			mapper[hash2].latest = [];
+			mapper[hash2].tps = new tps(key);
 		}
 	})
 
@@ -152,13 +155,14 @@ var track = {
 				else {
 					this.lingoProcess([parsed.id_str, parsed.text])
 				}
-				++tps.tick;
 			},
 			process: function(data){
-				if(data.tags.length == 1 && t.test(data.tags[0])){
-					
+				_.each.(data[1], function(hash){
+					if(_.contains(tracklist, hash)){
+						mapper[hash].latest.shift(this.corral[data[0]])
+						++mapper[hash].tps.tick
+					}
 				}
-				if(data.tags.length > 1)
 			},
 			lingoProcess: function(date){
 				
