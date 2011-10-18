@@ -11,8 +11,7 @@ var twit = new twitter({
 });
 
 var track = {
-	'Occupy':null,
-	'Wall Street': 'ows',
+	'Wall Street': null,
 	'New York City': 'nyc',
 	'Los Angeles': 'la',
 	Chicago: 'chi',
@@ -107,7 +106,7 @@ var track = {
 	Charleston: null
 	};
 	
-	var tracklist = [];
+	var tracklist = ['#ows', '#occupy'];
 	var mapper = {};
 	var t = new RegExp(/#occupy*/);
 	var tps = function(key){
@@ -143,7 +142,6 @@ var track = {
 			corral: {},
 			parse: function(data){
 				var parsed = JSON.parse(data);
-//				console.log(parsed);
 				this.corral[parsed.id_str] = {
 							_id : parsed.id_str,
 							txt: parsed.text, 
@@ -153,7 +151,6 @@ var track = {
 							time: parsed.created_at };
 				if(parsed.entities.hashtags.length){
 					this.process([parsed.id_str, parsed.entities.hashtags]);
-					console.log('down the hole!')
 				}
 //				else {
 //					this.lingoProcess([parsed.id_str, parsed.text])
@@ -162,7 +159,8 @@ var track = {
 			process: function(data){
 				_.each(data[1], function(hash){
 					if(_.contains(tracklist, hash)){
-						mapper[hash].latest.shift(this.corral[data[0]])
+											console.log('down the hole!')
+						mapper[hash].latest.unshift(this.corral[data[0]])
 						console.log(mapper[hash].latest.length)
 					//	++mapper[hash].tps.tick
 					}
