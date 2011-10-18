@@ -166,7 +166,8 @@ var track = {
 */
 		var switchBoard = {
 			mapper: {},
-			tracklist: ['#ows', '#occupy', '#99', '#99percent'],
+			wipe: [],
+			tracklist: ['ows', 'occupy', '99', '99percent'],
 			init: function(track){
 					merge(track, states);
 				_.each(this.tracklist, function(tag){
@@ -181,10 +182,10 @@ var track = {
 					this.mapper[hash].key = key;
 					this.mapper[hash].latest = [];
 					//mapper[hash].tps = new tps(key);
-					this.tracklist.push('#'+hash);
+					this.tracklist.push(hash);
 					if (value){
 						var hash2 = 'occupy'+value.toLowerCase();
-						this.tracklist.push('#'+hash2);
+						this.tracklist.push(hash2);
 						this.mapper[hash2] = {};
 						this.mapper[hash2].key = key;
 						this.mapper[hash2].latest = [];
@@ -202,7 +203,7 @@ var track = {
 							links: parsed.entities.urls, 
 							pic: parsed.user.profile_image_url || parsed.user.profile_image_url_https, 
 							time: parsed.created_at,
-							score: new Date().getTime()/1000 };
+							score: new Date().getTime() };
 				if(parsed.entities.hashtags.length){
 					this.process([parsed.id_str, parsed.entities.hashtags]);
 				}
@@ -214,20 +215,18 @@ var track = {
 //				}
 			},
 			process: function(data){
-				_.each(data[1], function(hash){
-					var tag = hash.text.toLowerCase()
-					,		_id = data[0];
-					if(_.contains(this.tracklist, '#'+tag)){
-						this.mapper[tag].latest.unshift(this.corral[_id]._id);
-						this.mapper[tag].latest.splice(1000, this.mapper[tag].latest.length - 1);
+				var _id = data[0];
+				var hashtags = _.intersection(data[1], this.tracklist)
+				if(hashtags.length)
+				_.each(hashtags, function(tag){
+						this.mapper[tag].latest.unshift(_id);
 						this.file(tag, _id);
 						this.stat(tag);
 						console.log(tag, this.mapper[tag].latest.length)
-					}
-					else {
-						this.del(_id);
-					}
-				},this)
+					},this)
+				else{
+					this.del(_id)
+				}
 			},
 			file: function(tag, _id){
 				client.zadd(tag, this.corral[_id].score, JSON.stringify(this.corral[_id]));
@@ -235,8 +234,8 @@ var track = {
 			stat: function(tag){
 				var len = this.mapper[tag].latest.length;
 				if(len > 500) {
-					var gones  = this.mapper[tag].latest.splice(500, len - 1);
-					_.each(gones, this.del(_id), this)
+					this.wipe.unshift(this.mapper[tag].latest.splice(500, len - 1));
+					_.each(_.uniq(this.wipe), this.del(_id), this)
 				}
 			},
 			del: function(_id){
@@ -247,12 +246,12 @@ var track = {
 			}
 		};switchBoard.init(track);
 
-		twit.stream('statuses/filter', {track: switchBoard.tracklist.join()}, function(stream) {
+		twit.stream('statuses/filter', {track: _.map(switchBoard.tracklist, function(t){return '#'+t}).join()}, function(stream) {
 		    stream.on('data', function (data) {
 					  switchBoard.parse(data);
 		    });
 				stream.on('error', function(err){
-					console.log('error', err)
+					console.log('error here', err)
 				})
 		});
 		
