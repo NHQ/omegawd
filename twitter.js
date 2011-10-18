@@ -195,7 +195,6 @@ var track = {
 			},
 			corral: {},
 			parse: function(data){
-				console.log('parsing');
 				var parsed = JSON.parse(data);
 				this.corral[parsed.id_str] = {
 							_id : parsed.id_str,
@@ -216,9 +215,9 @@ var track = {
 //				}
 			},
 			process: function(data){
-				console.log('processing');
 				var _id = data[0];
-				var hashtags = _.intersection(data[1], this.tracklist)
+				var hashtags = _.intersection(_.map(data[1], function(e){return e.toLowerCase()}), this.tracklist);
+				console.log(hashtags);
 				if(hashtags.length){
 				console.log('matches');
 				_.each(hashtags, function(tag){
