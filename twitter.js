@@ -195,6 +195,7 @@ var track = {
 			},
 			corral: {},
 			parse: function(data){
+				console.log('parsing');
 				var parsed = JSON.parse(data);
 				this.corral[parsed.id_str] = {
 							_id : parsed.id_str,
@@ -215,9 +216,11 @@ var track = {
 //				}
 			},
 			process: function(data){
+				console.log('processing');
 				var _id = data[0];
 				var hashtags = _.intersection(data[1], this.tracklist)
 				if(hashtags.length)
+				console.log('matches');
 				_.each(hashtags, function(tag){
 						this.mapper[tag].latest.unshift(_id);
 						this.file(tag, _id);
@@ -245,8 +248,9 @@ var track = {
 				
 			}
 		};switchBoard.init(track);
-
-		twit.stream('statuses/filter', {track: _.map(switchBoard.tracklist, function(t){return '#'+t}).join()}, function(stream) {
+		list = _.map(switchBoard.tracklist, function(t){return '#'+t}).join();
+		console.log(switchBoard.tracklist);
+		twit.stream('statuses/filter', {track: list}, function(stream) {
 		    stream.on('data', function (data) {
 					  switchBoard.parse(data);
 		    });
