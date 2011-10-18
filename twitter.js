@@ -39,7 +39,6 @@ _.each(statesJSON, function (obj, key){
 
 
 var track = {
-	'Wall Street': null,
 	'New York City': 'nyc',
 	'Los Angeles': 'la',
 	Chicago: 'chi',
@@ -167,11 +166,10 @@ var track = {
 		var switchBoard = {
 			mapper: {},
 			wipe: [],
-			tracklist: ['ows', 'occupy', '99', '99percent'],
+			tracklist: ['ows', 'occupy', '99', '99percent', 'wallstreet'],
 			init: function(track){
 					merge(track, states);
 				_.each(this.tracklist, function(tag){
-					tag = tag.slice(1);
 					this.mapper[tag] = {},
 					this.mapper[tag].key = 'Occupy Wall Street'
 					this.mapper[tag].latest = []
@@ -217,9 +215,7 @@ var track = {
 			process: function(data){
 				var _id = data[0];
 				var hashtags = _.intersection(_.map(data[1], function(e){return e.text.toLowerCase()}), this.tracklist);
-				console.log(hashtags);
 				if(hashtags.length){
-				console.log('matches');
 				_.each(hashtags, function(tag){
 						this.mapper[tag].latest.unshift(_id);
 						this.file(tag, _id);
