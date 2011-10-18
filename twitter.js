@@ -132,6 +132,7 @@ var track = {
 		if (value){
 			var hash2 = '#occupy'+value;
 			tracklist.push(hash2);
+			mapper[hash2] = {};
 			mapper[hash2].key = key;
 			mapper[hash2].latest = [];
 			mapper[hash2].tps = new tps(key);
