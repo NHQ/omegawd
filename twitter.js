@@ -218,9 +218,10 @@ var track = {
 					var tag = hash.text.toLowerCase()
 					,		_id = data[0];
 					if(_.contains(this.tracklist, '#'+tag)){
-						this.mapper[tag].latest.unshift(this.corral[_id]);
+						this.mapper[tag].latest.unshift(this.corral[_id]._id);
 						this.mapper[tag].latest.splice(1000, this.mapper[tag].latest.length - 1);
 						this.file(tag, _id);
+						this.stat(tag);
 						console.log(tag, this.mapper[tag].latest.length)
 					}
 					else {
@@ -230,7 +231,14 @@ var track = {
 			},
 			file: function(tag, _id){
 				client.zadd(tag, this.corral[_id].score, JSON.stringify(this.corral[_id]));
-				setTimeout(this.del(), 500, _id) 
+			},
+			stat: function(tag){
+				var len = this.mapper[tag].latest.length;
+				if(len > 500) {
+					var gones  = this.mapper[tag].latest.splice(500, len - 1);
+					_.each(gones, this.del(_id), this)
+					})
+				}
 			},
 			del: function(_id){
 				delete this.corral[_id]
