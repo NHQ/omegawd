@@ -173,10 +173,11 @@ var track = {
 
 		twit.stream('statuses/filter', {track: '#ows'}, function(stream) {
 		    stream.on('data', function (data) {
-						switchBoard.parse(data)
+					//	switchBoard.parse(data);
+						console.log(data)
 		    });
 				stream.on('error', function(err){
-					console.log('error')
+					console.log('error', err)
 				})
 		});
 		
