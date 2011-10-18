@@ -228,7 +228,7 @@ var track = {
 				},this)
 			},
 			file: function(tag, post){
-				client.zadd(tag, post.score/1000, JSON.stringify(post), redis.print)
+				client.zadd(tag, post.score/1000, JSON.stringify(post))
 			},
 			del: function(_id){
 				delete this.corral[_id]
