@@ -158,9 +158,10 @@ var track = {
 			},
 			process: function(data){
 				_.each(data[1], function(hash){
-					if(_.contains(tracklist, '#'+hash.text.toLowerCase())){
+					var tag = '#'+hash.text.toLowerCase();
+					if(_.contains(tracklist, tag)){
 											console.log('down the hole!')
-						mapper[hash].latest.unshift(this.corral[data[0]])
+						mapper[tag].latest.unshift(this.corral[data[0]])
 						console.log(mapper[hash].latest.length)
 					//	++mapper[hash].tps.tick
 					}
