@@ -142,8 +142,8 @@ var track = {
 		var switchBoard = {
 			corral: {},
 			parse: function(data){
-				console.log('herrrr');
 				var parsed = JSON.parse(data);
+//				console.log(parsed);
 				this.corral[parsed.id_str] = {
 							_id : parsed.id_str,
 							txt: parsed.text, 
@@ -151,7 +151,7 @@ var track = {
 							links: parsed.entities.urls, 
 							pic: parsed.user.profile_image_url || parsed.user.profile_image_url_https, 
 							time: parsed.created_at };
-				if(parsed.tags.length){
+				if(parsed.entities.hashtags.length){
 					this.process([parsed.id_str, parsed.tags]);
 				}
 //				else {
@@ -162,7 +162,7 @@ var track = {
 				_.each(data[1], function(hash){
 					if(_.contains(tracklist, hash)){
 						mapper[hash].latest.shift(this.corral[data[0]])
-						console.log(	mapper[hash].latest.length)
+						console.log(mapper[hash].latest.length)
 					//	++mapper[hash].tps.tick
 					}
 				})
