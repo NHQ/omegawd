@@ -139,9 +139,10 @@ var track = {
 		}
 	})
 
-		switchBoard = {
+		var switchBoard = {
 			corral: {},
 			parse: function(data){
+				console.log('herrrr');
 				var parsed = JSON.parse(data);
 				this.corral[parsed.id_str] = {
 							_id : parsed.id_str,
@@ -173,7 +174,7 @@ var track = {
 
 		twit.stream('statuses/filter', {track: '#ows'}, function(stream) {
 		    stream.on('data', function (data) {
-					//	switchBoard.parse(data);
+					  switchBoard.parse(data);
 						console.log(data)
 		    });
 				stream.on('error', function(err){
