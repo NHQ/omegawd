@@ -11,6 +11,7 @@ var twit = new twitter({
 });
 
 var track = {
+	'Occupy':'',
 	'Wall Street': 'ows',
 	'New York City': 'nyc',
 	'Los Angeles': 'la',
@@ -105,6 +106,7 @@ var track = {
 	Olympia: null,
 	Charleston: null
 	};
+	
 	var tracklist = [];
 	var mapper = {};
 	var t = new RegExp(/#occupy*/);
@@ -152,9 +154,9 @@ var track = {
 				if(parsed.tags.length){
 					this.process([parsed.id_str, parsed.tags]);
 				}
-				else {
-					this.lingoProcess([parsed.id_str, parsed.text])
-				}
+//				else {
+//					this.lingoProcess([parsed.id_str, parsed.text])
+//				}
 			},
 			process: function(data){
 				_.each.(data[1], function(hash){
@@ -169,9 +171,9 @@ var track = {
 			}
 		}
 
-		twit.stream('statuses/filter', {track: '#occupy'}, function(stream) {
+		twit.stream('statuses/filter', {track: '#ows'}, function(stream) {
 		    stream.on('data', function (data) {
-						console.log(data)
+						this.switchBoard.parse(data)
 		    });
 				stream.on('error', function(err){
 					console.log(err)
