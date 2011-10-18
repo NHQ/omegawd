@@ -7,6 +7,7 @@ var twit = new twitter({
     consumer_secret: 'iW0KQprGmvzpTvY0KZuLONdHrdYi9FBErBRIZGH0CM',
     access_token_key: '46961216-ns6DWzNaAUDnKkVUZQTkqQgXfa0Z4SGss1ElQfafA',
     access_token_secret: 'MSY57uqMaIMOtsRSWLvNDfL9DxaZXbrXGFak679tA78'
+//		authorize_callback: 'http://74.207.246.247:8000'
 });
 
 var track = {
@@ -121,9 +122,24 @@ var track = {
 	
 	console.log(tracklist.join(), mapper)
 
-	function switchBoard(data){
-		
-	}
+		this.switchBoard = {
+			corral: {},
+			parse: function(data){
+				var parsed = JSON.parse(data)
+				,		tweet = {
+							_id : parsed.id_str,
+							txt: parsed.text, 
+							tags: parsed.entities.hashtags, 
+							links: parsed.entities.urls, 
+							pic: parsed.user.profile_image_url || parsed.user.profile_image_url_https, 
+							time: parsed.created_at };
+				this.corral[parsed.id_str] = tweet;
+				this.process([parsed.id_str, parsed.tags])
+			},
+			process: function(data){
+				
+			}
+		}
 
 		twit.stream('statuses/filter', {track: '#occupy'}, function(stream) {
 		    stream.on('data', function (data) {
