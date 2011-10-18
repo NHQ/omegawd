@@ -2,6 +2,12 @@ var twitter = require('twitter'),
 		_ = require('underscore'),
 		redis = require('redis'),
 		client = redis.createClient();
+		client.on("error", function (err) {
+		    console.log("Error " + err);
+		});
+		client.on("ready", function (res) {
+		    console.log(res, "ready");
+		});
 
 var twit = new twitter({
     consumer_key: 'mw6Dw4adevPW0l67wHk3hw',
@@ -10,6 +16,24 @@ var twit = new twitter({
     access_token_secret: 'MSY57uqMaIMOtsRSWLvNDfL9DxaZXbrXGFak679tA78',
 		authorize_callback: 'http://74.207.246.247:8000'
 });
+
+function merge (a, b){
+  if (a && b) {
+    for (var key in b) {
+      a[key] = b[key];
+    }
+  }
+  return a;
+};
+
+var states = {}, statesJSON = JSON.parse(fs.readFileSync('../lib/States.json', encoding='utf8')).states.state; // this is an array 
+
+_.each(statesJSON, function (obj, key){
+		var name = obj['@attributes'].name
+		,		abbr = obj['@attributes'].abbreviation;
+		state[name] = abbr;
+})
+
 
 var track = {
 	'Wall Street': null,
@@ -141,6 +165,7 @@ var track = {
 			mapper: {},
 			tracklist: ['#ows', '#occupy', '#99', '#99percent'],
 			init: function(track){
+					merge(track, states);
 				_.each(this.tracklist, function(tag){
 					tag = tag.slice(1);
 					this.mapper[tag] = {},
@@ -178,6 +203,9 @@ var track = {
 				if(parsed.entities.hashtags.length){
 					this.process([parsed.id_str, parsed.entities.hashtags]);
 				}
+				else{
+					delete this.corral[parsed.id_str] // for now
+				}
 //				else {
 //					this.lingoProcess([parsed.id_str, parsed.text])
 //				}
@@ -188,18 +216,22 @@ var track = {
 					,		_id = data[0];
 					if(_.contains(this.tracklist, '#'+tag)){
 						this.mapper[tag].latest.unshift(this.corral[_id]);
-						this.mapper[tag].latest.splice(500, this.mapper[tag].latest.length - 1);
-						this.file(_id);
+						this.mapper[tag].latest.splice(1000, this.mapper[tag].latest.length - 1);
+						this.file(tag, this.mapper[tag]);
 						console.log(tag, this.mapper[tag].latest.length)
+						this.del(_id);
+					}
+					else {
+						this.del(_id);
 					}
 				},this)
 			},
-			file: function(_id){
-				var y = this.corral[_id];
-				client.zadd(_id, y.score, JSON.stringify(y))
-				client.expire(_id, 259200);
-//				delete this.corral[_id]
+			file: function(tag, post){
+				client.zadd(tag, post.score, JSON.stringify(post))
 			},
+			del: function(_id){
+				delete this.corral[_id]
+			}
 			lingoProcess: function(date){
 				
 			}
