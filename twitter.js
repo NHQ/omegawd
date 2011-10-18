@@ -159,7 +159,7 @@ var track = {
 //				}
 			},
 			process: function(data){
-				_.each.(data[1], function(hash){
+				_.each(data[1], function(hash){
 					if(_.contains(tracklist, hash)){
 						mapper[hash].latest.shift(this.corral[data[0]])
 						++mapper[hash].tps.tick
