@@ -1,4 +1,5 @@
-var twitter = require('twitter'),
+var fs = requie('fs'),
+		twitter = require('twitter'),
 		_ = require('underscore'),
 		redis = require('redis'),
 		client = redis.createClient();
@@ -26,7 +27,7 @@ function merge (a, b){
   return a;
 };
 
-var states = {}, statesJSON = JSON.parse(fs.readFileSync('../lib/States.json', encoding='utf8')).states.state; // this is an array 
+var states = {}, statesJSON = JSON.parse(fs.readFileSync('lib/States.json', encoding='utf8')).states.state; // this is an array 
 
 _.each(statesJSON, function (obj, key){
 		var name = obj['@attributes'].name
