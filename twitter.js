@@ -216,7 +216,7 @@ var track = {
 			},
 			process: function(data){
 				var _id = data[0];
-				var hashtags = _.intersection(_.map(data[1], function(e){return e.toLowerCase()}), this.tracklist);
+				var hashtags = _.intersection(_.map(data[1], function(e){return e.text.toLowerCase()}), this.tracklist);
 				console.log(hashtags);
 				if(hashtags.length){
 				console.log('matches');
