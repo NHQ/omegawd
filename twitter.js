@@ -219,7 +219,7 @@ var track = {
 				console.log('processing');
 				var _id = data[0];
 				var hashtags = _.intersection(data[1], this.tracklist)
-				if(hashtags.length)
+				if(hashtags.length){
 				console.log('matches');
 				_.each(hashtags, function(tag){
 						this.mapper[tag].latest.unshift(_id);
@@ -227,6 +227,7 @@ var track = {
 						this.stat(tag);
 						console.log(tag, this.mapper[tag].latest.length)
 					},this)
+				}
 				else{
 					this.del(_id)
 				}
