@@ -32,7 +32,7 @@ var states = {}, statesJSON = JSON.parse(fs.readFileSync('lib/States.json', enco
 _.each(statesJSON, function (obj, key){
 		var name = obj['@attributes'].name
 		,		abbr = obj['@attributes'].abbreviation;
-		state[name] = abbr;
+		states[name] = abbr;
 })
 
 
