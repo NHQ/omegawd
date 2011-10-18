@@ -220,7 +220,7 @@ var track = {
 						this.mapper[tag].latest.splice(1000, this.mapper[tag].latest.length - 1);
 						this.file(tag, this.mapper[tag]);
 						console.log(tag, this.mapper[tag].latest.length)
-//						this.del(_id);
+						this.del(_id);
 					}
 					else {
 						this.del(_id);
@@ -228,7 +228,7 @@ var track = {
 				},this)
 			},
 			file: function(tag, post){
-				client.zadd(tag, post.score, JSON.stringify(post), redis.print)
+				client.zadd(tag, post.score/1000, JSON.stringify(post), redis.print)
 			},
 			del: function(_id){
 				delete this.corral[_id]
