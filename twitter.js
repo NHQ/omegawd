@@ -158,7 +158,7 @@ var track = {
 			},
 			process: function(data){
 				_.each(data[1], function(hash){
-					if(_.contains(tracklist, hash.toLowerCase())){
+					if(_.contains(tracklist, '#'+hash.text.toLowerCase())){
 											console.log('down the hole!')
 						mapper[hash].latest.unshift(this.corral[data[0]])
 						console.log(mapper[hash].latest.length)
