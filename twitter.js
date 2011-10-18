@@ -237,7 +237,6 @@ var track = {
 				if(len > 500) {
 					var gones  = this.mapper[tag].latest.splice(500, len - 1);
 					_.each(gones, this.del(_id), this)
-					}
 				}
 			},
 			del: function(_id){
