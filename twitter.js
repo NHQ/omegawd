@@ -106,37 +106,61 @@ var track = {
 	Charleston: null
 	};
 	var tracklist = [];
-	var mapper = {}
+	var mapper = {};
+	var t = new RegExp(/#occupy*/);
+	var tps = function(key){
+		this.name = key;
+		this.init = function(){
+			this.timer = setInterval(this.set(), 1000)
+		};
+		this.set = function(){
+				console.log(this.name, this.tick);
+				this.tick = 0;
+		};
+		this.tick: 0
+	}
 	
 	_.map(track, function(value, key, list){
-		mapper[key] = [];
+		mapper[key] = {};
+		mapper[key].tags = [],
+		mapper[key].latest = [];
+		mapper[key].tps = new tps(key);
 		var one = '#occupy'+key.replace(/\s/g,"");
 		tracklist.push(one);
-		mapper[key].push(one)
+		mapper[key].tags.push(one)
 		if (value){
 			two = '#occupy'+value;
 			tracklist.push(two);
-			mapper[key].push(two)
+			mapper[key].tags.push(two)
 		}
 	})
-	
-	console.log(tracklist.join(), mapper)
 
 		this.switchBoard = {
 			corral: {},
 			parse: function(data){
-				var parsed = JSON.parse(data)
-				,		tweet = {
+				var parsed = JSON.parse(data),
+				this.corral[parsed.id_str] = {
 							_id : parsed.id_str,
 							txt: parsed.text, 
 							tags: parsed.entities.hashtags, 
 							links: parsed.entities.urls, 
 							pic: parsed.user.profile_image_url || parsed.user.profile_image_url_https, 
 							time: parsed.created_at };
-				this.corral[parsed.id_str] = tweet;
-				this.process([parsed.id_str, parsed.tags])
+				if(parsed.tags.length){
+					this.process([parsed.id_str, parsed.tags]);
+				}
+				else {
+					this.lingoProcess([parsed.id_str, parsed.text])
+				}
+				++tps.tick;
 			},
 			process: function(data){
+				if(data.tags.length == 1 && t.test(data.tags[0])){
+					
+				}
+				if(data.tags.length > 1)
+			},
+			lingoProcess: function(date){
 				
 			}
 		}
