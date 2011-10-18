@@ -179,7 +179,7 @@ var track = {
 					var tag = hash.text.toLowerCase()
 					,		_id = data[0];
 					console.log(tag);
-					if(_.contains(tracklist, tag)){
+					if(_.contains(this.tracklist, tag)){
 						this.mapper[tag].latest.unshift(this.corral[_id])
 						console.log(this.mapper[tag].latest.length)
 					//	++mapper[hash].tps.tick
