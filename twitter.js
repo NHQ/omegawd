@@ -119,7 +119,7 @@ var track = {
 				console.log(this.name, this.tick);
 				this.tick = 0;
 		};
-		this.tick: 0
+		this.tick = 0
 	}
 	
 	_.map(track, function(value, key, list){
