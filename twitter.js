@@ -11,7 +11,7 @@ var twit = new twitter({
 });
 
 var track = {
-	'Occupy':'',
+	'Occupy':null,
 	'Wall Street': 'ows',
 	'New York City': 'nyc',
 	'Los Angeles': 'la',
@@ -152,7 +152,8 @@ var track = {
 							pic: parsed.user.profile_image_url || parsed.user.profile_image_url_https, 
 							time: parsed.created_at };
 				if(parsed.entities.hashtags.length){
-					this.process([parsed.id_str, parsed.tags]);
+					this.process([parsed.id_str, parsed.entities.hashtags]);
+					console.log('down the hole!')
 				}
 //				else {
 //					this.lingoProcess([parsed.id_str, parsed.text])
@@ -175,7 +176,6 @@ var track = {
 		twit.stream('statuses/filter', {track: '#ows'}, function(stream) {
 		    stream.on('data', function (data) {
 					  switchBoard.parse(data);
-						console.log(data)
 		    });
 				stream.on('error', function(err){
 					console.log('error', err)
