@@ -143,7 +143,7 @@ var track = {
 		this.switchBoard = {
 			corral: {},
 			parse: function(data){
-				var parsed = JSON.parse(data),
+				var parsed = JSON.parse(data);
 				this.corral[parsed.id_str] = {
 							_id : parsed.id_str,
 							txt: parsed.text, 
