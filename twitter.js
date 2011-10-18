@@ -229,9 +229,8 @@ var track = {
 				},this)
 			},
 			file: function(tag, _id){
-				client.zadd(tag, this.corral[_id].score, JSON.stringify(this.corral[_id]), function(){
-					switchBoard.del(_id);
-				});
+				client.zadd(tag, this.corral[_id].score, JSON.stringify(this.corral[_id]));
+				setTimeout(this.del(), 500, _id) 
 			},
 			del: function(_id){
 				delete this.corral[_id]
