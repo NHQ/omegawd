@@ -164,12 +164,12 @@ var track = {
 						mapper[hash].latest.shift(this.corral[data[0]])
 						++mapper[hash].tps.tick
 					}
-				}
+				})
 			},
 			lingoProcess: function(date){
 				
 			}
-		}
+		};
 
 		twit.stream('statuses/filter', {track: '#ows'}, function(stream) {
 		    stream.on('data', function (data) {
