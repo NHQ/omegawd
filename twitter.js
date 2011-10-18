@@ -10,6 +10,8 @@ var fs = require('fs'),
 		    console.log(res, "ready");
 		});
 
+client.set('bogey', 'wogey', redis.print);
+
 var twit = new twitter({
     consumer_key: 'mw6Dw4adevPW0l67wHk3hw',
     consumer_secret: 'iW0KQprGmvzpTvY0KZuLONdHrdYi9FBErBRIZGH0CM',
@@ -200,7 +202,7 @@ var track = {
 							links: parsed.entities.urls, 
 							pic: parsed.user.profile_image_url || parsed.user.profile_image_url_https, 
 							time: parsed.created_at,
-							score: new Date().getTime() };
+							score: new Date().getTime()/1000 };
 				if(parsed.entities.hashtags.length){
 					this.process([parsed.id_str, parsed.entities.hashtags]);
 				}
@@ -218,17 +220,17 @@ var track = {
 					if(_.contains(this.tracklist, '#'+tag)){
 						this.mapper[tag].latest.unshift(this.corral[_id]);
 						this.mapper[tag].latest.splice(1000, this.mapper[tag].latest.length - 1);
-						this.file(tag, this.mapper[tag]);
+						this.file(tag, _id);
 						console.log(tag, this.mapper[tag].latest.length)
-						this.del(_id);
 					}
 					else {
 						this.del(_id);
 					}
 				},this)
 			},
-			file: function(tag, post){
-				client.zadd(tag, post.score/1000, JSON.stringify(post))
+			file: function(tag, _id){
+				client.zadd(tag, this.corral[_id].score, JSON.stringify(this.corral[_id]), redis.print);
+				this.del(_id);
 			},
 			del: function(_id){
 				delete this.corral[_id]
