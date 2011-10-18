@@ -231,7 +231,7 @@ var track = {
 			},
 			del: function(_id){
 				delete this.corral[_id]
-			}
+			},
 			lingoProcess: function(date){
 				
 			}
