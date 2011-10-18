@@ -138,8 +138,14 @@ var track = {
 */
 		var switchBoard = {
 			mapper: {},
-			tracklist: ['#ows', '#occupy'],
+			tracklist: ['#ows', '#occupy', '#99', '#99percent'],
 			init: function(track){
+				_.each(this.tracklist, function(tag){
+					tag = tag.slice(1);
+					this.mapper[tag] = {},
+					this.mapper[tag].key = 'Occupy Wall Street'
+					this.mapper[tag].latest = []
+				}, this)
 				_.map(track, function(value, key, list){
 					var hash = 'occupy'+key.replace(/\s/g,"").toLowerCase();
 					this.mapper[hash] = {};
@@ -179,7 +185,7 @@ var track = {
 					var tag = hash.text.toLowerCase()
 					,		_id = data[0];
 					console.log(tag);
-					if(_.contains(this.tracklist, tag)){
+					if(_.contains(this.tracklist, '#'+tag)){
 						this.mapper[tag].latest.unshift(this.corral[_id])
 						console.log(this.mapper[tag].latest.length)
 					//	++mapper[hash].tps.tick
