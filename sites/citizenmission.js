@@ -1,6 +1,6 @@
 var jade = require('jade');
 
-module.exports = function(connect, tweet, _){
+module.exports = function(connect, occupy, _){
 	var ahem = occupy.mapper.ows.latest.length;
 	var server = connect();
 	/*
