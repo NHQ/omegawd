@@ -1,5 +1,7 @@
 var http = require('http'), fs = require('fs');
 
+var buff = new Buffer('citizen:peapod2011').toString('base64')
+
 tags = JSON.parse(fs.readFileSync('./lib/tracklist.json'))
 
 tags.forEach(subscribe)
@@ -9,7 +11,7 @@ function subscribe (tag){
 		var dataw = "hubmode=subscribe&hub.verify=async&hub.callback=http://74.207.246.247:8001/feed";
 		var request = spfdr.request('POST', '/hubbub', {
 			'Host':'superfeedr.com',
-			"Authorization":"basic TkhROmxvb3Bob2xl",
+			"Authorization":"basic "+buff,
 			'Accept':'application/json',
 			'Content-Length': dataw.length
 		});
