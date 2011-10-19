@@ -2,7 +2,12 @@ var fs = require('fs'),
 		twitter = require('twitter'),
 		_ = require('underscore'),
 		redis = require('redis'),
-		client = redis.createClient();
+		client = redis.createClient(),
+		request = require('request'),
+		dom = require('jsdom');
+		
+var jQ = fs.readFileSync('./lib/jquery-1.6.2.min.js');
+		
 		client.on("error", function (err) {
 		    console.log("Error " + err);
 		});
@@ -171,11 +176,13 @@ var tick = 0;
 							links: parsed.entities.urls, 
 							pic: parsed.user.profile_image_url || parsed.user.profile_image_url_https, 
 							time: parsed.created_at,
+							author: parsed.user.name,
+							home: 'http://twitter.com/'+parsed.user.screen_name,
 							score: new Date().getTime() };
 				if(parsed.entities.hashtags.length){
 					this.process([parsed.id_str, parsed.entities.hashtags]);
 				}
-				else{
+				else {
 					delete this.corral[parsed.id_str] // for now
 				}
 //				else {
@@ -193,10 +200,35 @@ var tick = 0;
 					//	this.file(tag, _id);
 						this.stat(tag);
 					},this)
+					if(this.corral[_id].urls.length){
+						this.analyze(hashtags,this.corral[_id].urls)
+					}
 				}
 				else{
 					this.del(_id)
 				}
+			},
+			analyze: function(tags, urls){
+				_.each(urls, function(url){
+					var link = url.url;
+					console.log(url)
+					var req = request(link, this.domit(e,r,b,tags))
+				})
+			},
+			domit: function(e,r,b,tags){
+				var dom = dom.env({
+					html: b,
+					scripts: jQ,
+					done: function(err, window) {
+							if(err){console.log(err);return}
+					    var $ = window.$;
+							var link = window.location;
+					    var link_title = $('title')[0].html() || null;
+							_.each(tags, function(tag){
+								client.zincrby(tag+':links', 1, JSON.stringify([link, link_title]), redis.print)
+							})
+					    }
+					})
 			},
 			file: function(tag, _id){
 				//client.zadd(tag, this.corral[_id].score, JSON.stringify(this.corral[_id]));
