@@ -216,7 +216,7 @@ var tick = 0;
 					var req = request({uri: link, maxRedirects:5}, function(e,r,b){
 						console.log(e,r.statusCode);
 						if(!e){
-							this.domit(b,tags)
+							switchBoard.domit(b,tags)
 						}
 					})
 				}, this)
