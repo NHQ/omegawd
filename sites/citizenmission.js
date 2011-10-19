@@ -12,11 +12,11 @@ module.exports = function(connect, _){
 		}));
 	*/
 		server.use(function (req, res){
-			var ahem = occupy.ows.latest.length;
+			var ahem = occupy.mapper.ows.latest[0];
 			console.log(ahem);
 			var fn = jade.compile('h2 !{ahem}', {ahem : ahem});
 			res.writeHead('200', {'Content-Type': 'text/html'});
-			res.end(ahem);
+			res.end(occupy.corral[ahem]);
 	});
 	return server
 }; 
