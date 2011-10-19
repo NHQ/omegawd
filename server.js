@@ -14,7 +14,7 @@ var server = connect();
 		server.use(connect.session({secret: 'giddy gato' }));
 		domani.forEach(function (domain) {
 			server.use(vhost(domain, subs, _,
-				require('./sites/citizenmission')(connect)
+				require('./sites/citizenmission')(connect, tweet, _)
 			))
 		});
 		server.use(require('./sites/citizenmission')(connect));

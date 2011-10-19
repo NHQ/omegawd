@@ -1,4 +1,6 @@
-var jade = require('jade')
+var jade = require('jade');
+
+var ahem = tweet.switchBoard.mapper.ows.latest
 
 module.exports = function(connect){
 	var server = connect();
@@ -12,7 +14,7 @@ module.exports = function(connect){
 	*/
 		server.use(function (req, res){
 			console.log(req.subdomains);
-			var fn = jade.compile('h2 Boo!');
+			var fn = jade.compile('h2 !{ahem}');
 			res.writeHead('200', {'Content-Type': 'text/html'});
 			res.end(fn());
 	});
