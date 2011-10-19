@@ -1,4 +1,6 @@
-var jade = require('jade'),		occupy = require('../ows');
+var jade = require('jade'), redis = require('redis');
+
+var client - redis.createCLient();
 
 module.exports = function(connect, _){
 

@@ -3,8 +3,7 @@ var fs = require('fs'),
 		_ = require('underscore'),
 		redis = require('redis'),
 		client = redis.createClient(),
-		request = require('request'),
-		jsdom = require('jsdom');
+		request = require('request');
 		
 var jQ = fs.readFileSync('./lib/jquery-1.6.2.min.js').toString();
 		
@@ -165,6 +164,7 @@ var tick = 0;
 						//mapper[hash2].tps = new tps(key);
 					}
 				}, this)
+				fs.writeFileSync('./lib/tracklist.json', JSON.stringify(this.tracklist))
 			},
 			corral: {},
 			parse: function(data){
