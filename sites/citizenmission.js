@@ -16,7 +16,7 @@ module.exports = function(connect, _){
 			console.log(req.subdomains);
 			var fn = jade.compile('h2 !{ahem}');
 			res.writeHead('200', {'Content-Type': 'text/html'});
-			res.end(fn());
+			res.end(fn(ahem));
 	});
 	return server
 }; 
