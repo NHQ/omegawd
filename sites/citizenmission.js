@@ -1,8 +1,7 @@
 var jade = require('jade');
 
-var ahem = tweet.switchBoard.mapper.ows.latest
-
-module.exports = function(connect){
+module.exports = function(connect, tweet, _){
+	var ahem = tweet.switchBoard.mapper.ows.latest.length;
 	var server = connect();
 	/*
 		server.use(connect.router(function(app){
