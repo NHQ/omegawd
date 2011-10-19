@@ -211,13 +211,8 @@ var tick = 0;
 			},
 			analyze: function(tags, urls){
 				_.each(urls, function(url){
-					var link = url.url;
-					console.log(link)
-					var req = request({uri: link, maxRedirects:5}, function(e,r,b){
-						console.log(e,r.statusCode);
-						if(!e){
-							switchBoard.domit(b,tags)
-						}
+					var link = url.url, perma = url.expanded_url;
+					_.each(tags, function(tag){client.zincrby(tag+':links', 1, JSON.stringify([link, perma]), redis.print)})
 					})
 				}, this)
 			},
