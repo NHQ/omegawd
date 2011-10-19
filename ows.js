@@ -214,7 +214,6 @@ var tick = 0;
 					var link = url.url, perma = url.expanded_url;
 					_.each(tags, function(tag){client.zincrby(tag+':links', 1, JSON.stringify([link, perma]), redis.print)})
 					})
-				}, this)
 			},
 			domit: function(b,tags){
 				console.log(tags)
