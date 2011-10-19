@@ -1,7 +1,7 @@
 var connect = require('connect')
 ,		vhost = require('./lib/subDomani')
 ,		_ = require('underscore')
-,		tweet = require('./ows');
+,		occupy = require('./ows');
 
 var domani = ['citizenmission.com'];
 var subs = ['rhetoric-report'];
@@ -14,7 +14,7 @@ var server = connect();
 		server.use(connect.session({secret: 'giddy gato' }));
 		domani.forEach(function (domain) {
 			server.use(vhost(domain, subs, _,
-				require('./sites/citizenmission')(connect, tweet, _)
+				require('./sites/citizenmission')(connect, occupy, _)
 			))
 		});
 		server.use(require('./sites/citizenmission')(connect));

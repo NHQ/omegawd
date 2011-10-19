@@ -227,4 +227,4 @@ var tick = 0;
 				})
 		});
 
-exports.switchBoard = switchBoard
+module.exports = switchBoard;
