@@ -16,7 +16,7 @@ module.exports = function(connect, _){
 			console.log(ahem);
 			var fn = jade.compile('h2 !{ahem}', {ahem : ahem});
 			res.writeHead('200', {'Content-Type': 'text/html'});
-			res.end(occupy.corral[ahem]);
+			res.end(occupy.corral[ahem].text);
 	});
 	return server
 }; 
