@@ -131,6 +131,8 @@ var track = {
 	Charleston: null
 };
 
+var tick = 0;
+
 		var switchBoard = {
 			mapper: {},
 			wipe: [],
@@ -186,9 +188,10 @@ var track = {
 				if(hashtags.length){
 				_.each(hashtags, function(tag){
 						this.mapper[tag].latest.unshift(_id);
-						this.file(tag, _id);
+						++tick;
+						console.log(tick);
+					//	this.file(tag, _id);
 						this.stat(tag);
-						console.log(tag, this.mapper[tag].latest.length)
 					},this)
 				}
 				else{
@@ -196,7 +199,7 @@ var track = {
 				}
 			},
 			file: function(tag, _id){
-				client.zadd(tag, this.corral[_id].score, JSON.stringify(this.corral[_id]));
+				//client.zadd(tag, this.corral[_id].score, JSON.stringify(this.corral[_id]));
 			},
 			stat: function(tag){
 				var len = this.mapper[tag].latest.length;
