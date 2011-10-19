@@ -13,10 +13,10 @@ module.exports = function(connect, _){
 	*/
 		server.use(function (req, res){
 			var ahem = occupy.ows.latest.length;
-			console.log(req.subdomains);
+			console.log(ahem);
 			var fn = jade.compile('h2 !{ahem}', {ahem : ahem});
 			res.writeHead('200', {'Content-Type': 'text/html'});
-			res.end(fn());
+			res.end(ahem);
 	});
 	return server
 }; 
