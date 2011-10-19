@@ -6,7 +6,7 @@ var fs = require('fs'),
 		request = require('request'),
 		jsdom = require('jsdom');
 		
-var jQ = fs.readFileSync('./lib/jquery-1.6.2.min.js');
+var jQ = fs.readFileSync('./lib/jquery-1.6.2.min.js').toString();
 		
 		client.on("error", function (err) {
 		    console.log("Error " + err);
@@ -213,11 +213,16 @@ var tick = 0;
 				_.each(urls, function(url){
 					var link = url.url;
 					console.log(link)
-					var req = request({uri: link, maxRedirects:5}, this.domit)
+					var req = request({uri: link, maxRedirects:5}, function(e,r,b){
+						console.log(e,r.statusCode);
+						if(!e){
+							this.domit(b,tags)
+						}
+					})
 				}, this)
 			},
-			domit: function(e,r,b,tags){
-				console.log(e,r.statusCode)
+			domit: function(b,tags){
+				console.log(tags)
 				var dom = jsdom.env({
 					html: b,
 					scripts: jQ,
