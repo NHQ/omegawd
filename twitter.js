@@ -10,8 +10,6 @@ var fs = require('fs'),
 		    console.log(res, "ready");
 		});
 
-client.set('bogey', 'wogey', redis.print);
-
 var twit = new twitter({
     consumer_key: 'mw6Dw4adevPW0l67wHk3hw',
     consumer_secret: 'iW0KQprGmvzpTvY0KZuLONdHrdYi9FBErBRIZGH0CM',
@@ -234,7 +232,7 @@ var track = {
 				var len = this.mapper[tag].latest.length;
 				if(len > 500) {
 					this.wipe.unshift(this.mapper[tag].latest.splice(500, len - 1));
-					_.each(_.uniq(this.wipe), this.del(_id), this)
+					_.map(_.uniq(this.wipe), this.del, this)
 				}
 			},
 			del: function(_id){
@@ -244,9 +242,8 @@ var track = {
 				
 			}
 		};switchBoard.init(track);
-		list = _.map(switchBoard.tracklist, function(t){return '#'+t}).join();
-		console.log(switchBoard.tracklist);
-		twit.stream('statuses/filter', {track: list}, function(stream) {
+
+		twit.stream('statuses/filter', {track: _.map(switchBoard.tracklist, function(t){return '#'+t}).join()}, function(stream) {
 		    stream.on('data', function (data) {
 					  switchBoard.parse(data);
 		    });
