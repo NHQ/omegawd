@@ -212,8 +212,8 @@ var tick = 0;
 			analyze: function(tags, urls){
 				_.each(urls, function(url){
 					var link = url.url;
-					console.log(url)
-					var req = request(link, this.domit(e,r,b,tags))
+					console.log(link)
+					var req = request(link, this.domit)
 				})
 			},
 			domit: function(e,r,b,tags){
