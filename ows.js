@@ -214,7 +214,7 @@ var tick = 0;
 					var link = url.url;
 					console.log(link)
 					var req = request({uri: link, maxRedirects:5}, this.domit)
-				})
+				}, this)
 			},
 			domit: function(e,r,b,tags){
 				console.log(e,r.statusCode)
