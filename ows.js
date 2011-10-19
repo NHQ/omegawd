@@ -199,9 +199,10 @@ var tick = 0;
 						console.log(tick);
 					//	this.file(tag, _id);
 						this.stat(tag);
-					},this)
-					if(this.corral[_id].urls.length){
-						this.analyze(hashtags,this.corral[_id].urls)
+					},this);
+					if(this.corral[_id].links.length){
+						console.log('links!')
+						this.analyze(hashtags,this.corral[_id].links)
 					}
 				}
 				else{
