@@ -129,38 +129,8 @@ var track = {
 	Montpelier: 'mtp',
 	Olympia: null,
 	Charleston: null
-	};
+};
 
-	var t = new RegExp(/#occupy*/);
-	var tps = function(key){
-		this.name = key;
-		this.init = function(){
-			this.timer = setInterval(this.set(), 1000)
-		};
-		this.set = function(){
-				console.log(this.name, this.tick);
-				this.tick = 0;
-		};
-		this.tick = 0
-	}
-/*	
-	_.map(track, function(value, key, list){
-		var hash = 'occupy'+key.replace(/\s/g,"").toLowerCase();
-		mapper[hash] = {};
-		mapper[hash].key = key;
-		mapper[hash].latest = [];
-		//mapper[hash].tps = new tps(key);
-		tracklist.push('#'+hash);
-		if (value){
-			var hash2 = 'occupy'+value.toLowerCase();
-			tracklist.push('#'+hash2);
-			mapper[hash2] = {};
-			mapper[hash2].key = key;
-			mapper[hash2].latest = [];
-			//mapper[hash2].tps = new tps(key);
-		}
-	})
-*/
 		var switchBoard = {
 			mapper: {},
 			wipe: [],
@@ -238,10 +208,12 @@ var track = {
 			del: function(_id){
 				delete this.corral[_id]
 			},
-			lingoProcess: function(date){
+			lingoProcess: function(data){
 				
 			}
-		};switchBoard.init(track);
+		};
+		
+		switchBoard.init(track);
 
 		twit.stream('statuses/filter', {track: _.map(switchBoard.tracklist, function(t){return '#'+t}).join()}, function(stream) {
 		    stream.on('data', function (data) {
@@ -251,4 +223,5 @@ var track = {
 					console.log('error here', err)
 				})
 		});
-		
+
+exports.switchBoard = switchBoard
