@@ -1,7 +1,7 @@
 var connect = require('connect')
 ,		vhost = require('./lib/subDomani')
 ,		_ = require('underscore')
-,		tweet = require('ows');
+,		tweet = require('./ows');
 
 var domani = ['citizenmission.com'];
 var subs = ['rhetoric-report'];
