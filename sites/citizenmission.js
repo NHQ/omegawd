@@ -1,7 +1,7 @@
-var jade = require('jade');
+var jade = require('jade'),		occupy = require('../ows');
 
-module.exports = function(connect, occupy, _){
-	var ahem = occupy.mapper.ows.latest.length;
+module.exports = function(connect, _){
+
 	var server = connect();
 	/*
 		server.use(connect.router(function(app){
@@ -12,6 +12,7 @@ module.exports = function(connect, occupy, _){
 		}));
 	*/
 		server.use(function (req, res){
+			var ahem = occupy.ows.latest.length;
 			console.log(req.subdomains);
 			var fn = jade.compile('h2 !{ahem}');
 			res.writeHead('200', {'Content-Type': 'text/html'});

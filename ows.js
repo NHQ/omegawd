@@ -88,7 +88,7 @@ var track = {
 	Cincinnati: null,
 	'Saint Paul': 'sp',
 	Lincoln: null,
-	Madions: null,
+	Madison: null,
 	'Baton Rouge': null,
 	Spokane: null,
 	Cheyenne: null,
@@ -227,4 +227,4 @@ var tick = 0;
 				})
 		});
 
-module.exports = switchBoard;
+module.exports = switchBoard.mapper;
