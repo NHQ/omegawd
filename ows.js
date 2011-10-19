@@ -4,7 +4,7 @@ var fs = require('fs'),
 		redis = require('redis'),
 		client = redis.createClient(),
 		request = require('request'),
-		dom = require('jsdom');
+		jsdom = require('jsdom');
 		
 var jQ = fs.readFileSync('./lib/jquery-1.6.2.min.js');
 		
@@ -213,11 +213,12 @@ var tick = 0;
 				_.each(urls, function(url){
 					var link = url.url;
 					console.log(link)
-					var req = request(link, this.domit)
+					var req = request({uri: link, maxRedirects:5}, this.domit)
 				})
 			},
 			domit: function(e,r,b,tags){
-				var dom = dom.env({
+				console.log(e,r.statusCode)
+				var dom = jsdom.env({
 					html: b,
 					scripts: jQ,
 					done: function(err, window) {
