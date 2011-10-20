@@ -36,7 +36,7 @@ module.exports = function(connect, _){
 				var eche = "";
 				console.log(index)
 				function append(k, cb){
-					eche += '<a href="'+k[1]+'">'+k[1]+'</a><br />'
+					eche += '<a href='+k[1]+'>'+k[1].slice(1,-1)+'</a><br />'
 					cb(null);
 				};
 				client.zrevrangebyscore(index.toLowerCase(), 100, 2, function(e,r){
