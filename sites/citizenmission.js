@@ -18,7 +18,7 @@ _.each(trackmap, function(v,k){
 		html += '<a href="/'+v+'">'+v+'</a><br />'
 	}
 })
-console.log(html)
+
 _.map(trackmap, function(val, key){
 	
 })
@@ -50,13 +50,12 @@ module.exports = function(connect, _){
 				console.log(index)
 				function append(k, cb){
 					k = JSON.parse(k);
-					eche += '<a href='+k[1]+'>'+k[1].slice(1,-1)+'</a><br />'
+					var p = k[1] || k[0];
+					eche += '<a href='+p+'>'+p.slice(1,-1)+'</a><br />'
 					cb(null);
 				};
-				client.zrevrangebyscore(index.toLowerCase(), 200, 2, function(e,r){
-					console.log(e,r)
+				client.zrevrangebyscore(index.toLowerCase(), '+inf', 2, function(e,r){
 					async.forEachSeries(r,append,function(err){
-						console.log(eche);
 						res.end(eche)
 					})
 				})
