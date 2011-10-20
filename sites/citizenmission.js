@@ -1,8 +1,9 @@
 var jade = require('jade'), redis = require('redis'), trackmap = require('../lib/trackmap.js'), _ = require('underscore'), 
-		ows = require('../ows.js');
+		ows = require('../ows.js'), fs = require('fs');
 
 var client = redis.createClient();
 var mapper = {}, html = "";
+var statesJSON = JSON.parse(fs.readFileSync('lib/States.json', encoding='utf8')).states.state;
 
 _.each(trackmap, function(val,key){
 	mapper[key] = ['occupy'+key]
@@ -28,6 +29,15 @@ module.exports = function(connect, _){
 			app.get('/', function(req, res){
 				res.writeHead('200', {'Content-Type': 'text/html'});
 				res.end(html);
+			})
+			app.get('/:place', function(req, res){
+				res.writeHead('200', {'Content-Type': 'text/html'})
+				client.zrevrangebyscore('occupy'+req.params.place+':links', 100, 2, function(err, res){
+					_.each(res, function(v){
+						html += '<a href="/'+v[1]+'">'+v[1]+'</a><br />'
+					})
+					res.end(html)
+				})
 			})
 		}));
 
