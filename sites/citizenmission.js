@@ -34,8 +34,9 @@ module.exports = function(connect, _){
 				res.writeHead('200', {'Content-Type': 'text/html'});
 				var eche = "";
 				client.zrevrangebyscore('occupy'+req.params.place.replace(/_/g, "")+':links', 100, 2, function(e,r){
-					async.forEach(r, function(k){
+					async.forEach(r, function(k, cb){
 							eche += '<a href="/'+k[1]+'">'+k[1]+'</a><br />'
+							cb(null, eche)
 					}, res.end(eche))
 				})
 			})
