@@ -1,7 +1,8 @@
-var jade = require('jade'), redis = require('redis'), trackmap = require('../lib/trackmap.js'), _ = require('underscore');
+var jade = require('jade'), redis = require('redis'), trackmap = require('../lib/trackmap.js'), _ = require('underscore'), 
+		ows = require('../ows.js');
 
 var client = redis.createClient();
-var mapper = {}, html;
+var mapper = {}, html = "";
 
 _.each(trackmap, function(val,key){
 	mapper[key] = ['occupy'+key]
@@ -10,7 +11,8 @@ _.each(trackmap, function(val,key){
 })
 
 _.each(trackmap, function(v,k){
-	html += '<a href="/'+k+'">'+k+'</a>'
+	k = k.replace(/\s/g,"_");
+	html += '<a href="/'+k+'">'+k+'</a><br />'
 })
 console.log(html);
 
