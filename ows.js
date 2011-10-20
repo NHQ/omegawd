@@ -232,7 +232,7 @@ var tick = 0;
 					})
 			},
 			file: function(tag, _id){
-				//client.zadd(tag, this.corral[_id].score, JSON.stringify(this.corral[_id]));
+				// client.zadd(tag, this.corral[_id].score, JSON.stringify(this.corral[_id]));
 			},
 			stat: function(tag){
 				var len = this.mapper[tag].latest.length;
