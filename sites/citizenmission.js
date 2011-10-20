@@ -31,12 +31,13 @@ module.exports = function(connect, _){
 				res.end(html);
 			})
 			app.get('/:place', function(req, res){
-				res.writeHead('200', {'Content-Type': 'text/html'})
-				client.zrevrangebyscore('occupy'+req.params.place+':links', 100, 2, function(err, res){
-					_.each(res, function(v){
-						html += '<a href="/'+v[1]+'">'+v[1]+'</a><br />'
+				res.writeHead('200', {'Content-Type': 'text/html'});
+				var eche = "";
+				client.zrevrangebyscore('occupy'+req.params.place+':links', 100, 2, function(err, re){
+					re.forEach(function(v){
+						eche += '<a href="/'+v[1]+'">'+v[1]+'</a><br />'
 					})
-					res.end(html)
+					res.end(eche)
 				})
 			})
 		}));
