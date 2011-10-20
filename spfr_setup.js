@@ -2,14 +2,14 @@ var http = require('http'), fs = require('fs');
 
 var buff = new Buffer('citizen:peapod2011').toString('base64')
 
-tags = JSON.parse(fs.readFileSync('./lib/tracklist.json'))
-
-tags.forEach(subscribe)
+var tags = JSON.parse(fs.readFileSync('./lib/tracklist.json'))
+var tats = ['ows']
+tats.forEach(subscribe)
 
 function subscribe (tag){
-		var spfdr = http.createClient(80, 'tumblr.superfeedr.com');
-		var dataw = "hub.mode=subscribe&hub.verify=async&hub.callback=http://74.207.246.247:8001/feed";
-		var request = spfdr.request('POST', '/track', {
+		var spfdr = http.createClient(80, 'superfeedr.com');
+		var dataw = "hub.mode=subscribe&hub.verify=async&hub.topic=http://tumblr.superfeedr.com/track/"+tag+"&hub.callback=http://74.207.246.247:8001/feed";
+		var request = spfdr.request('POST', '/hubbub', {
 			'Host':'superfeedr.com',
 			"Authorization":"basic "+buff,
 			'Accept':'application/json',
