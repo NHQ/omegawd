@@ -46,7 +46,7 @@ module.exports = function(connect, _){
 				if(req.params.place.toLowerCase() === 'ows'){
 					index = 'daily';
 				}
-				var eche = "";
+				var eche = "Top = most repeatedly shared: <br /><br />";
 				console.log(index)
 				function append(k, cb){
 					k = JSON.parse(k);
