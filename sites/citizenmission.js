@@ -49,7 +49,7 @@ module.exports = function(connect, _){
 				function append(k, cb){
 					k = JSON.parse(k);
 					var p = k[1] || k[0];
-					eche += '<a href='+p+'>'+p.slice(1,-1)+'</a><br />'
+					eche += '<a href='+p+'>'+p+'</a><br />'
 					cb(null);
 				};
 				client.zrevrangebyscore(index.toLowerCase(), '+inf', 1, function(e,r){
