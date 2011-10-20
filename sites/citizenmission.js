@@ -29,7 +29,7 @@ module.exports = function(connect, _){
 		server.use(function(req,res,next){
 			client.zunionstore('daily', 3, 'ows:links', 'occupy:links', '99percent:links', function(err, res){
 				console.log(err, res);
-				client.zremrangebyscore('daily', 0, 30, function(e,r){
+				client.zremrangebyscore('daily', 0, 17, function(e,r){
 					next()
 				})
 			})
@@ -54,7 +54,7 @@ module.exports = function(connect, _){
 					eche += '<a href='+p+'>'+p.slice(1,-1)+'</a><br />'
 					cb(null);
 				};
-				client.zrevrangebyscore(index.toLowerCase(), '+inf', 2, function(e,r){
+				client.zrevrangebyscore(index.toLowerCase(), '+inf', 1, function(e,r){
 					async.forEachSeries(r,append,function(err){
 						res.end(eche)
 					})
