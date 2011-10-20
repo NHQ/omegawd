@@ -36,6 +36,7 @@ module.exports = function(connect, _){
 				var eche = "";
 				console.log(index)
 				function append(k, cb){
+					k = JSON.parse(k);
 					eche += '<a href='+k[1]+'>'+k[1].slice(1,-1)+'</a><br />'
 					cb(null);
 				};
