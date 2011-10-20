@@ -33,11 +33,14 @@ module.exports = function(connect, _){
 			app.get('/:place', function(req, res){
 				res.writeHead('200', {'Content-Type': 'text/html'});
 				var eche = "";
+				function append(k, cb){
+					eche += '<a href="/'+k[1]+'">'+k[1]+'</a><br />'
+					cb(null);
+				};
 				client.zrevrangebyscore('occupy'+req.params.place.replace(/_/g, "")+':links', 100, 2, function(e,r){
-					async.forEach(r, function(k, cb){
-							eche += '<a href="/'+k[1]+'">'+k[1]+'</a><br />'
-							cb(null, eche)
-					}, res.end(eche))
+					async.forEachSeries(r,append,function(err){
+						res.end(eche)
+					})
 				})
 			})
 		}));
