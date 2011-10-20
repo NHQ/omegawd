@@ -43,7 +43,7 @@ module.exports = function(connect, _){
 			app.get('/:place', function(req, res){
 				res.writeHead('200', {'Content-Type': 'text/html'});
 				var index = 'occupy'+req.params.place.replace(/_/g, "")+':links';
-				if(req.params.place.toLowerCase === 'ows'){
+				if(req.params.place.toLowerCase() === 'ows'){
 					index = 'daily';
 				}
 				var eche = "";
