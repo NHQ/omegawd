@@ -32,13 +32,17 @@ module.exports = function(connect, _){
 			})
 			app.get('/:place', function(req, res){
 				res.writeHead('200', {'Content-Type': 'text/html'});
+				var index = 'occupy'+req.params.place.replace(/_/g, "")+':links';
 				var eche = "";
+				console.log(index)
 				function append(k, cb){
 					eche += '<a href="/'+k[1]+'">'+k[1]+'</a><br />'
 					cb(null);
 				};
-				client.zrevrangebyscore('occupy'+req.params.place.replace(/_/g, "")+':links', 100, 2, function(e,r){
+				client.zrevrangebyscore(index, 100, 2, function(e,r){
+					console.log(e,r)
 					async.forEachSeries(r,append,function(err){
+						console.log(eche);
 						res.end(eche)
 					})
 				})

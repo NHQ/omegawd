@@ -196,12 +196,10 @@ var tick = 0;
 				_.each(hashtags, function(tag){
 						this.mapper[tag].latest.unshift(_id);
 						++tick;
-						console.log(tick);
 					//	this.file(tag, _id);
 						this.stat(tag);
 					},this);
 					if(this.corral[_id].links.length){
-						console.log('links!')
 						this.analyze(hashtags,this.corral[_id].links)
 					}
 				}
@@ -212,7 +210,7 @@ var tick = 0;
 			analyze: function(tags, urls){
 				_.each(urls, function(url){
 					var link = url.url, perma = url.expanded_url;
-					_.each(tags, function(tag){client.zincrby(tag+':links', 1, JSON.stringify([link, perma]), redis.print)})
+					_.each(tags, function(tag){client.zincrby(tag+':links', 1, JSON.stringify([link, perma]))})
 					})
 			},
 			domit: function(b,tags){
