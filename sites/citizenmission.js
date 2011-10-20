@@ -1,5 +1,5 @@
 var jade = require('jade'), redis = require('redis'), trackmap = require('../lib/trackmap.js'), _ = require('underscore'), 
-		ows = require('../ows.js'), fs = require('fs');
+		ows = require('../ows.js'), fs = require('fs'), async = require('async');
 
 var client = redis.createClient();
 var mapper = {}, html = "";
@@ -33,11 +33,10 @@ module.exports = function(connect, _){
 			app.get('/:place', function(req, res){
 				res.writeHead('200', {'Content-Type': 'text/html'});
 				var eche = "";
-				client.zrevrangebyscore('occupy'+req.params.place+':links', 100, 2, function(err, re){
-					re.forEach(function(v){
-						eche += '<a href="/'+v[1]+'">'+v[1]+'</a><br />'
-					})
-					res.end(eche)
+				client.zrevrangebyscore('occupy'+req.params.place.replace(/_/g, "")+':links', 100, 2, function(e,r){
+					async.forEach(r, function(k){
+							eche += '<a href="/'+k[1]+'">'+k[1]+'</a><br />'
+					}, res.end(eche))
 				})
 			})
 		}));
