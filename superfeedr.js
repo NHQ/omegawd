@@ -2,7 +2,7 @@ var connect = require('connect')
 ,		vhost = require('./lib/subDomani')
 ,		_ = require('underscore')
 ,		redis = require('redis')
-,		client = redis.createServer();
+,		client = redis.createClient();
 
 var server = connect();
 		server.use(connect.profiler());
@@ -30,7 +30,7 @@ var server = connect();
 				console.log('spfrd post')
 				res.writeHead('200');
 				res.end();
-				var tag : req.params.tag;
+				var tag = req.params.tag;
 				var d = req.body;
 				var dl = d.items.length;
 				var unfurl = d.status.feed
