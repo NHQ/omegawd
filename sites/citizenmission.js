@@ -14,9 +14,11 @@ _.each(trackmap, function(val,key){
 _.each(trackmap, function(v,k){
 	k = k.replace(/\s/g,"_");
 	html += '<a href="/'+k+'">'+k+'</a><br />'
+	if(v){
+		html += '<a href="/'+v+'">'+v+'</a><br />'
+	}
 })
-console.log(html);
-
+console.log(html)
 _.map(trackmap, function(val, key){
 	
 })
@@ -24,7 +26,15 @@ _.map(trackmap, function(val, key){
 module.exports = function(connect, _){
 
 	var server = connect();
-
+		server.use(function(req,res,next){
+			client.zunionstore('daily', 3, 'ows:links', 'occupy:links', '99percent:links', function(err, res){
+				console.log(err, res);
+				client.zremrangebyscore('daily', 0, 30, function(e,r){
+					next()
+				})
+			})
+		});
+		
 		server.use(connect.router(function(app){
 			app.get('/', function(req, res){
 				res.writeHead('200', {'Content-Type': 'text/html'});
@@ -33,6 +43,9 @@ module.exports = function(connect, _){
 			app.get('/:place', function(req, res){
 				res.writeHead('200', {'Content-Type': 'text/html'});
 				var index = 'occupy'+req.params.place.replace(/_/g, "")+':links';
+				if(req.params.place.toLowerCase === 'ows'){
+					index = 'daily';
+				}
 				var eche = "";
 				console.log(index)
 				function append(k, cb){
@@ -40,7 +53,7 @@ module.exports = function(connect, _){
 					eche += '<a href='+k[1]+'>'+k[1].slice(1,-1)+'</a><br />'
 					cb(null);
 				};
-				client.zrevrangebyscore(index.toLowerCase(), 100, 2, function(e,r){
+				client.zrevrangebyscore(index.toLowerCase(), 200, 2, function(e,r){
 					console.log(e,r)
 					async.forEachSeries(r,append,function(err){
 						console.log(eche);
