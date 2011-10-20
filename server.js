@@ -17,5 +17,5 @@ var server = connect();
 			))
 		});
 		server.use(require('./sites/citizenmission')(connect));
-		server.listen(process.env.NODE_ENV === 'production' ? 80 : 8000);
+		server.listen(process.env.NODE_ENV === 'production' ? 80 : 80);
 		console.log('Listening on ' + server.address().port);
