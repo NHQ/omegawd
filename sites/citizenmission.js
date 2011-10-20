@@ -28,7 +28,6 @@ module.exports = function(connect, _){
 	var server = connect();
 		server.use(function(req,res,next){
 			client.zunionstore('daily', 3, 'ows:links', 'occupy:links', '99percent:links', function(err, res){
-				console.log(err, res);
 				client.zremrangebyscore('daily', 0, 17, function(e,r){
 					next()
 				})
@@ -47,7 +46,6 @@ module.exports = function(connect, _){
 					index = 'daily';
 				}
 				var eche = "Top = most repeatedly shared: <br /><br />";
-				console.log(index)
 				function append(k, cb){
 					k = JSON.parse(k);
 					var p = k[1] || k[0];
@@ -64,7 +62,6 @@ module.exports = function(connect, _){
 
 		server.use(function (req, res){
 			var ahem = occupy.mapper.ows.latest[0];
-			console.log(ahem);
 			var fn = jade.compile('h2 !{ahem}', {ahem : ahem});
 			res.writeHead('200', {'Content-Type': 'text/html'});
 			res.end(occupy.corral[ahem].txt);

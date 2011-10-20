@@ -197,7 +197,6 @@ var tick = 0;
 						++tick;
 					//	this.file(tag, _id);
 						this.stat(tag);
-						console.log(tag);
 					},this);
 					if(this.corral[_id].links.length){
 						this.analyze(hashtags,this.corral[_id].links)
