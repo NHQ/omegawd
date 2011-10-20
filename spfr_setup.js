@@ -7,11 +7,11 @@ var tats = ['ows']
 tats.forEach(subscribe)
 
 function subscribe (tag){
-		var spfdr = http.createClient(80, 'tumblr.superfeedr.com/');
-		var dataw = "hub.mode=subscribe&hub.verify=async&hub.topic=http://tumblr.superfeedr.com/track/"+tag+"&hub.callback=http://74.207.246.247:8001/feed";
+		var spfdr = http.createClient(80, 'superfeedr.com');
+		var dataw = "hub.mode=subscribe&hub.verify=async&hub.callback=http://74.207.246.247:8001/feed";
 		var request = spfdr.request('POST', '/track/ows', {
 			'Host':'superfeedr.com',
-			"Authorization":"basic "+buff,
+			"Authorization":"basic TkhROmxvb3Bob2xl",
 			'Accept':'application/json',
 			'Content-Length': dataw.length
 		});
