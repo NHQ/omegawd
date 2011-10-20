@@ -39,7 +39,7 @@ module.exports = function(connect, _){
 					eche += '<a href="/'+k[1]+'">'+k[1]+'</a><br />'
 					cb(null);
 				};
-				client.zrevrangebyscore(index, 100, 2, function(e,r){
+				client.zrevrangebyscore(index.toLowerCase(), 100, 2, function(e,r){
 					console.log(e,r)
 					async.forEachSeries(r,append,function(err){
 						console.log(eche);
