@@ -28,7 +28,7 @@ module.exports = function(connect, _){
 		server.use(connect.router(function(app){
 			app.get('/', function(req, res){
 				res.writeHead('200', {'Content-Type': 'text/html'})
-				res.end("<script>window.location = http://citizenmission.com/ows</script>")
+				res.end('<script>window.location = "http://citizenmission.com/ows"</script>')
 			})
 			app.get('/analytics', function(res, res){
 				res.writeHead('200', {'Content-Type': 'text/html'})
