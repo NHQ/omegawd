@@ -31,7 +31,7 @@ module.exports = function(connect, _){
 			})
 			app.get('/analytics', function(res, res){
 				res.writeHead('200', {'Content-Type': 'text/html'})
-				res.end(Object.keys(ows).length.toString())
+				res.end(Object.keys(ows.corral).length.toString())
 			})
 			app.get('/:place', function(req, res){
 				res.writeHead('200', {'Content-Type': 'text/html'});
