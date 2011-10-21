@@ -158,7 +158,7 @@ var tick = 0;
 			corral: {},
 			parse: function(data){
 				var parsed = JSON.parse(data);
-				this.corral[parsed.id_str] = {
+				var post = {
 							_id : parsed.id_str,
 							txt: parsed.text, 
 							tags: parsed.entities.hashtags, 
@@ -168,19 +168,16 @@ var tick = 0;
 							author: parsed.user.name,
 							home: 'http://twitter.com/'+parsed.user.screen_name,
 							score: new Date().getTime() };
-				if(parsed.entities.hashtags.length){
-					this.process([parsed.id_str, parsed.entities.hashtags]);
-				}
-				else {
-					delete this.corral[parsed.id_str] // for now
+				if(post.entities.hashtags.length){
+					this.process(post);
 				}
 //				else {
 //					this.lingoProcess([parsed.id_str, parsed.text])
 //				}
 			},
 			process: function(data){
-				var _id = data[0];
-				var hashtags = _.intersection(_.map(data[1], function(e){return e.text.toLowerCase()}), this.tracklist);
+				var _id = data._id;
+				var hashtags = _.intersection(_.map(data.tags, function(e){return e.text.toLowerCase()}), this.tracklist);
 				if(hashtags.length){
 				_.each(hashtags, function(tag){
 						this.mapper[tag].latest.unshift(_id);
@@ -188,16 +185,13 @@ var tick = 0;
 					//	this.file(tag, _id);
 						this.stat(tag);
 					},this);
-					if(this.corral[_id].links.length){
-						this.analyze(hashtags,this.corral[_id].links)
+					if(data.links.length){
+						this.analyze(hashtags,data)
 					}
 				}
-				else{
-					this.del(_id)
-				}
 			},
-			analyze: function(tags, urls){
-				_.each(urls, function(url){
+			analyze: function(tags, data){
+				_.each(data.links, function(url){
 					var link = url.url, perma = url.expanded_url;
 					_.each(tags, function(tag){client.zincrby(tag+':links', 1, JSON.stringify([link, perma]))})
 					})
