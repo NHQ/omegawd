@@ -39,5 +39,48 @@ var str = _.uniq(arr).join()
 
 var data = {trackstring: str, tracklist: _.uniq(arr), states: JSON.parse(trackmap).states, tagCity : tags}
 
+data.mapTags = function (input){
+	
+	function tags (state, bool){
+		var tags = [];
+		switch (bool)
+		
+		{
+		case true:
+
+			tags = _.map(_.uniq([state.capital, state.abbreviation, state["most-populous-city"]]), function(e){return e.toLowerCase().replace(/\s/g, "")})
+			break;
+			
+		case false:
+			
+			_.each(state.cities, function(city){
+				_.each(city.keywords, function(words){
+					tags.push(words.toLowerCase().replace(/\s/g, ""))
+				})
+			})
+						
+			break
+		}
+		
+		return (_.flatten(tags))
+		
+	}
+	
+	var name = input.toUpperCase().replace(/_/g, " ")
+	
+	if(_.contains(Object.keys(this.states), name)){
+		// is a state
+		var state = trackmap.name;
+		var tags = tags(this.states[name], _.isEmpty(this.states[name].cities)) 
+		return tags
+		}
+	else if(_.contains(Object.keys(this.tagCity), name)){
+		// is a city
+			var tags = this.tagCity[name];
+			return tags
+		}
+	else {return null}
+}
+
 module.exports = data;
 

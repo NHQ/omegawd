@@ -3,48 +3,7 @@ var jade = require('jade'), redis = require('redis'), trackmap = require('../mak
 var client = redis.createClient();
 var mapper = {}, html = "";
 
-function mapTags (input){
-	
-	function tags (state, bool){
-		var tags = [];
-		switch (bool)
-		
-		{
-		case true:
-
-			tags = _.map(_.uniq([state.capital, state.abbreviation, state["most-populous-city"]]), function(e){return e.toLowerCase().replace(/\s/g, "")})
-			break;
-			
-		case false:
-			
-			_.each(state.cities, function(city){
-				_.each(city.keywords, function(words){
-					tags.push(words.toLowerCase().replace(/\s/g, ""))
-				})
-			})
-						
-			break
-		}
-		
-		return (_.flatten(tags))
-		
-	}
-	
-	var name = input.toUpperCase().replace(/_/g, " ")
-	
-	if(_.contains(Object.keys(trackmap.states), name)){
-		// is a state
-		var state = trackmap.name;
-		var tags = tags(trackmap.states[name], _.isEmpty(trackmap.states[name].cities)) 
-		return tags
-		}
-	if(_.contains(Object.keys(trackmap.tagCity), name)){
-		// is a city
-			var tags = trackmap.tagCity[name];
-			return tags
-		}
-}
-
+//  console.log(trackmap.mapTags("illinois"))
 
 module.exports = function(connect, _){
 
@@ -60,14 +19,11 @@ module.exports = function(connect, _){
 		server.use(connect.router(function(app){
 			app.get('/', function(req, res){
 				res.writeHead('200', {'Content-Type': 'text/html'})
-				res.end('<script>window.location = "http://citizenmission.com/ows"</script>')
+				res.end('<script>window.location = "http://citizenmission.com/occupy"</script>')
 			})
-			app.get('/:place', function(req, res){
-				res.writeHead('200', {'Content-Type': 'text/html'});
-				var index = 'occupy'+req.params.place.replace(/_/g, "")+':links';
-				if(req.params.place.toLowerCase() === 'ows'){
-					index = 'daily';
-				}
+			
+			app.get('/occupy', function(req, res){
+				res.writeHead('200', {'Content-Type': 'text/html'})
 				var eche = "Top = most repeatedly shared: <br /><br />";
 				function append(k, cb){
 					k = JSON.parse(k);
@@ -75,13 +31,31 @@ module.exports = function(connect, _){
 					eche += '<a href='+p+'>'+p+'</a><br />'
 					cb(null);
 				};
-				client.zrevrangebyscore(index.toLowerCase(), '+inf', 1, function(e,r){
+				client.zrevrangebyscore('daily', '+inf', 17, function(e,r){
 					async.forEachSeries(r,append,function(err){
 						res.end(eche)
 					})
 				})
 			})
-		}));
+			
+			app.get('/:place', function(req, res){
+				res.writeHead('200', {'Content-Type': 'text/html'});
+				
+				var tags = trackmap.mapTags(req.params.place);
+				client.zunionstore(
+					req.params.place+':agg', 
+					tags.length, 
+					_.map(tags, function(tag){ return 'occupy'+tag+':links'}), 
+					function(e,r){
+						console.log(arguments)
+						client.zrevrangebyscore(req.params.place+':agg', '+inf', 2, function(e,r){
+							async.forEachSeries(r,append,function(err){
+								res.end(eche)
+							})
+						})
+					})	
+				})
+			}));
 
 		server.use(function (req, res){
 			var fn = jade.compile('h2 !{ahem}', {ahem : ahem});
