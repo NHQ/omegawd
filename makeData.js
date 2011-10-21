@@ -9,6 +9,7 @@ _.each(JSON.parse(trackmap).states, function(val, key){
 		arr.push(val.capital.toLowerCase().replace(/\s/g, ""), val["most-populous-city"].toLowerCase().replace(/\s/g, ""))
 	}
 	else if (!_.isEmpty(val.cities)){
+		arr.push(val.capital.toLowerCase().replace(/\s/g, ""))
 		_.each(val.cities, function(city,k){
 			city.keywords.forEach(function(e){
 				arr.push(e.toLowerCase().replace(/\s/g, ""))
