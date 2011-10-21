@@ -42,6 +42,14 @@ module.exports = function(connect, _){
 				res.writeHead('200', {'Content-Type': 'text/html'});
 				
 				var tags = trackmap.mapTags(req.params.place);
+				
+				function append(k, cb){
+					k = JSON.parse(k);
+					var p = k[1] || k[0];
+					eche += '<a href='+p+'>'+p+'</a><br />'
+					cb(null);
+				};
+				
 				client.zunionstore(
 					req.params.place+':agg', 
 					tags.length, 
