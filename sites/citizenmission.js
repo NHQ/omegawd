@@ -1,16 +1,9 @@
-var jade = require('jade'), redis = require('redis'), trackmap = require('../lib/trackmap.js'), _ = require('underscore'), 
+var jade = require('jade'), redis = require('redis'), trackmap = require('../makeData.js'), _ = require('underscore'), 
 		ows = require('../ows.js'), fs = require('fs'), async = require('async');
 
 var client = redis.createClient();
 var mapper = {}, html = "";
-var statesJSON = JSON.parse(fs.readFileSync('lib/States.json', encoding='utf8')).states.state;
-
-_.each(trackmap, function(val,key){
-	mapper[key] = ['occupy'+key]
-	if(val)
-	mapper[key].push('occupy'+val)
-})
-
+/*
 _.each(trackmap, function(v,k){
 	k = k.replace(/\s/g,"_");
 	html += '<a href="/'+k+'">'+k+'</a><br />'
@@ -18,10 +11,8 @@ _.each(trackmap, function(v,k){
 		html += '<a href="/'+v+'">'+v+'</a><br />'
 	}
 })
+*/
 
-_.map(trackmap, function(val, key){
-	
-})
 
 module.exports = function(connect, _){
 
@@ -36,8 +27,7 @@ module.exports = function(connect, _){
 		
 		server.use(connect.router(function(app){
 			app.get('/', function(req, res){
-				res.writeHead('200', {'Content-Type': 'text/html'});
-				res.end(html);
+				res.redirect('/ows')
 			})
 			app.get('/analytics', function(res, res){
 				res.writeHead('200', {'Content-Type': 'text/html'})

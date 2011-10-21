@@ -21,6 +21,5 @@ var str = _.uniq(arr).join()
 
 var data = {trackstring: str, tracklist: _.uniq(arr), states: JSON.parse(trackmap)}
 
-console.log(data.tracklist);
-
 module.exports = data;
+

@@ -140,7 +140,7 @@ var tick = 0;
 			mapper: {},
 			wipe: [],
 			data : require('./makeData.js'),
-			tracklist: ['ows', 'occupy', '99', '99percent', 'occupywallstreet'],
+			tracklist: ['ows', 'occupy', '99', '99percent', 'occupywallstreet', 'occupydc'],
 			init: function(track){
 				_.each(this.tracklist, function(tag){
 					this.mapper[tag] = {},
@@ -230,7 +230,8 @@ var tick = 0;
 				}
 			},
 			del: function(_id){
-				delete this.corral[_id]
+				delete this.corral[_id];
+				console.log('This Many: '+Object.keys(this).length)
 			},
 			lingoProcess: function(data){
 				
