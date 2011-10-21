@@ -1,17 +1,20 @@
 var jade = require('jade'), redis = require('redis'), trackmap = require('../makeData.js'), _ = require('underscore'), 
-		ows = require('../ows.js'), fs = require('fs'), async = require('async');
+	/*	ows = require('../ows.js'), */ fs = require('fs'), async = require('async');
 
 var client = redis.createClient();
 var mapper = {}, html = "";
-/*
-_.each(trackmap, function(v,k){
-	k = k.replace(/\s/g,"_");
-	html += '<a href="/'+k+'">'+k+'</a><br />'
-	if(v){
-		html += '<a href="/'+v+'">'+v+'</a><br />'
+
+function map (name){
+	if(_.contains(Object.keys(trackmap.states), name.toUpperCase().replace(/_/g, " "))){
+		// is a state
+		
 	}
-})
-*/
+	if(_.contains(Object.keys(trackmap.tagCity), name.toUpperCase().replace(/_/g, " "))){
+		// is a city
+
+	}
+}map('New_York')
+
 
 
 module.exports = function(connect, _){

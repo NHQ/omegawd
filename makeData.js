@@ -1,6 +1,6 @@
 var fs = require('fs'), trackmap = require('./lib/trackmap.js'), _ = require('underscore');
 
-var arr = [];
+var arr = [], tags = {};
 
 _.each(JSON.parse(trackmap).states, function(val, key){
 	key = key.toLowerCase().replace(/\s/g, "")
@@ -18,9 +18,26 @@ _.each(JSON.parse(trackmap).states, function(val, key){
 	}
 })
 
+_.map(JSON.parse(trackmap).states, function(val, key){
+	if(!_.isEmpty(val.cities)){
+		_.each(val.cities, function(val, key){
+			var city = key.toUpperCase();
+			tags[city] = _.map(val.keywords, function(e){
+				return e.toLowerCase().replace(/\s/g, "")
+			})
+		})
+	}
+	else if (_.isEmpty(val.cities)){
+		var cap = val.capital.toUpperCase();
+		tags[cap] = [cap.toLowerCase().replace(/\s/g, "")];
+		var pop = val["most-populous-city"].toUpperCase();
+		tags[pop] = [val["most-populous-city"].toLowerCase().replace(/\s/g, "") ]
+	}
+})
+
 var str = _.uniq(arr).join()
 
-var data = {trackstring: str, tracklist: _.uniq(arr), states: JSON.parse(trackmap)}
+var data = {trackstring: str, tracklist: _.uniq(arr), states: JSON.parse(trackmap).states, tagCity : tags}
 
 module.exports = data;
 
