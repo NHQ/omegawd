@@ -43,6 +43,8 @@ module.exports = function(connect, _){
 				
 				var tags = trackmap.mapTags(req.params.place);
 				
+				var eche = "Top = most repeatedly shared: <br /><br />";
+				
 				function append(k, cb){
 					k = JSON.parse(k);
 					var p = k[1] || k[0];
