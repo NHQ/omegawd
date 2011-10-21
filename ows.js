@@ -139,7 +139,7 @@ var tick = 0;
 		var switchBoard = {
 			mapper: {},
 			wipe: [],
-			data : require('./makeData.js');
+			data : require('./makeData.js'),
 			tracklist: ['ows', 'occupy', '99', '99percent', 'occupywallstreet'],
 			init: function(track){
 				_.each(this.tracklist, function(tag){
@@ -147,7 +147,7 @@ var tick = 0;
 					this.mapper[tag].key = 'Occupy Wall Street'
 					this.mapper[tag].latest = []
 				}, this)
-				_.map(data.tracklist, function(value, key, list){
+				_.map(this.data.tracklist, function(value, key, list){
 					var hash = 'occupy'+key;
 					this.mapper[hash] = {};
 					this.mapper[hash].key = key;
@@ -182,6 +182,7 @@ var tick = 0;
 				var _id = data[0];
 				var hashtags = _.intersection(_.map(data[1], function(e){return e.text.toLowerCase()}), this.tracklist);
 				if(hashtags.length){
+					console.log(hashtags);
 				_.each(hashtags, function(tag){
 						this.mapper[tag].latest.unshift(_id);
 						++tick;
