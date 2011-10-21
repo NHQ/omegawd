@@ -139,31 +139,21 @@ var tick = 0;
 		var switchBoard = {
 			mapper: {},
 			wipe: [],
-			tracklist: ['ows', 'occupy', '99', '99percent', 'wallstreet'],
+			data = require('./makeData.js');
+			tracklist: ['ows', 'occupy', '99', '99percent', 'occupywallstreet'],
 			init: function(track){
-					merge(track, states);
 				_.each(this.tracklist, function(tag){
 					this.mapper[tag] = {},
 					this.mapper[tag].key = 'Occupy Wall Street'
 					this.mapper[tag].latest = []
 				}, this)
-				_.map(track, function(value, key, list){
-					var hash = 'occupy'+key.replace(/\s/g,"").toLowerCase();
+				_.map(data.tracklist, function(value, key, list){
+					var hash = 'occupy'+key;
 					this.mapper[hash] = {};
 					this.mapper[hash].key = key;
 					this.mapper[hash].latest = [];
-					//mapper[hash].tps = new tps(key);
 					this.tracklist.push(hash);
-					if (value){
-						var hash2 = 'occupy'+value.toLowerCase();
-						this.tracklist.push(hash2);
-						this.mapper[hash2] = {};
-						this.mapper[hash2].key = key;
-						this.mapper[hash2].latest = [];
-						//mapper[hash2].tps = new tps(key);
-					}
 				}, this)
-				fs.writeFileSync('./lib/tracklist.json', JSON.stringify(this.tracklist))
 			},
 			corral: {},
 			parse: function(data){

@@ -39,6 +39,10 @@ module.exports = function(connect, _){
 				res.writeHead('200', {'Content-Type': 'text/html'});
 				res.end(html);
 			})
+			app.get('/analytics', function(res, res){
+				res.writeHead('200', {'Content-Type': 'text/html'})
+				res.end(Object.keys(ows).length.toString())
+			})
 			app.get('/:place', function(req, res){
 				res.writeHead('200', {'Content-Type': 'text/html'});
 				var index = 'occupy'+req.params.place.replace(/_/g, "")+':links';
