@@ -1,5 +1,5 @@
 var jade = require('jade'), redis = require('redis'), trackmap = require('../makeData.js'), _ = require('underscore'), 
-	/*	ows = require('../ows.js'), */ fs = require('fs'), async = require('async');
+	ows = require('../ows.js'), fs = require('fs'), async = require('async');
 
 var client = redis.createClient();
 var mapper = {}, html = "";
@@ -13,7 +13,7 @@ function map (name){
 		// is a city
 
 	}
-}map('New_York')
+}
 
 
 
