@@ -1,20 +1,49 @@
-var jade = require('jade'), redis = require('redis'), trackmap = require('../makeData.js'), _ = require('underscore'), 
-	ows = require('../ows.js'), fs = require('fs'), async = require('async');
+var jade = require('jade'), redis = require('redis'), trackmap = require('../makeData.js'), _ = require('underscore'), fs = require('fs'), async = require('async');
 
 var client = redis.createClient();
 var mapper = {}, html = "";
 
-function map (name){
-	if(_.contains(Object.keys(trackmap.states), name.toUpperCase().replace(/_/g, " "))){
-		// is a state
+function mapTags (input){
+	
+	function tags (state, bool){
+		var tags = [];
+		switch (bool)
+		
+		{
+		case true:
+
+			tags = _.map(_.uniq([state.capital, state.abbreviation, state["most-populous-city"]]), function(e){return e.toLowerCase().replace(/\s/g, "")})
+			break;
+			
+		case false:
+			
+			_.each(state.cities, function(city){
+				_.each(city.keywords, function(words){
+					tags.push(words.toLowerCase().replace(/\s/g, ""))
+				})
+			})
+						
+			break
+		}
+		
+		return (_.flatten(tags))
 		
 	}
-	if(_.contains(Object.keys(trackmap.tagCity), name.toUpperCase().replace(/_/g, " "))){
+	
+	var name = input.toUpperCase().replace(/_/g, " ")
+	
+	if(_.contains(Object.keys(trackmap.states), name)){
+		// is a state
+		var state = trackmap.name;
+		var tags = tags(trackmap.states[name], _.isEmpty(trackmap.states[name].cities)) 
+		return tags
+		}
+	if(_.contains(Object.keys(trackmap.tagCity), name)){
 		// is a city
-
-	}
+			var tags = trackmap.tagCity[name];
+			return tags
+		}
 }
-
 
 
 module.exports = function(connect, _){
@@ -32,10 +61,6 @@ module.exports = function(connect, _){
 			app.get('/', function(req, res){
 				res.writeHead('200', {'Content-Type': 'text/html'})
 				res.end('<script>window.location = "http://citizenmission.com/ows"</script>')
-			})
-			app.get('/analytics', function(res, res){
-				res.writeHead('200', {'Content-Type': 'text/html'})
-				res.end(Object.keys(ows.corral).length.toString())
 			})
 			app.get('/:place', function(req, res){
 				res.writeHead('200', {'Content-Type': 'text/html'});
@@ -59,10 +84,9 @@ module.exports = function(connect, _){
 		}));
 
 		server.use(function (req, res){
-			var ahem = occupy.mapper.ows.latest[0];
 			var fn = jade.compile('h2 !{ahem}', {ahem : ahem});
 			res.writeHead('200', {'Content-Type': 'text/html'});
-			res.end(occupy.corral[ahem].txt);
+			res.end();
 	});
 	return server
 }; 

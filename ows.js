@@ -180,6 +180,7 @@ var tick = 0;
 				var hashtags = _.intersection(_.map(data.tags, function(e){return e.text.toLowerCase()}), this.tracklist);
 				if(hashtags.length){
 				_.each(hashtags, function(tag){
+					console.log(tag);
 						this.mapper[tag].latest.unshift(_id);
 						++tick;
 					//	this.file(tag, _id);

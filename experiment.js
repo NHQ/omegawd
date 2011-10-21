@@ -1,3 +1,6 @@
+console.log(html.raw)
+
+
 this.self = {}
 this.self.connect = require('connect');
 this.self.vhost = require('./lib/subDomani');
