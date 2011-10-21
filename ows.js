@@ -182,7 +182,6 @@ var tick = 0;
 				var _id = data[0];
 				var hashtags = _.intersection(_.map(data[1], function(e){return e.text.toLowerCase()}), this.tracklist);
 				if(hashtags.length){
-					console.log(hashtags);
 				_.each(hashtags, function(tag){
 						this.mapper[tag].latest.unshift(_id);
 						++tick;
@@ -224,14 +223,13 @@ var tick = 0;
 			},
 			stat: function(tag){
 				var len = this.mapper[tag].latest.length;
-				if(len > 500) {
-					this.wipe.unshift(this.mapper[tag].latest.splice(500, len - 1));
+				if(len > 200) {
+					this.wipe.unshift(this.mapper[tag].latest.splice(200, len - 1));
 					_.map(_.uniq(this.wipe), this.del, this)
 				}
 			},
 			del: function(_id){
 				delete this.corral[_id];
-				console.log('This Many: '+Object.keys(this).length)
 			},
 			lingoProcess: function(data){
 				
