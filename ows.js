@@ -168,7 +168,7 @@ var tick = 0;
 							author: parsed.user.name,
 							home: 'http://twitter.com/'+parsed.user.screen_name,
 							score: new Date().getTime() };
-				if(post.entities.hashtags.length){
+				if(post.tags.length){
 					this.process(post);
 				}
 //				else {
