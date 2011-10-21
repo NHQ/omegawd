@@ -139,7 +139,7 @@ var tick = 0;
 		var switchBoard = {
 			mapper: {},
 			wipe: [],
-			data = require('./makeData.js');
+			data : require('./makeData.js');
 			tracklist: ['ows', 'occupy', '99', '99percent', 'occupywallstreet'],
 			init: function(track){
 				_.each(this.tracklist, function(tag){
