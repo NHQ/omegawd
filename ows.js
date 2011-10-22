@@ -158,22 +158,23 @@ var tick = 0;
 			corral: {},
 			parse: function(data){
 				var parsed = JSON.parse(data);
-				var post = {
-							_id : parsed.id_str,
-							txt: parsed.text, 
-							tags: parsed.entities.hashtags, 
-							links: parsed.entities.urls, 
-							pic: parsed.user.profile_image_url || parsed.user.profile_image_url_https, 
-							time: parsed.created_at,
-							author: parsed.user.name,
-							home: 'http://twitter.com/'+parsed.user.screen_name,
-							score: new Date().getTime() };
 				if(post.tags.length){
+					var post = {
+								_id : parsed.id_str,
+								txt: parsed.text, 
+								tags: parsed.entities.hashtags, 
+								links: parsed.entities.urls, 
+								pic: parsed.user.profile_image_url || parsed.user.profile_image_url_https, 
+								time: parsed.created_at,
+								author: parsed.user.name,
+								home: 'http://twitter.com/'+parsed.user.screen_name,
+								score: new Date().getTime() };
+					parsed = null;
 					this.process(post);
 				}
-//				else {
-//					this.lingoProcess([parsed.id_str, parsed.text])
-//				}
+				else {
+					parsed = null;
+				}
 			},
 			process: function(data){
 				var _id = data._id;
@@ -190,6 +191,7 @@ var tick = 0;
 						this.analyze(hashtags,data)
 					}
 				}
+				else return
 			},
 			analyze: function(tags, data){
 				_.each(data.links, function(url){
@@ -232,6 +234,8 @@ var tick = 0;
 		};
 		
 		switchBoard.init(track);
+
+		console.log(_.map(switchBoard.tracklist, function(t){return '#'+t});
 
 		twit.stream('statuses/filter', {track: _.map(switchBoard.tracklist, function(t){return '#'+t}).join()}, function(stream) {
 		    stream.on('data', function (data) {
