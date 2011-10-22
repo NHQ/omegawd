@@ -148,9 +148,8 @@ var tick = 0;
 					this.mapper[tag].latest = []
 				}, this)
 				_.map(this.data.tracklist, function(value, key, list){
-					var hash = 'occupy'+key;
+					var hash = 'occupy'+val;
 					this.mapper[hash] = {};
-					this.mapper[hash].key = key;
 					this.mapper[hash].latest = [];
 					this.tracklist.push(hash);
 				}, this)
