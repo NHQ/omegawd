@@ -68,6 +68,25 @@ data.mapTags = function (input){
 	
 	var name = input.toUpperCase().replace(/_/g, " ")
 	
+	if(name.length === 2){
+		// is abbr.
+		var st;
+		
+		_.each(this.states, function(state){
+		 if(state.abbreviation == name){
+			console.log(state.abbreviation)
+			st = state.name;
+		}
+		}, this)
+		
+		console.log(st)
+		
+		var tags = tags(this.states[st], _.isEmpty(this.states[st].cities)) 
+		
+		return tags
+		
+	}
+	
 	if(_.contains(Object.keys(this.states), name)){
 		// is a state
 		var state = trackmap.name;

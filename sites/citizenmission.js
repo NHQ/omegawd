@@ -3,7 +3,7 @@ var jade = require('jade'), redis = require('redis'), trackmap = require('../mak
 var client = redis.createClient();
 var mapper = {}, html = "";
 
-//  console.log(trackmap.mapTags("illinois"))
+ console.log(trackmap.mapTags("il"))
 
 module.exports = function(connect, _){
 
@@ -40,6 +40,8 @@ module.exports = function(connect, _){
 			
 			app.get('/:place', function(req, res){
 				res.writeHead('200', {'Content-Type': 'text/html'});
+				
+				console.log(req.params.place);
 				
 				var tags = trackmap.mapTags(req.params.place);
 				

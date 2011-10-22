@@ -157,7 +157,7 @@ var tick = 0;
 			corral: {},
 			parse: function(data){
 				var parsed = JSON.parse(data);
-				if(post.tags.length){
+				if(post.hashtags.length){
 					var post = {
 								_id : parsed.id_str,
 								txt: parsed.text, 
