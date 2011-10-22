@@ -43,4 +43,4 @@
 "WEST VIRGINIA":{"abbreviation":"WV","capital":"Charleston","most-populous-city":"Charleston","population":"1819777","square-miles":"24231","time-zone-1":"EST (UTC-5)","time-zone-2":"","dst":"YES","cities":{}},
 "WISCONSIN":{"abbreviation":"WI","capital":"Madison","most-populous-city":"Milwaukee","population":"5654774","square-miles":"65503","time-zone-1":"CST (UTC-6)","time-zone-2":"","dst":"YES","cities":{"Milwaukee":{"keywords":["Milwaukee"]}, "Green Bay":{"keywords":["greenbay"]}, "Madison":{"keywords":["madison"]}}},
 "WYOMING":{"abbreviation":"WY","capital":"Cheyenne","most-populous-city":"Cheyenne","population":"544270","square-miles":"97818","time-zone-1":"MT (UTC-07)","time-zone-2":"","dst":"YES","cities":{}},
-"DISTRICT OF COLUMBIA":{"abbreviation":"DC","capital":"Washington D.C","most-populous-city":"Washington DC","population":"unknown","square-miles":"nope","cities":{"District of Columbia":{"keywords":["dc"]}}}}}
+"DISTRICT OF COLUMBIA":{"abbreviation":"DC","capital":"Washington DC","most-populous-city":"Washington DC","population":"unknown","square-miles":"nope","cities":{}}}}
