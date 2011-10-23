@@ -79,14 +79,12 @@ data.mapTags = function (input){
 	
 	else if(_.contains(Object.keys(this.states), name)){
 		// is a state
-		var state = name.replace(/-/g, "");
-		var tags = this.tags(this.states[state], _.isEmpty(this.states[state].cities)) 
+		var tags = this.tags(this.states[name], _.isEmpty(this.states[name].cities)) 
 		return tags
 		}
 	else if(_.contains(Object.keys(this.tagCity), name)){
 		// is a city
-		var city = name.replace(/-/g, "");
-			var tags = this.tagCity[city];
+			var tags = this.tagCity[name];
 			return tags
 		}
 	else {return null}

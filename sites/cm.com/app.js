@@ -48,12 +48,12 @@ app.configure('production', function(){
 				next()
 				break;
 			case 3: //location state
-				req.card.state = host[0]
+				req.card.state = host[0].replace(/-/g, " ");
 				next()
 				break;
 			case 4: //location city, state
-				req.card.state = host[0];
-				req.card.city = host[1]
+				req.card.state = host[0].replace(/-/g, " ");
+				req.card.city = host[1].replace(/-/g, " ");
 				next()
 				break;
 			default:
