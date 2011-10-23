@@ -64,6 +64,7 @@ function card (req,res,next){
 				
 		}
 	}
+}
 
 
 app.get('/', card, function(req, res){
