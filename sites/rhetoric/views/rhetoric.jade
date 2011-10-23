@@ -1,0 +1,90 @@
+form(method="post", action="/rhetoric", id="fizorm", class="rhetoric", enctype="multipart/form-data")
+  fieldset(id="container")    
+    legend Rhetoric Report
+    div(id="required")
+      input(type="reset", value="reset all fields", id="clear", onclick="close()", class="right")
+      br
+      label(for"name") * Full Name:
+      br
+      input(type="text", name="name", id="name")
+      br
+      label(for="quote") * Quote:
+      br
+      textarea(name="quote", id="quote")
+      br
+      label(for="link") * Link / Reference (must be a valid link):
+      br
+      input(type="text", name="link", id="link")
+    fieldset(id="info")
+      legend This person is:
+      p(class="right") Optional
+      input(type="checkbox", id="is_elected", name="is_elected")
+      label(for="is_elected") An Elected (or Appointed) Office Holder
+      div.elected(class='hide sub', id='elected')
+        input(type="radio", name="seat", id="house", value="House of Representatives")
+        label(for="house") House Of Representatives
+        div(class="house hide sub")
+          !=partial('states', {locals:{name: "e", states:states}})
+          br
+          label(for="district") District: 
+          input(type="text", name="house district", class="house", id="district")
+        br
+        input(type="radio", name="seat", id="senate")
+        label(for="senate") Senate
+        div(class="senate hide sub")
+          !=partial('states', {locals:{ name: "e", states:states}})
+        br
+        input(type="radio", name="seat", id="president", value="President") 
+        label(for="president") The President
+        br
+        input(type="radio", name="seat", id="vice-president", value="Vice-President") 
+        label(for="vice-president") The Vice-President
+        br
+        input(type="radio", name="seat", id="cabinet", value="Cabinet") 
+        label(for="cabinet") Cabinet (eg. Secretary of State)
+      br
+      br
+      input(type="checkbox", id="is_running", name="is_running")
+      label(for="is_running") Running/Campaigning for Elected Office
+      div.running(class='hide sub', id='running')
+        input(type="radio", name="body", id="house_run", value="House of Representatives") 
+        label(for="house_run") House Of Representatives
+        div(class='house_run hide sub')
+          !=partial('states', {locals:{name: 'r', states:states}})
+          br
+          label(for="district") District: 
+          input(type="text", name="house_run district", class="house", id="district")
+        br
+        input(type="radio", name="body", id="senate_run", value="Senate")
+        label(for="senate_run") Senate
+        div(class='senate_run hide sub')
+          !=partial('states', {locals:{name: 'r', states:states}})
+        br
+        input(type="radio", name="body", id="president_run", value="President")
+        label(for="president_run") President
+        br
+        input(type="radio", name="body", id="vice-president_run", value="Vice-President") 
+        label(for="vice-president_run") The Vice-President
+      br
+      br
+      div(class="agent", id="fed")
+        input(type="radio", name="agent", id="fed_agent", value="federal")
+        label(for="fed_agent") A Federal Agent (eg. FCC, FTC, CIA)
+
+        div(class='fed_agency hide sub')
+          label(for="agency") Agency:
+          input(type="text", name="agency", id="agency")
+      br
+      div(class="local_agent", id="local")
+        input(type="radio", name="agent", id="local_agent", value="local")
+        label(for="local_agent") A State/Local Gov't Agent
+        br
+        div(class='local_agency hide sub')
+          label(for="local_agency") Agency:
+          input(type="text", name="local_agency", id="local_agency")
+
+    fieldset(id="mugshot")
+      legend(style="display:inline") Upload Mug Shot
+      br
+      input(type="file", name="mug", id="mug")
+    input(type='submit', value="Report Abusive Rhetoric", class="right")

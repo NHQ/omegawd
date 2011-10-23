@@ -1,0 +1,123 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+form.rhetoric {
+	width:650px;
+}
+label {
+	margin:0 1.5ex;
+}
+
+#required textarea {
+		margin-bottom:1ex;
+		font-size: 22px;
+		text-indent:1ex;
+		width:605px;
+		height:100px	
+}
+
+#required input[type=text] {
+	margin-bottom:1ex;
+		font-size: 22px;
+		text-indent:1ex;
+		width:600px;
+		height:25px
+}
+
+.hide{display:none;}
+
+.show{display:inline-block;}
+
+.right {
+	float:right;
+}
+
+#container {
+		border: 1px dotted #333;
+}
+
+#mugshot {
+	border: 1px dotted #333;
+	width:200px;
+	margin-bottom:1ex;
+}
+#info {
+		border: 1px dotted #333;
+			margin:1ex 0;
+			width:585px;
+}
+
+
+#pop{
+	position:absolute;
+	padding: 5px 10px;
+	-moz-animation-duration: 3s;  
+	    -moz-animation-name: glow;
+			-webkit-animation-duration: 3s;  
+			    -wenkit-animation-name: glow;
+}
+
+@-webkit-keyframes glow{
+	from {
+		top:0;
+	}
+	
+	to {
+		top:600px;
+	}
+}
+
+.sub{
+	margin:10px 25px 0;
+	padding:0;
+	max-width:300px;
+}
+.pop {
+  -moz-animation-duration: 1s;
+  -webkit-animation-duration: 1s;
+  -moz-animation-name: slidein;
+  -webkit-animation-name: slidein;
+animation-duration: 1s;
+animation-name:slidein;
+}
+@-keyframes slidein {
+  from {
+		background-color:#fff
+  }
+  50% {
+		background-color:yellow;
+	}
+  to {
+background-color:#fff
+  }
+}
+
+@-moz-keyframes slidein {
+  from {
+		background-color:#fff
+  }
+  50% {
+		background-color:yellow;
+	}
+  to {
+background-color:#fff
+  }
+}
+
+@-webkit-keyframes slidein {
+	  from {
+			background-color:#fff
+	  }
+	  50% {
+			background-color:yellow;
+		}
+	  to {
+	background-color:#fff
+	  }
+}

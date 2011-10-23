@@ -1,0 +1,6 @@
+label(for="states") State: 
+select(name=name+"_state", id="states")
+  option(value="") Select
+  - each state in states
+    option(value=state['@attributes'].name) 
+      =state['@attributes'].name
