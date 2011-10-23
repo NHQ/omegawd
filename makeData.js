@@ -71,9 +71,9 @@ data.mapTags = function (input){
 		// is abbr.
 		var st;
 		
-		_.each(this.states, function(state){
-		 if(state.abbreviation == name){
-			st = this.tags(state, _.isEmpty(state.cities));
+		_.each(this.states, function(val,state){
+		 if(this.states[state].abbreviation == name){
+			st = this.tags(this.states[state], _.isEmpty(this.states[state].cities));
 			}
 		}, this)
 		return st
