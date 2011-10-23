@@ -76,7 +76,7 @@ app.get('/', vhost, function(req, res){
 		var tags = _.map(trackmap.mapTags(state), function(k){
 			return 'occupy'+k+':links';
 		});
-		if (state == 'NEW YORK'){tags.push('ows', 'occupywallstreet')}
+		if (state.toUpperCase() == 'NEW YORK'){tags.push('ows', 'occupywallstreet')}
 		client.zunionstore(state+':links', tags.length, tags, function(e,r){
 			console.log(e||r);
 			client.zrevrangebyscore(state+':links', '+inf', 3, function(e,r){
