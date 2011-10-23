@@ -1,8 +1,18 @@
 var my_api_key = 'IzwRqAwyqaSAb16IYCHSjX2HvH1eOvqIKvuijy0u2GtIfyw0Oxl6qvE7LL6rEUwD';
 var client = new(require('linode-api').LinodeClient)(my_api_key);
-var dId = '241528'
+var dId = '241528';
+var data = require('./makeData.js'),
+		_ = require('underscore');
 
+_.each(data.states, function(v,state){
+	var name = state.replace(/\s/g, "-");
+	client.call('domain.resource.create', {domainID: dId, type: 'A', name: name+'.citizen.mission.com', target: '74.207.246.247'}, function (err, res) {
+	  if (err) throw err;
+	  console.log(err, res);
+	});
+})
 
+/*
 client.call('domain.resource.create', {domainID: dId, type: 'A', name:'rhetoric-report.citizen.mission.com', target: '74.207.246.247'}, function (err, res) {
   if (err) throw err;
   console.log(err, res);
