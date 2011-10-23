@@ -17,6 +17,30 @@ var app = module.exports = express.createServer();
 
 app.configure(function(){
 	app.use(function(req,res,next){
+		function vhost (str){
+			req.card = {}
+			var host = req.header.host.split(".")
+			switch host.length
+			{
+				case 2:
+					next()
+					break;
+				case 3: //location state
+					req.card.state = host[0]
+					next()
+					break;
+				case 4: //location city, state
+					req.card.state = host[0];
+					req.card.city = host[1]
+					next()
+					break;
+				default:
+					res.redirect('http://citizenmission.com')
+					break;
+					
+			}
+		}
+		
 		req.subdomain = req.headers.host.slice(0, req.headers.host.indexOf(.))
 		console.log(req.subdomain);
 		next()
@@ -42,6 +66,9 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', function(req, res){
+	if(Object.keys(req.card).length < 1){ // homepage
+		
+	}
 	
   res.render('index', {
     title: 'Express'
