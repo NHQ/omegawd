@@ -1,5 +1,5 @@
-for link in links
-  unless link[1]
+each link in links
+  if link[1]
     a(href=link[1])
-      = link[1]
+      =link[1]
     br
