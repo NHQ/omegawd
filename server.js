@@ -6,12 +6,33 @@ var domani = ['citizenmission.com'];
 var subs = ['rhetoric-report'];
 
 var server = connect();
-		server.use(function(req,res,next){
-			req.subdomain = req.headers.host.slice(0, req.headers.host.indexOf("."));
-			console.log(req.subdomain);
-			next()
-		});
 		server.use(connect.profiler());
+		server.use(function(req,res,next){
+			function vhost (str){
+				req.card = {}
+				var host = req.header.host.split(".")
+				switch host.length
+				{
+					case 2:
+						next()
+						break;
+					case 3: //location state
+						req.card.state = host[0]
+						next()
+						break;
+					case 4: //location city, state
+						req.card.state = host[0];
+						req.card.city = host[1]
+						next()
+						break;
+					default:
+						res.redirect('http://citizenmission.com')
+						break;
+
+				}
+			}
+			next()
+		})
 		server.use(connect.logger());
 		server.use(connect.favicon());
 		server.use(connect.cookieParser());

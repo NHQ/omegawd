@@ -77,7 +77,7 @@ data.mapTags = function (input){
 		return st
 	}
 	
-	if(_.contains(Object.keys(this.states), name)){
+	else if(_.contains(Object.keys(this.states), name)){
 		// is a state
 		var state = trackmap.name;
 		var tags = tags(this.states[name], _.isEmpty(this.states[name].cities)) 

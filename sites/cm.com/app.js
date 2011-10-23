@@ -11,6 +11,8 @@ var express = require('express')
 ,  fs = require('fs')
 ,  async = require('async');
 
+var client = redis.createClient();
+
 var app = module.exports = express.createServer();
 
 // Configuration
@@ -67,15 +69,30 @@ app.configure('production', function(){
 
 app.get('/', function(req, res){
 	if(Object.keys(req.card).length < 1){ // homepage
-		
+		res.render('index', {
+	    title: 'Express'
+	  });
+	}
+	else if(Object.keys(req.card).length == 1){ //state
+		var state = req.card.state;
+		var tags = _.map(trackmap.mapTags(state), function(k){
+			return 'occupy'+k+':links';
+		});
+		client.zunionstore(state+':links', tags.length, tags, function(e,r){
+			console.log(e||r);
+			client.zrevrangebyscore(state+':links', '+inf', 3, function(e,r){
+				console.log(e||r);
+				res.render('links', {
+			    title: 'Occupy Links:' State,
+					locals: {links: r}
+			  });
+			})
+		})
 	}
 	
-  res.render('index', {
-    title: 'Express'
-  });
 });
 
 app.get()
 
-app.listen(3000);
+app.listen(80);
 console.log("Express server listening on port %d", app.address().port);
