@@ -18,9 +18,11 @@ var app = module.exports = express.createServer();
 // Configuration
 
 app.configure(function(){
+	app.use(express.profiler());
 	app.use(function(req,res,next){
 		function vhost (str){
-			req.card = {}
+			req.card = {}]
+			console.log(host)
 			var host = req.header.host.split(".")
 			switch (host.length)
 			{
@@ -64,7 +66,7 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', function(req, res){
-	if(Object.keys(req.card).length < 1){ // homepage
+	if(Object.keys(req.card).length == 0){ // homepage
 		res.render('index', {
 	    title: 'Express'
 	  });
