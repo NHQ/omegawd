@@ -39,8 +39,7 @@ app.configure('production', function(){
 
 // Routes
 
-function card (req,res,next){
-	function vhost (str){
+	function vhost (req,res,next){
 		req.card = {};
 		console.log(host);
 		var host = req.header.host.split(".")
@@ -64,10 +63,9 @@ function card (req,res,next){
 				
 		}
 	}
-}
 
 
-app.get('/', card, function(req, res){
+app.get('/', vhost, function(req, res){
 	if(Object.keys(req.card).length == 0){ // homepage
 		res.render('index', {
 	    title: 'Express'
