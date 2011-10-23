@@ -42,7 +42,7 @@ app.configure('production', function(){
 	function vhost (req,res,next){
 		req.card = {};
 		console.log(host);
-		var host = req.header.host.split(".")
+		var host = req.headers.host.split(".")
 		switch (host.length)
 		{
 			case 2:
