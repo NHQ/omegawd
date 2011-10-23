@@ -88,7 +88,5 @@ app.get('/', function(req, res){
 	
 });
 
-app.get()
-
 app.listen(80);
 console.log("Express server listening on port %d", app.address().port);
