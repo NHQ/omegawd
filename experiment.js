@@ -1,19 +1,15 @@
-console.log(html.raw)
+var fs = require('fs'), _ = require('underscore');
 
+var states = JSON.parse(fs.readFileSync('./lib/USA.json').toString('utf8')).states;
 
-this.self = {}
-this.self.connect = require('connect');
-this.self.vhost = require('./lib/subDomani');
-this.self._ = require('underscore');
-this.self.domani = ['citizenmission.com'];
-this.self.subs = ['rhetoric-report'];
+_.map(states, function(val,key){
+	states[key].keywords = [];
+	states[key].keywords.push(key.toLowerCase().replace(/\s/g, ""))
+})
 
-this.self.server = this.self.connect();
-		this.self.server.use(this.self.connect.profiler());
-		this.self.server.use(this.self.connect.logger());
-		this.self.server.use(this.self.connect.favicon());
-		this.self.server.use(this.self.connect.cookieParser());
-		this.self.server.use(this.self.connect.session({secret: 'giddy gato' }));
-		this.self.server.use(require('./sites/expCit')(this.self));
-		this.self.server.listen(process.env.NODE_ENV === 'production' ? 80 : 8000);
-		console.log('Listening on ' + this.self.server.address().port);
+var mew = {"states":states}
+
+console.log(mew)
+
+fs.writeFileSync('./lib/poo.json', JSON.stringify(mew))
+

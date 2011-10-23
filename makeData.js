@@ -47,11 +47,13 @@ data.mapTags = function (input){
 		{
 		case true:
 
-			tagged = _.map(_.uniq([state.capital, state.abbreviation, state["most-populous-city"]]), function(e){return e.toLowerCase().replace(/\s/g, "")});
+			tagged = _.map(_.uniq(_.flatten([state.keywords, state.capital, state.abbreviation, state["most-populous-city"]])), 
+										function(e){return e.toLowerCase().replace(/\s/g, "")});
 			break;
 			
 		case false:
-			
+			tagged.push(state.abbreviation.toLowerCase());
+			_.each(state.keywords, function(e){tagged.push(e)})
 			_.each(state.cities, function(city){
 				_.each(city.keywords, function(words){
 					tagged.push(words.toLowerCase().replace(/\s/g, ""))
