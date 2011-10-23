@@ -7,7 +7,8 @@ var connect = require('connect')
 var server = connect();
 		server.use(connect.profiler());
 		server.use(connect.logger());
-		server.use(connect.query())
+		server.use(connect.query());
+		server.use(connect.bodyParser());
 		server.use(connect.router(function(app){
 			
 			app.get('/feed/:tag', function(req, res){
