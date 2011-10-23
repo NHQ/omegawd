@@ -88,6 +88,7 @@ data.mapTags = function (input){
 	else if(_.contains(Object.keys(this.tagCity), name)){
 		// is a city
 			var tags = this.tagCity[name.toUpperCase()];
+			console.log(tags);
 			return tags
 		}
 	else {return null}

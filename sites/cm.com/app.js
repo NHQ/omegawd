@@ -45,6 +45,10 @@ app.configure('production', function(){
 		switch (host.length)
 		{
 			case 2:
+				if(host[0] != 'citizenmission'){
+					res.redirect('http://nationalheadquarter.org')
+				}
+				else
 				next()
 				break;
 			case 3: //location state
@@ -72,16 +76,13 @@ app.get('/occupy', vhost, function(req, res){
 	  });
 	}
 	else if(Object.keys(req.card).length == 1){ //state
-		console.log('state!');
 		var state = req.card.state;
 		var tags = _.map(trackmap.mapTags(state), function(k){
 			return 'occupy'+k+':links';
 		});
 		if (state.toUpperCase() == 'NEW YORK'){tags.push('ows:links', 'occupywallstreet:links')}
 		client.zunionstore(state+':links', tags.length, tags, function(e,r){
-			console.log(e||r);
 			client.zrevrangebyscore(state+':links', '+inf', 3, function(e,r){
-				console.log(e||r);
 				res.render('links', {
 			    title: 'Occupy Links:'+state,
 					locals: {links: _.map(r, function(links){return JSON.parse(links)})} // links going in as json, needs fix, use one link not array
@@ -90,7 +91,6 @@ app.get('/occupy', vhost, function(req, res){
 		})
 	}
 	else if (Object.keys(req.card).length > 1){ // city, state
-		console.log('city!')
 		var city = req.card.city;
 		var tags = _.map(trackmap.mapTags(city), function(k){
 			return 'occupy'+k+':links';
