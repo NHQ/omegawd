@@ -22,5 +22,15 @@ var server = connect();
 			))
 		});
 		server.use(require('./sites/citizenmission')(connect));
-		server.listen(process.env.NODE_ENV === 'production' ? 80 : 80);
+//		server.listen(process.env.NODE_ENV === 'production' ? 80 : 80);
 		console.log('Listening on ' + server.address().port);
+		
+		var cluster = require('cluster');
+
+		cluster(server)
+		  .use(cluster.logger('logs'))
+		  .use(cluster.stats())
+		  .use(cluster.pidfiles('pids'))
+		  .use(cluster.cli())
+		  .use(cluster.repl(8888))
+		  .listen(80);
