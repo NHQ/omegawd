@@ -6,6 +6,10 @@ var domani = ['citizenmission.com'];
 var subs = ['rhetoric-report'];
 
 var server = connect();
+		server.use(function(req, res, next){
+			console.log(req);
+			next();
+		});
 		server.use(connect.profiler());
 		server.use(connect.logger());
 		server.use(connect.favicon());

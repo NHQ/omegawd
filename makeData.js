@@ -41,29 +41,26 @@ var data = {trackstring: str, tracklist: _.uniq(arr), states: JSON.parse(trackma
 
 data.mapTags = function (input){
 	
-	function tags (state, bool){
-		var tags = [];
+	this.tags = function (state, bool){
+				var tagged = [];
 		switch (bool)
-		
 		{
 		case true:
 
-			tags = _.map(_.uniq([state.capital, state.abbreviation, state["most-populous-city"]]), function(e){return e.toLowerCase().replace(/\s/g, "")})
+			tagged = _.map(_.uniq([state.capital, state.abbreviation, state["most-populous-city"]]), function(e){return e.toLowerCase().replace(/\s/g, "")});
 			break;
 			
 		case false:
 			
 			_.each(state.cities, function(city){
 				_.each(city.keywords, function(words){
-					tags.push(words.toLowerCase().replace(/\s/g, ""))
+					tagged.push(words.toLowerCase().replace(/\s/g, ""))
 				})
 			})
-						
-			break
+			break;
 		}
-		
-		return (_.flatten(tags))
-		
+
+		return _.flatten(tagged)
 	}
 	
 	var name = input.toUpperCase().replace(/_/g, " ")
@@ -74,17 +71,10 @@ data.mapTags = function (input){
 		
 		_.each(this.states, function(state){
 		 if(state.abbreviation == name){
-			console.log(state.abbreviation)
-			st = state.name;
-		}
+			st = this.tags(state, _.isEmpty(state.cities));
+			}
 		}, this)
-		
-		console.log(st)
-		
-		var tags = tags(this.states[st], _.isEmpty(this.states[st].cities)) 
-		
-		return tags
-		
+		return st
 	}
 	
 	if(_.contains(Object.keys(this.states), name)){
