@@ -3,8 +3,8 @@ var http = require('http'), fs = require('fs');
 var buff = new Buffer('citizen:peapod2011').toString('base64')
 
 var tags = JSON.parse(fs.readFileSync('./lib/tracklist.json'))
-var tats = ['occupy', '#ows', 'occupywallstreet', 'occupychicago']
-tats.forEach(subscribe)
+var tats = ['occupy', 'tumblr.com']
+subscribe(tats.join("&"))
 
 function subscribe (tag){
 		var spfdr = http.createClient(80, 'superfeedr.com');
