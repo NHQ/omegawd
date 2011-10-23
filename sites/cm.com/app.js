@@ -88,7 +88,7 @@ app.get('/occupy', vhost, function(req, res){
 			})
 		})
 	}
-	else if (Object.keys(req.card).length == 2){ city, state
+	else if (Object.keys(req.card).length == 2){ // city, state
 		var city = req.card.city;
 		var tags = _.map(trackmap.mapTags(state), function(k){
 			return 'occupy'+k+':links';
