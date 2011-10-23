@@ -62,7 +62,7 @@ var server = connect();
 						"created": d.items[x].postedTime,
 						"feed": d.status.feed
 					};
-					client.zadd(tag+'feeds', d.items[x].postedTime, JSON.stringify(body), function(err, reply){if (err){sys.puts(err)}});					
+					client.zadd(tag+':feeds', d.items[x].postedTime, JSON.stringify(body), function(err, reply){if (err){sys.puts(err)}});					
 				};
 			});
 		}))
