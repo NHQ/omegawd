@@ -101,9 +101,9 @@ app.get('/occupy', vhost, function(req, res){
 					locals: {links: _.map(r, function(links){return JSON.parse(links)})} // links going in as json, needs fix, use one link not array
 			  });
 		})
-	}
+	})
 	
-});
+}});
 
 app.listen(80);
 console.log("Express server listening on port %d", app.address().port);
