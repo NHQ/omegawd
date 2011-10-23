@@ -19,7 +19,6 @@ var app = module.exports = express.createServer();
 
 app.configure(function(){
 	app.use(express.profiler());
-	
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
@@ -40,8 +39,34 @@ app.configure('production', function(){
 
 // Routes
 
-app.get('/', function(req, res){
-	req.card = {};
+function card (req,res,next){
+	function vhost (str){
+		req.card = {};
+		console.log(host);
+		var host = req.header.host.split(".")
+		switch (host.length)
+		{
+			case 2:
+				next()
+				break;
+			case 3: //location state
+				req.card.state = host[0]
+				next()
+				break;
+			case 4: //location city, state
+				req.card.state = host[0];
+				req.card.city = host[1]
+				next()
+				break;
+			default:
+				res.redirect('http://citizenmission.com')
+				break;
+				
+		}
+	}
+
+
+app.get('/', card, function(req, res){
 	if(Object.keys(req.card).length == 0){ // homepage
 		res.render('index', {
 	    title: 'Express'
