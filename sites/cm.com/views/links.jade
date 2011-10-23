@@ -1,4 +1,5 @@
 - each l in links
-  a(href=l)
-    = l
-  br
+  - if l[1]
+    a(href=l[1])
+      = l[1]
+    br
