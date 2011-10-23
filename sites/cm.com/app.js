@@ -90,7 +90,7 @@ app.get('/occupy', vhost, function(req, res){
 	}
 	else if (Object.keys(req.card).length == 2){ // city, state
 		var city = req.card.city;
-		var tags = _.map(trackmap.mapTags(state), function(k){
+		var tags = _.map(trackmap.mapTags(city), function(k){
 			return 'occupy'+k+':links';
 		});
 		client.zunionstore(city+':links', tags.length, tags, function(e,r){
