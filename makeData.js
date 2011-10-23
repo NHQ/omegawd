@@ -80,6 +80,7 @@ data.mapTags = function (input){
 	else if(_.contains(Object.keys(this.states), name)){
 		// is a state
 		var tags = this.tags(this.states[name], _.isEmpty(this.states[name].cities)) 
+		console.log(tags);
 		return tags
 		}
 	else if(_.contains(Object.keys(this.tagCity), name)){
