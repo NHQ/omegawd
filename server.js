@@ -7,7 +7,7 @@ var subs = ['rhetoric-report'];
 
 var server = connect();
 		server.use(function(req,res,next){
-			req.subdomain = req.headers.host.slice(0, req.headers.host.indexOf(.))
+			req.subdomain = req.headers.host.slice(0, req.headers.host.indexOf("."));
 			console.log(req.subdomain);
 			next()
 		});
