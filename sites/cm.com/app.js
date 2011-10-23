@@ -21,8 +21,8 @@ app.configure(function(){
 	app.use(express.profiler());
 	app.use(function(req,res,next){
 		function vhost (str){
-			req.card = {}]
-			console.log(host)
+			req.card = {};
+			console.log(host);
 			var host = req.header.host.split(".")
 			switch (host.length)
 			{
