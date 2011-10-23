@@ -3,7 +3,7 @@ var http = require('http'), fs = require('fs');
 var buff = new Buffer('citizen:peapod2011').toString('base64')
 
 var tags = JSON.parse(fs.readFileSync('./lib/tracklist.json'))
-var tats = ['occupy&-twitter.com'];
+var tats = ['occupy&-#occupy'];
 var toots = ['occupy', 'chicago', '-twitter.com'];
 subscribe(encodeURIComponent(tats.join("&")))
 //subscribe(encodeURIComponent(toots.join('&')))
