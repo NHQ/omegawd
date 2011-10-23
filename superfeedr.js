@@ -10,7 +10,8 @@ var server = connect();
 		server.use(connect.query())
 		server.use(connect.router(function(app){
 			
-			app.get('/feed', function(req, res){
+			app.get('/feed/:tag', function(req, res){
+				console.log(req.params.tag);
 				if (req.query['hub.challenge'])
 				{	res.writeHead('200');
 				//path = url.parse(req.url).query;
@@ -29,6 +30,7 @@ var server = connect();
 			
 			app.post('/feed/:tag', function(req, res){
 				console.log('spfrd post')
+				console.log(req.params.tag)
 				res.writeHead('200');
 				res.end();
 				var tag = req.params.tag;
