@@ -36,6 +36,7 @@ var server = connect();
 				var tag = req.params.tag;
 				var d = req.body;
 				console.log(d);
+				/*
 				var dl = d.items.length;
 				var unfurl = d.status.feed
 				for (x = 0; x < dl; ++x){
@@ -66,6 +67,7 @@ var server = connect();
 					};
 					client.zadd(tag+':feeds', d.items[x].postedTime, JSON.stringify(body), function(err, reply){if (err){sys.puts(err)}});					
 				};
+				*/
 			});
 		}))
 		server.listen(8001);
