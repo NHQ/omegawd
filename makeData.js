@@ -87,7 +87,7 @@ data.mapTags = function (input){
 		}
 	else if(_.contains(Object.keys(this.tagCity), name)){
 		// is a city
-			var tags = this.tagCity[name];
+			var tags = this.tagCity[name.toUpperCase()];
 			return tags
 		}
 	else {return null}
@@ -95,3 +95,4 @@ data.mapTags = function (input){
 
 module.exports = data;
 
+console.log(data.tagCity)
