@@ -52,8 +52,8 @@ app.configure('production', function(){
 				next()
 				break;
 			case 4: //location city, state
-				req.card.state = host[0].replace(/-/g, " ");
-				req.card.city = host[1].replace(/-/g, " ");
+				req.card.state = host[1].replace(/-/g, " ");
+				req.card.city = host[0].replace(/-/g, " ");
 				next()
 				break;
 			default:
@@ -72,6 +72,7 @@ app.get('/occupy', vhost, function(req, res){
 	  });
 	}
 	else if(Object.keys(req.card).length == 1){ //state
+		console.log('state!');
 		var state = req.card.state;
 		var tags = _.map(trackmap.mapTags(state), function(k){
 			return 'occupy'+k+':links';
@@ -89,6 +90,7 @@ app.get('/occupy', vhost, function(req, res){
 		})
 	}
 	else if (Object.keys(req.card).length > 1){ // city, state
+		console.log('city!')
 		var city = req.card.city;
 		var tags = _.map(trackmap.mapTags(city), function(k){
 			return 'occupy'+k+':links';
