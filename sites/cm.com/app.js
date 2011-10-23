@@ -42,10 +42,6 @@ app.configure(function(){
 					
 			}
 		}
-		
-		req.subdomain = req.headers.host.slice(0, req.headers.host.indexOf(.))
-		console.log(req.subdomain);
-		next()
 	})
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
