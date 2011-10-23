@@ -79,13 +79,14 @@ data.mapTags = function (input){
 	
 	else if(_.contains(Object.keys(this.states), name)){
 		// is a state
-		var state = trackmap.name;
-		var tags = this.tags(this.states[name], _.isEmpty(this.states[name].cities)) 
+		var state = name.replace(/-/g, "");
+		var tags = this.tags(this.states[state], _.isEmpty(this.states[state].cities)) 
 		return tags
 		}
 	else if(_.contains(Object.keys(this.tagCity), name)){
 		// is a city
-			var tags = this.tagCity[name];
+		var city = name.replace(/-/g, "");
+			var tags = this.tagCity[city];
 			return tags
 		}
 	else {return null}

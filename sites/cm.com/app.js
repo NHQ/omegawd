@@ -82,7 +82,7 @@ app.get('/', vhost, function(req, res){
 				console.log(e||r);
 				res.render('links', {
 			    title: 'Occupy Links:'+state,
-					locals: {links: _.map(r, function(links){return JSON.parse(links)})}
+					locals: {links: _.map(r, function(links){return JSON.parse(links)})} // links going in as json, needs fix, use one link not array
 			  });
 			})
 		})
