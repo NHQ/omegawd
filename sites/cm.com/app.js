@@ -79,7 +79,7 @@ app.get('/', function(req, res){
 			client.zrevrangebyscore(state+':links', '+inf', 3, function(e,r){
 				console.log(e||r);
 				res.render('links', {
-			    title: 'Occupy Links:' State,
+			    title: 'Occupy Links:'+State,
 					locals: {links: r}
 			  });
 			})
