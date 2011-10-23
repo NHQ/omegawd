@@ -41,7 +41,6 @@ app.configure('production', function(){
 
 	function vhost (req,res,next){
 		req.card = {};
-		console.log(host);
 		var host = req.headers.host.split(".")
 		switch (host.length)
 		{
@@ -66,6 +65,7 @@ app.configure('production', function(){
 
 
 app.get('/', vhost, function(req, res){
+	console.log(req.card)
 	if(Object.keys(req.card).length == 0){ // homepage
 		res.render('index', {
 	    title: 'Express'
