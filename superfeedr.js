@@ -32,6 +32,7 @@ var server = connect();
 				res.end();
 				var tag = req.params.tag;
 				var d = req.body;
+				console.log(d);
 				var dl = d.items.length;
 				var unfurl = d.status.feed
 				for (x = 0; x < dl; ++x){

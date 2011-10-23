@@ -4,13 +4,22 @@ var dId = '241528';
 var data = require('./makeData.js'),
 		_ = require('underscore');
 
+
 _.each(data.states, function(v,state){
-	var name = state.replace(/\s/g, "-");
-	client.call('domain.resource.delete', {domainID: dId, type: 'A', name: name+'.citizen.mission.com', target: '74.207.246.247'}, function (err, res) {
-	  if (err) throw err;
-	  console.log(err, res);
-	});
+	var st = data.states[state];
+	var name = state.toLowerCase().replace(/\s/g, "-");
+	
+	if(Object.keys(st.cities).length) {
+		_.each(st.cities, function(val, city){
+			client.call('domain.resource.create', {domainID: dId, type: 'A', name: city.toLowerCase().replace(/\s/g,"_")+'.'+name+'.citizenmission.com', target: '74.207.246.247'}, function (err, res) {
+			  if (err) throw err;
+			  console.log(err, res);
+			});
+		})
+	}
+	
 })
+	
 
 /*
 client.call('domain.resource.create', {domainID: dId, type: 'A', name:'rhetoric-report.citizen.mission.com', target: '74.207.246.247'}, function (err, res) {

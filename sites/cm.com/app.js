@@ -64,7 +64,7 @@ app.configure('production', function(){
 	}
 
 
-app.get('/', vhost, function(req, res){
+app.get('/occupy', vhost, function(req, res){
 	console.log(req.card)
 	if(Object.keys(req.card).length == 0){ // homepage
 		res.render('index', {
@@ -86,6 +86,20 @@ app.get('/', vhost, function(req, res){
 					locals: {links: _.map(r, function(links){return JSON.parse(links)})} // links going in as json, needs fix, use one link not array
 			  });
 			})
+		})
+	}
+	else if (Object.keys(req.card).length == 2){ city, state
+		var city = req.card.city;
+		var tags = _.map(trackmap.mapTags(state), function(k){
+			return 'occupy'+k+':links';
+		});
+		client.zunionstore(city+':links', tags.length, tags, function(e,r){
+			client.zrevrangebyscore(city+':links', '+inf', 1, function(e,r){
+				console.log(e||r);
+				res.render('links', {
+			    title: 'Occupy Links:'+city,
+					locals: {links: _.map(r, function(links){return JSON.parse(links)})} // links going in as json, needs fix, use one link not array
+			  });
 		})
 	}
 	
