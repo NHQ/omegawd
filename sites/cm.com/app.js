@@ -82,7 +82,7 @@ app.get('/occupy', vhost, function(req, res){
 		});
 		if (state.toUpperCase().replace(/-/g, " ") == 'NEW YORK'){tags.push('ows:links', 'occupywallstreet:links')}
 		client.zunionstore(state+':links', tags.length, tags, function(e,r){
-			client.zrevrangebyscore(state+':links', '+inf', 1, function(e,r){
+			client.zrevrangebyscore(state+':links', '+inf', 3, function(e,r){
 				res.render('links', {
 			    title: 'Occupy Links:'+state,
 					locals: {links: _.map(r, function(links){return JSON.parse(links)})} // links going in as json, needs fix, use one link not array
