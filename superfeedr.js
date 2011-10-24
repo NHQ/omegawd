@@ -66,6 +66,7 @@ var server = connect();
 						"feed": d.status.feed
 					};
 					client.zadd(tag+'links', new Date().getTime(), d.items[x].permalinkUrl);
+					client.zincrby(tag+'hotlinks', 1, d.items[x].permalinkUrl);
 					client.hmset(d.items[x].permalinkUrl, body, function(err, reply){if (err){sys.puts(err)}});					
 				};
 			});
