@@ -3,7 +3,8 @@ var fs = require('fs'),
 		_ = require('underscore'),
 		redis = require('redis'),
 		client = redis.createClient(),
-		request = require('request');
+		request = require('request'),
+		subscribe = require('./spfr_setup.js');
 		
 var jQ = fs.readFileSync('./lib/jquery-1.6.2.min.js').toString();
 		
@@ -22,119 +23,6 @@ var twit = new twitter({
 		authorize_callback: 'http://74.207.246.247:8000'
 });
 
-function merge (a, b){
-  if (a && b) {
-    for (var key in b) {
-      a[key] = b[key];
-    }
-  }
-  return a;
-};
-
-var states = {}, statesJSON = JSON.parse(fs.readFileSync('lib/States.json', encoding='utf8')).states.state; // this is an array 
-
-_.each(statesJSON, function (obj, key){
-		var name = obj['@attributes'].name
-		,		abbr = obj['@attributes'].abbreviation;
-		states[name] = abbr;
-})
-
-var track = {
-	'New York City': 'nyc',
-	'Los Angeles': 'la',
-	Chicago: 'chi',
-	Houston: null,
-	Philadelphia: 'philly',
-	Pheonix: null,
-	'San Antonio': 'sananto',
-	'San Diego': 'sd',
-	Dallas: null,
-	'San Jose': 'sj',
-	Jacksonville: null,
-	Indianapolis: 'indy', 
-	'San Francisco': 'sf',
-	Austin: null,
-	Columbus: null,
-	'Fort Worth': null,
-	Charlotte: null,
-	Detroit: null,
-	'El Paso': 'ep',
-	Memphis: null,
-	Baltimore: null,
-	Boston: null,
-	Seattle: null,
-	DC: 'kstreet',
-	Nashville: null,
-	Denver:  null,
-	Louisville: null,
-	Milwaukee: null,
-	Portland: null,
-	'Las Vegas': 'lv',
-	'Oklahoma City': 'oklahoma',
-	Albuquerque: 'abq',
-	Tucson: null,
-	Fresno: null,
-	Sacramento: 'sac',
-	'Kansas City': 'kc',
-	Atlanta: null,
-	'Colorado Springs': 'cs',
-	Omaha: null,
-	Atlanta: 'atl',
-	Miami: null,
-	Cleveland: null,
-	Tulsa: null,
-	Oakland: null,
-	Minneapolis: null,
-	'New Orleans': 'no',
-	Pittsburgh:  null,
-	'St Louis': 'stl',
-	Cincinnati: null,
-	'Saint Paul': 'sp',
-	Lincoln: null,
-	Madison: null,
-	'Baton Rouge': null,
-	Spokane: null,
-	Cheyenne: null,
-	Rochester: null,
-	Birmingham: null,
-	'San Bernardino': null,
-	'Des Moines': null,
-	Boise: null,
-	Richmond: null,
-	Montgomery: null,
-	'Little Rock': null,
-	'Salt Lake City':'slc',
-	Tallahassee: null,
-	Providence: null,
-	Jackson: null,
-	Salem: null,
-	Topeka: null,
-	Springfield:  null,
-	Lansing: null,
-	Juneau: null,
-	Hartford: null,
-	Dover: null,
-	Hawaii: null,
-	Augusta: null,
-	Annapolis: null,
-	'Jefferson City': 'jc',
-	Montana: null,
-	'Carson City': 'cc',
-	Concord: null,
-	Trenton: null,
-	'Santa Fe': null,
-	Albany: null,
-	Bismarck: null,
-	Harrisburg: null,
-	Providence: null,
-	Columbia: null,
-	Pierre: null,
-	Montpelier: 'mtp',
-	Olympia: null,
-	Charleston: null
-};
-
-var tick = 0;
 
 		var switchBoard = {
 			mapper: {},
@@ -153,6 +41,9 @@ var tick = 0;
 					this.mapper[hash].latest = [];
 					this.tracklist.push(hash);
 				}, this)
+				this.tracklist.forEach(function(e){
+					subscribe(e, 'tumblr')
+				})
 			},
 			corral: {},
 			parse: function(data){
@@ -194,8 +85,16 @@ var tick = 0;
 			analyze: function(tags, data){
 				_.each(data.links, function(url){
 					var link = url.url, perma = url.expanded_url;
-					_.each(tags, function(tag){client.zincrby(tag+':links', 1, JSON.stringify([link, perma]))})
-					})
+					_.each(tags, 
+						function(tag){
+							if(data.links[1]) 
+							{
+								client.zincrby(tag+':hotlinks', 1, data.links[1]);
+								client.zadd(tag+':links', data.score, data.links[1]);
+								client.hmset(data.links[1], data);
+							}
+						})
+				})
 			},
 			domit: function(b,tags){
 				console.log(tags)

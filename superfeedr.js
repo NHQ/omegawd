@@ -37,7 +37,6 @@ var server = connect();
 				var tag = req.params.tag;
 				var d = req.body;
 				console.log(d);
-				/*
 				var dl = d.items.length;
 				var unfurl = d.status.feed
 				for (x = 0; x < dl; ++x){
@@ -66,9 +65,9 @@ var server = connect();
 						"created": d.items[x].postedTime,
 						"feed": d.status.feed
 					};
-					client.zadd(tag+':feeds', d.items[x].postedTime, JSON.stringify(body), function(err, reply){if (err){sys.puts(err)}});					
+					client.zadd(tag+'links', new Date().getTime(), d.items[x].permalinkUrl);
+					client.hmset(d.items[x].permalinkUrl, body, function(err, reply){if (err){sys.puts(err)}});					
 				};
-				*/
 			});
 		}))
 		server.listen(8001);
