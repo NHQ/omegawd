@@ -41,9 +41,11 @@ var twit = new twitter({
 					this.mapper[hash].latest = [];
 					this.tracklist.push(hash);
 				}, this)
+				/*
 				this.tracklist.forEach(function(e){
 					subscribe(e, 'tumblr')
 				})
+				*/
 			},
 			corral: {},
 			parse: function(data){
@@ -72,7 +74,6 @@ var twit = new twitter({
 				if(hashtags.length){
 				_.each(hashtags, function(tag){
 						this.mapper[tag].latest.unshift(_id);
-						++tick;
 					//	this.file(tag, _id);
 						this.stat(tag);
 					},this);
