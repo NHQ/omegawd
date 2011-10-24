@@ -36,7 +36,6 @@ var server = connect();
 				res.end();
 				var tag = req.params.tag;
 				var d = req.body;
-				console.log(d);
 				var dl = d.items.length;
 				var unfurl = d.status.feed
 				for (x = 0; x < dl; ++x){
@@ -53,6 +52,7 @@ var server = connect();
 						summary = d.items[x].summary
 					};
 					var title = d.items[x].title.replace(/&nbsp;/g, " ");
+					console.log(d.items[x].permalinkUrl);
 					var body = {
 						"title": title,
 						"content": content,
