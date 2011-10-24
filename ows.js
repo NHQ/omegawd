@@ -52,15 +52,15 @@ var twit = new twitter({
 				var parsed = JSON.parse(data);
 				if(parsed.entities.hashtags.length){
 					var post = {
-								_id : parsed.id_str,
-								txt: parsed.text, 
-								tags: parsed.entities.hashtags, 
-								links: parsed.entities.urls, 
-								pic: parsed.user.profile_image_url || parsed.user.profile_image_url_https, 
-								time: parsed.created_at,
-								author: parsed.user.name,
-								home: 'http://twitter.com/'+parsed.user.screen_name,
-								score: new Date().getTime() };
+								'_id' : parsed.id_str,
+								'txt': parsed.text, 
+								'tags': parsed.entities.hashtags, 
+								'links': parsed.entities.urls, 
+								'pic': parsed.user.profile_image_url || parsed.user.profile_image_url_https, 
+								'time': parsed.created_at,
+								'author': parsed.user.name,
+								'home': 'http://twitter.com/'+parsed.user.screen_name,
+								'score': new Date().getTime() };
 					parsed = null;
 					this.process(post);
 				}
@@ -90,9 +90,15 @@ var twit = new twitter({
 						function(tag){
 							if(data.links[1]) 
 							{
-								client.zincrby(tag+':hotlinks', 1, data.links[1]);
-								client.zadd(tag+':links', data.score, data.links[1]);
-								client.hmset(data.links[1], data);
+								client.zincrby(tag+':hotlinks', 1, data.links[1], function(e,r){
+									if(e)console.log(e)
+								});
+								client.zadd(tag+':links', data.score, data.links[1], function(e,r){
+									if(e)console.log(e)
+								});
+								client.hmset(data.links[1], data, function(e,r){
+									if(e)console.log(e)
+								});
 							}
 						})
 				})
