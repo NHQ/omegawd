@@ -2,7 +2,7 @@ var http = require('http'), fs = require('fs');
 
 var buff = new Buffer('citizen:peapod2011').toString('base64')
 
-modeule.exports = subscribe;
+module.exports = subscribe;
 
 function subscribe (word, src){
 		var tag = word+'&'+src;
