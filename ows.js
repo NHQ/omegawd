@@ -130,7 +130,7 @@ var twit = new twitter({
 			}
 		};
 		
-		switchBoard.init(track);
+		switchBoard.init();
 
 		console.log(switchBoard.tracklist);
 
