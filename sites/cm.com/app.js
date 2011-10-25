@@ -67,7 +67,9 @@ app.configure('production', function(){
 		}
 	}
 
-
+app.get('/', function(req,res){
+	res.redirect('/occupy')
+})
 app.get('/occupy', vhost, function(req, res){
 	console.log(req.card)
 	var otags = ['ows:hotlinks', 'occupy:hotlinks', '99:hotlinks', '99percent:hotlinks', 'occupywallstreet:hotlinks','occupywallst:hotlinks'];
