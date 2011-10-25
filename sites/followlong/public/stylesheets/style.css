@@ -1,0 +1,81 @@
+body {
+    width:1111px;
+background:#3c3c3c;
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+color:#c9c9c9;
+font-size:18px;
+  margin:0 auto; 
+
+}
+h1 {font-size:190%;}
+h2 {font-size:26px;font-weight:300;}
+.main{
+	width:970px;
+}
+#tv {
+  margin:0 auto;    
+}
+.pigment{color:#cc1100;}
+a, a:visited {color:#d9d9d9;text-decoration:none;}
+.title{text-decoration:none;}
+.articles{
+	background:#111;
+	margin-bottom:5px;
+	display:block;
+}
+#console{
+  float:left;
+  clear:none;
+	padding:3px;
+	width:720px;
+
+}
+.fit {	padding:3px;}
+
+
+/* Menus Nav */
+
+#remote{
+	width:325px;
+  float:right;
+}
+li.channel{
+	display:block;
+  margin-left: 21px;
+}
+ul#channels li.channel a{
+	color:#e6e6e6;
+}
+a.admin {color: green; margin-right: 2ex}
+
+/**** Isotope filtering ****/
+
+.isotope-item {
+  z-index: 2;
+}
+
+.isotope-hidden.isotope-item {
+  pointer-events: none;
+  z-index: 1;
+}
+
+.isotope,
+.isotope .isotope-item {
+  /* change duration value to whatever you like */
+  -webkit-transition-duration: 0.8s;
+     -moz-transition-duration: 0.8s;
+          transition-duration: 0.8s;
+}
+
+.isotope {
+  -webkit-transition-property: height, width;
+     -moz-transition-property: height, width;
+          transition-property: height, width;
+}
+
+.isotope .isotope-item {
+  -webkit-transition-property: -webkit-transform, opacity;
+     -moz-transition-property:    -moz-transform, opacity;
+          transition-property:         transform, opacity;
+}
