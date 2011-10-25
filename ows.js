@@ -44,7 +44,6 @@ var twit = new twitter({
 
 				['occupy', 'ows', 'occupywallstreet', '99percent'].forEach(function(e){
 					subscribe(e, 'tumblr')
-				*/
 			},
 			corral: {},
 			parse: function(data){
