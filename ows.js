@@ -42,9 +42,9 @@ var twit = new twitter({
 					this.tracklist.push(hash);
 				}, this)
 
-				var spfdr = ['occupy', 'ows', 'occupywallstreet', '99percent'];
-				spfdr.forEach(function(e){
-					subscribe(e, 'tumblr')})
+//				var spfdr = ['occupy', 'ows', 'occupywallstreet', '99percent'];
+//				spfdr.forEach(function(e){
+//					subscribe(e, 'tumblr')})
 			},
 			corral: {},
 			parse: function(data){
@@ -59,7 +59,8 @@ var twit = new twitter({
 								'time': parsed.created_at,
 								'author': parsed.user.name,
 								'home': 'http://twitter.com/'+parsed.user.screen_name,
-								'score': new Date().getTime() };
+								'score': new Date().getTime() 
+					};
 					parsed = null;
 					this.process(post);
 				}
@@ -68,6 +69,7 @@ var twit = new twitter({
 				}
 			},
 			process: function(data){
+				var data = data;
 				var _id = data._id;
 				var hashtags = _.intersection(_.map(data.tags, function(e){return e.text.toLowerCase()}), this.tracklist);
 				if(hashtags.length){
@@ -82,23 +84,23 @@ var twit = new twitter({
 				}
 				else return
 			},
-			analyze: function(tags, data){
+			analyze: function(tags, datum){
+				var data = datum, tags = tags;
+				console.log(data);
 				_.each(data.links, function(url){
 					var link = url.url, perma = url.expanded_url;
+					if(perma)
 					_.each(tags, 
 						function(tag){
-							if(data.links[1]) 
-							{
-								client.zincrby(tag+':hotlinks', 1, data.links[1], function(e,r){
+								client.zincrby(tag+':hotlinks', 1, perma, function(e,r){
 									if(e)console.log(e)
 								});
-								client.zadd(tag+':links', data.score, data.links[1], function(e,r){
+								client.zadd(tag+':links', data.score, perma, function(e,r){
 									if(e)console.log(e)
 								});
-								client.hmset(data.links[1], data, function(e,r){
+								client.hmset(perma, data, function(e,r){
 									if(e)console.log(e)
 								});
-							}
 						})
 				})
 			},
