@@ -149,9 +149,8 @@ app.get('/try', function(req,res){
     res.redirect('/init')
 });
 app.get('/logout', function(req,res){
-	res.writeHead('200');
 	res.session.destroy;
-	red.end()
+	res.redirect('/')
 })
 app.get('/init', getSesh, function (req, res){
   var feeds = req.person.wire.feeds,
