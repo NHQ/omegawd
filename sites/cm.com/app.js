@@ -70,10 +70,16 @@ app.configure('production', function(){
 
 app.get('/occupy', vhost, function(req, res){
 	console.log(req.card)
+	var otags = ['ows:hotlinks', 'occupy:hotlinks', '99:hotlinks', '99percent:hotlinks', 'occupywallstreet:hotlinks','occupywallst:hotlinks'];
 	if(Object.keys(req.card).length == 0){ // homepage
-		res.render('index', {
-	    title: 'Express'
-	  });
+		client.zunionstore('occupy:live', otags.length, otags, function(e,r){
+			client.zrevrangebyscore('occupy:live', '+inf', 2, function(e,r){
+				res.render('links', {
+			    title: 'Occupy Links:',
+					locals: {links: r}
+			  });
+			})
+		})
 	}
 	else if(Object.keys(req.card).length == 1){ //state
 		var state = req.card.state;
