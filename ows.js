@@ -139,8 +139,6 @@ var twit = new twitter({
 		
 		switchBoard.init();
 
-		console.log(switchBoard.tracklist);
-
 		twit.stream('statuses/filter', {track: _.map(switchBoard.tracklist, function(t){return '#'+t}).join()}, function(stream) {
 		    stream.on('data', function (data) {
 					  switchBoard.parse(data);
