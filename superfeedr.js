@@ -68,7 +68,7 @@ var server = connect();
 					};
 					client.zadd(tag+':links', new Date().getTime(), d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}});
 					client.zadd(tag+':superlinks', new Date().getTime(), d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}});
-					client.zincrby(tag+':hotlinks', 1, d.items[x].permalinkUrl,  function(err, reply){if (err){console.log(err)}});
+					client.zincrby(tag+':hotlinks', 2, d.items[x].permalinkUrl,  function(err, reply){if (err){console.log(err)}});
 					client.hmset(d.items[x].permalinkUrl, body, function(err, reply){if (err){console.log(err)}});					
 				};
 			});
