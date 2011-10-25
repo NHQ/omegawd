@@ -15,7 +15,6 @@ var app = module.exports = express.createServer(),
     crypto = require('crypto')
     , http = require('http')
     , url = require('url')
-    , user = require('./user-model')
 	, querystring = require('querystring')
     , fs = require('fs')
     , sys = require(process.binding('natives').util ? 'util' : 'sys')
@@ -23,7 +22,7 @@ var app = module.exports = express.createServer(),
 	, newfeed = require('./models/newfeed')
 	, newuser = require('./models/user')
 	, RedisStore = require('connect-redis')(express), multi
-	, local = http.createClient(80, 'mostmodernist.no.de')
+	, local = http.createClient(8002, '74.207.246.247')
 	, fb = require('facebook-js'),
   async = require('async'),
   request = require('request'),
@@ -315,11 +314,12 @@ function followNot (furl){
 	}});
 };
 function unsubscribe (feed){
+	var buff = new Buffer('citizen:peapod2011').toString('base64');
 		spfdr = http.createClient(80, 'superfeedr.com');
-		datat = "hub.mode=unsubscribe&hub.verify=sync&hub.topic="+feed+"&hub.callback=http://74.207.246.247:3001/feed";
+		datat = "hub.mode=unsubscribe&hub.verify=sync&hub.topic="+feed+"&hub.callback=http://74.207.246.247:8002/feed";
 		var request = spfdr.request('POST', '/hubbub', {
 			'Host':'superfeedr.com',
-			"Authorization":"basic TkhROmxvb3Bob2xl",
+			"Authorization":"basic "+buff,
 			'Accept':'application/json',
 			'Content-Length': datat.length
 		});
@@ -334,7 +334,7 @@ function unsubscribe (feed){
 
 function subscribe (feed){
 		var spfdr = http.createClient(80, 'superfeedr.com');
-		var dataw = "hub.mode=subscribe&hub.verify=async&hub.topic="+feed+"&hub.callback=http://74.207.246.247:3001/feed";
+		var dataw = "hub.mode=subscribe&hub.verify=async&hub.topic="+feed+"&hub.callback=http://74.207.246.247:8002/feed";
 		var request = spfdr.request('POST', '/hubbub', {
 			'Host':'superfeedr.com',
 			"Authorization":"basic TkhROmxvb3Bob2xl",
