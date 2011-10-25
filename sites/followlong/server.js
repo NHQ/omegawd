@@ -25,9 +25,7 @@ var app = module.exports = express.createServer(),
 	, local = http.createClient(8002, '74.207.246.247')
 	, fb = require('facebook-js'),
   async = require('async'),
-  request = require('request'),
-	everyAuth = require('everyauth');
-
+  request = require('request');
 function epoch(){return Math.round(new Date().getTime()/1000.0)};
 
 client.on("error", function (err) {
@@ -46,7 +44,6 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
-	app.use(everyauth.middleware());
 });
 
 app.configure('development', function(){
@@ -54,10 +51,7 @@ app.configure('development', function(){
 });
 
 app.configure('production', function(){
-  app.use(express.errorHandler()); 
 });
-everyauth.helpExpress(app);
-console.log(everyauth.facebook.configurable());
 
 // Mongo Sesh
 /*
