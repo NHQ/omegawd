@@ -483,7 +483,7 @@ app.get('/fb', function (req, res) {
 app.get('/fb', function (req, res) {
   res.redirect(fb.getAuthorizeUrl({
     client_id: '190292354344532',
-    redirect_uri: 'http://74.207.246.247:3001/fb/auth',
+    redirect_uri: 'http://74.207.246.247:8002/fb/auth',
     scope: 'user_location,user_photos'
   }));
 });
@@ -537,7 +537,7 @@ app.get('/fb/auth', function (req, res) {
 // redis auth
 
 app.get('/fb/auth', function (req, res) {
-  fb.getAccessToken('190292354344532', 'ac9d7f273a15e91ac035871d04ef1915', req.param('code'), 'http://74.207.246.247:3001/fb/auth', function (error, access_token, refresh_token) {
+  fb.getAccessToken('190292354344532', 'ac9d7f273a15e91ac035871d04ef1915', req.param('code'), 'http://74.207.246.247:8002/fb/auth', function (error, access_token, refresh_token) {
     console.log(error || access_token);
   fb.apiCall('GET', '/me', {access_token: access_token, fields:'id,gender,first_name, middle_name,last_name,location,locale,friends,website'}, function (err, response, body){
 		console.log(body);
@@ -571,7 +571,7 @@ app.get('/fb/auth', function (req, res) {
 
 app.get('/auth', function (req, res) {
 	var code = req.query.code;
-	var url = '/oauth/access_token?client_id=190292354344532&redirect_uri=http%3A%2F%2F74.207.246.247%3A3001%2Fauth&client_secret=6a8433e613782515148f6b2ee038cb1a&code='+code;
+	var url = '/oauth/access_token?client_id=190292354344532&redirect_uri=http%3A%2F%2F74.207.246.247%3A8002%2Fauth&client_secret=6a8433e613782515148f6b2ee038cb1a&code='+code;
 	var fbGetAccessToken = http.createClient(443, 'graph.facebook.com', secure=true);
 	var request = fbGetAccessToken.request('POST', url, {
 		'Host':'graph.facebook.com',
