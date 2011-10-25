@@ -54,7 +54,7 @@ app.configure('production', function(){
 });
 
 // Mongo Sesh
-/*
+
 function getSesh (req, res, next){
   if(!req.session._id)
 		res.redirect('/fb');
@@ -72,8 +72,8 @@ function getSesh (req, res, next){
 			});
 		});}
 }
-*/
 
+/*
 function getSesh (req, res, next){
 	console.log(req.session.uid);
 	if(!req.session.uid)
@@ -85,7 +85,7 @@ function getSesh (req, res, next){
 		next();
 	}
 };
-
+*/
 function frontis(facts){
 	var facts = facts;
 	var channel = new Array();
@@ -148,6 +148,11 @@ app.get('/try', function(req,res){
     req.session._id = '4e41cffe650aefed11000001'
     res.redirect('/init')
 });
+app.get('/logout', function(req,res){
+	res.writeHead('200');
+	res.session.destroy;
+	red.end()
+})
 app.get('/init', getSesh, function (req, res){
   var feeds = req.person.wire.feeds,
   channels = [];
@@ -489,7 +494,7 @@ app.get('/fb', function (req, res) {
 });
 
 // mongo auth
-/*
+
 app.get('/fb/auth', function (req, res) {
   fb.getAccessToken('190292354344532', 'ac9d7f273a15e91ac035871d04ef1915', req.param('code'), 'http://74.207.246.247:3001/fb/auth', function (error, access_token, refresh_token) {
   fb.apiCall('GET', '/me', {access_token: access_token, fields:'id,gender,first_name, middle_name,last_name,location,locale,friends,website'}, function (err, response, body){
@@ -533,9 +538,9 @@ app.get('/fb/auth', function (req, res) {
 	});
   });
 });
-*/
-// redis auth
 
+// redis auth
+/*
 app.get('/fb/auth', function (req, res) {
   fb.getAccessToken('190292354344532', 'ac9d7f273a15e91ac035871d04ef1915', req.param('code'), 'http://74.207.246.247:8002/fb/auth', function (error, access_token, refresh_token) {
     console.log(error || access_token);
@@ -667,7 +672,7 @@ getLoco = (function (id, token) {
 		})
 	})
 })	
-
+*/
 
 if (!module.parent) {
   app.listen(8002);
