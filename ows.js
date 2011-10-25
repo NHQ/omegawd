@@ -28,7 +28,7 @@ var twit = new twitter({
 			mapper: {},
 			wipe: [],
 			data : require('./makeData.js'),
-			tracklist: ['ows', 'occupy', '99', '99percent', 'occupywallstreet', 'occupydc'],
+			tracklist: ['ows', 'occupy', '99', '99percent', 'occupywallstreet','occupywallst', 'occupydc'],
 			init: function(track){
 				_.each(this.tracklist, function(tag){
 					this.mapper[tag] = {},
@@ -86,7 +86,6 @@ var twit = new twitter({
 			},
 			analyze: function(tags, datum){
 				var data = datum, tags = tags;
-				console.log(data);
 				_.each(data.links, function(url){
 					var link = url.url, perma = url.expanded_url;
 					if(perma)

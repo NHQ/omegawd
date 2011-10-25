@@ -2,7 +2,8 @@ var connect = require('connect')
 ,		vhost = require('./lib/subDomani')
 ,		_ = require('underscore')
 ,		redis = require('redis')
-,		client = redis.createClient();
+,		client = redis.createClient()
+, sys = require('util');
 
 var server = connect();
 		server.use(connect.profiler());
@@ -65,9 +66,9 @@ var server = connect();
 						"created": d.items[x].postedTime,
 						"feed": d.status.feed
 					};
-					client.zadd(tag+':links', new Date().getTime(), d.items[x].permalinkUrl, function(err, reply){if (err){sys.puts(err)}});
-					client.zincrby(tag+':hotlinks', 1, d.items[x].permalinkUrl,  function(err, reply){if (err){sys.puts(err)}});
-					client.hmset(d.items[x].permalinkUrl, body, function(err, reply){if (err){sys.puts(err)}});					
+					client.zadd(tag+':links', new Date().getTime(), d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}});
+					client.zincrby(tag+':hotlinks', 1, d.items[x].permalinkUrl,  function(err, reply){if (err){console.log(err)}});
+					client.hmset(d.items[x].permalinkUrl, body, function(err, reply){if (err){console.log(err)}});					
 				};
 			});
 		}))
