@@ -512,15 +512,15 @@ app.get('/fb/auth', function (req, res) {
 request.get('https://graph.facebook.com/'+body.id+'/picture?type=large&access_token='+access_token).pipe(fs.createWriteStream('public/person/'+person._id+'/profile.jpg'));
 
 				person.insert({
-	        facts.fname : body.first_name,
-	        facts.mname : body.middle_name,
-	        facts.lname : body.last_name,
-	        facts.gender : body.gender, 
-	        facts.website : body.website, 
-	        secrets.fb_access_token : access_token,
-	        secrets.fbx : body.friends.data,
-	        secrets.fb_id : body.id,
-					wire.feeds= [{feed:'http://www.memeorandum.com/feed.xml', chans:['news']},{feed:'http://www.techmeme.com/feed.xml', chans:['tech']},{feed:'http://news.ycombinator.com/rss', chans:['YcombOverator']}]
+	        "facts.fname" : body.first_name,
+	        "facts.mname" : body.middle_name,
+	        "facts.lname" : body.last_name,
+	        "facts.gender" : body.gender, 
+	        "facts.website" : body.website, 
+	        "secrets.fb_access_token" : access_token,
+	        "secrets.fbx" : body.friends.data,
+	        "secrets.fb_id" : body.id,
+					"wire.feeds" : [{feed:'http://www.memeorandum.com/feed.xml', chans:['news']},{feed:'http://www.techmeme.com/feed.xml', chans:['tech']},{feed:'http://news.ycombinator.com/rss', chans:['YcombOverator']}]
 				}, function(err, res){
 					client.append(body.id, res._id, function(err){})
 					//person.update({_id: res._id}, {$set : {person.facts.portrait:'person/'+person._id+'/profile.jpg'}})
