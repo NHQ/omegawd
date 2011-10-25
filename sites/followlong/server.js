@@ -2,9 +2,15 @@
  * Module dependencies.
  */
 
-var express = require('express'),
-mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
+var express = require('express');
+
+var		Mongolian = require('mongolian')
+,		mongo = new Mongolian
+,		site = mongo.db('citizenmission')
+,		people = mongo.db('people')
+,		rhetoric = site.collection('quotes')
+,		person = people.collection('people')
+
 var app = module.exports = express.createServer(),
     redis = require("./redis"),
 	connect = require('connect'),
@@ -60,11 +66,10 @@ function getSesh (req, res, next){
 		res.redirect('/fb');
 	if(req.session._id)
 	{
-		req.perp = mongoose.model('Person');
-		req.perp.findById(req.session._id, function (err, individual){
+		person.findOne({person.secrets.fb_id : req.session._id}, function (err, individual){
 			if (err){console.log(err);}
 			req.session.regenerate(function(err){
-				//console.log(individual);
+				console.log(individual);
 				req.session._id = individual._id;
 				req.facts = individual.doc.facts;
 				req.person = individual;
@@ -502,26 +507,24 @@ app.get('/fb/auth', function (req, res) {
       console.log(que);
       if (que == 0){
         console.log('mak new');
-        var individual = mongoose.model('Person');
-        var person = new individual;
-        req.session._id = person._id;
+        req.session._id = body.id;
         fs.mkdirSync('public/person/'+person._id, 644, function(err){console.log(err);}); //the user's image directory
-        request.get('https://graph.facebook.com/'+body.id+'/picture?type=large&access_token='+access_token).pipe(fs.createWriteStream('public/person/'+person._id+'/profile.jpg'));
-        person.facts.portrait='person/'+person._id+'/profile.jpg', 
-        person.facts.fname = body.first_name,
-        person.facts.mname = body.middle_name,
-        person.facts.lname = body.last_name,
-        person.facts.gender=body.gender, 
-        person.facts.website=body.website, 
-        person.secrets.fb_access_token= access_token,
-        person.secrets.fbx=body.friends.data,
-        person.secrets.fb_id=  body.id;
-        person.wire.feeds= [{feed:'http://www.memeorandum.com/feed.xml', chans:['news']},{feed:'http://www.techmeme.com/feed.xml', chans:['tech']},{feed:'http://news.ycombinator.com/rss', chans:['YcombOverator']}]
-        person.save(function (err, doc){
-          console.log(err+'\n'+doc);
-          res.redirect('/init');
-          })
-        client.append(body.id, person._id, function(err){})
+request.get('https://graph.facebook.com/'+body.id+'/picture?type=large&access_token='+access_token).pipe(fs.createWriteStream('public/person/'+person._id+'/profile.jpg'));
+
+				person.insert({
+	        person.facts.fname : body.first_name,
+	        person.facts.mname : body.middle_name,
+	        person.facts.lname : body.last_name,
+	        person.facts.gender : body.gender, 
+	        person.facts.website : body.website, 
+	        person.secrets.fb_access_token : access_token,
+	        person.secrets.fbx : body.friends.data,
+	        person.secrets.fb_id : body.id.
+					person.wire.feeds= [{feed:'http://www.memeorandum.com/feed.xml', chans:['news']},{feed:'http://www.techmeme.com/feed.xml', chans:['tech']},{feed:'http://news.ycombinator.com/rss', chans:['YcombOverator']}]
+				}, function(err, res){
+					client.append(body.id, res._id, function(err){})
+					//person.update({_id: res._id}, {$set : {person.facts.portrait:'person/'+person._id+'/profile.jpg'}})
+				})
         };
       if (que == 1){
           console.log('mack old');
