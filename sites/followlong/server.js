@@ -519,7 +519,7 @@ request.get('https://graph.facebook.com/'+body.id+'/picture?type=large&access_to
 	        facts.website : body.website, 
 	        secrets.fb_access_token : access_token,
 	        secrets.fbx : body.friends.data,
-	        secrets.fb_id : body.id.
+	        secrets.fb_id : body.id,
 					wire.feeds= [{feed:'http://www.memeorandum.com/feed.xml', chans:['news']},{feed:'http://www.techmeme.com/feed.xml', chans:['tech']},{feed:'http://news.ycombinator.com/rss', chans:['YcombOverator']}]
 				}, function(err, res){
 					client.append(body.id, res._id, function(err){})
