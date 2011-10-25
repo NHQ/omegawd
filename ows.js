@@ -41,10 +41,9 @@ var twit = new twitter({
 					this.mapper[hash].latest = [];
 					this.tracklist.push(hash);
 				}, this)
-				/*
-				this.tracklist.forEach(function(e){
+
+				['occupy', 'ows', 'occupywallstreet', '99percent'].forEach(function(e){
 					subscribe(e, 'tumblr')
-				})
 				*/
 			},
 			corral: {},

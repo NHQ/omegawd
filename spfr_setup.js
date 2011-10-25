@@ -5,7 +5,7 @@ var buff = new Buffer('citizen:peapod2011').toString('base64')
 module.exports = subscribe;
 
 function subscribe (word, src){
-		var tag = word+'&'+src;
+		var tag = word+'&'+src=&'-twitter';
 		var spfdr = http.createClient(80, 'superfeedr.com');
 		var dataw = "hub.mode=subscribe&hub.verify=async&hub.topic=http://superfeedr.com/track/"+tag+"&hub.callback=http://74.207.246.247:8001/feed/"+word;
 		var request = spfdr.request('POST', '/hubbub', {
