@@ -2,8 +2,8 @@ function append (data){
 	var li = document.createElement('li'),
 			div = document.createElement('div');
 	var html = 	'<img src='+data.pic+'></img><p>'+data.txt+'</p>';
-			div.insertBefore(html);
-			li.insertBefore(div);
+			div.appendChild(html);
+			li.appendChild(div);
 			$('ul#post').append(li);
 }
 
