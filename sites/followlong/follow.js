@@ -148,7 +148,7 @@ app.get('/init', getSesh, function (req, res){
       req.content = content;
       res.render('index', {locals: {feeds: req.content, channels:_.uniq(_.flatten(channels))}});
   })
-*/
+
 });
 
 app.get('/userChannels', getSesh, function (req, res){
