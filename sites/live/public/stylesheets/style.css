@@ -15,11 +15,18 @@ li.post {
 	padding:5px 0;
 }
 img.thumb {
-	float:left;
 	display:inline;
 	max-width:100px;
 }
-
+.img {
+	float:left;
+	display:inline;
+	height:100%;
+	border: 2px dotted pink;
+}
 li.post p {
 	margin-left:5px;
+}
+.txt {
+	float:right;
 }
