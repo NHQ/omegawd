@@ -158,9 +158,10 @@ app.get('/userChannels', getSesh, function (req, res){
 });
 
 app.post('/followFeed', getSesh, function (req, res){
-	console.log(req.body)
-	var feeds = JSON.parse(req.person.feeds);
-  feeds.push({feed:decodeURIComponent(req.body.feed), chans:JSON.parse(req.body.channels)});
+	console.log(req.body);
+	console.log(req.person.feeds)
+  var feeds = JSON.parse(req.person.feeds);
+  feeds.push({feed:decodeURIComponent(req.body.feed), chans:req.body.channels});
 	client.hset(req.session.id, 'feeds', JSON.stringify(feeds), function(e,r){
 		if(e)console.log(e);
 		follow(req.body.feed);
@@ -381,7 +382,7 @@ app.get('/fb/auth', function (req, res) {
 									fb_access_token: access_token,
 									fbx: JSON.stringify(body.friends.data),
 									fb_id: body.id,
-									feeds:JSON.stringify(new Array()) // each feed is obj {feed:,channels:}, redis requires strings only
+									feeds:JSON.stringify([]) // each feed is obj {feed:,channels:}, redis requires strings only
 							};
 							client.hmset(body.id, person, function(err, r){
 								if(err){console.log(err)}
