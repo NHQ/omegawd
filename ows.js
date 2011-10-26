@@ -75,7 +75,7 @@ var twit = new twitter({
 				var hashtags = _.intersection(_.map(data.tags, function(e){return e.text.toLowerCase()}), this.tracklist);
 				if(hashtags.length){
 					hashtags.forEach(function(tag){
-						pub.publish(tag+':pub', data)
+						pub.publish(tag+':pub', JSON.stringify(data))
 					});
 					if(data.links.length){
 						this.analyze(hashtags,data)
