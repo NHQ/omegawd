@@ -2,9 +2,11 @@ var reg = new RegExp(/t.co/i), usr = new RegExp(/@[a-z0-9_]*/i);
 
 function loadimg (data){
 	var cut = data.indexOf("_normal");
-	var pic = data.slice(0, cut)+data.slice(cut+7)
+	var pic = data.slice(0, cut)+data.slice(cut+7);
+	console.log(pic)
 	var img = new Image;
 	img.src = pic;
+	console.log(pic);
 	return img
 }
 
@@ -29,6 +31,5 @@ function append (datum){
 
 	var socket = io.connect('http://74.207.246.247:8008');
   socket.on('news', function (data) {
-    console.log(data);
 		append(data);
   });
