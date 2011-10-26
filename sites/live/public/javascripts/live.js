@@ -1,15 +1,3 @@
-var post = {
-			'_id' : parsed.id_str,
-			'txt': parsed.text, 
-			'tags': parsed.entities.hashtags, 
-			'links': parsed.entities.urls, 
-			'pic': parsed.user.profile_image_url || parsed.user.profile_image_url_https, 
-			'time': parsed.created_at,
-			'author': parsed.user.name,
-			'home': 'http://twitter.com/'+parsed.user.screen_name,
-			'score': new Date().getTime() 
-};
-
 function append (data){
 	var li = document.createElement('li'),
 			div = document.createElement('div');
