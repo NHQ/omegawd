@@ -4,12 +4,13 @@
  */
 
 var express = require('express')
-,		socket = require('socket.io')
 ,		redis = require('redis')
 ,		client = redis.createClient()
 , 	RedisStore = require('connect-redis')(express);
 
 var app = module.exports = express.createServer();
+app.listen(8008);
+var	io = require('socket.io').listen(app);
 
 // Configuration
 
@@ -41,7 +42,7 @@ app.get('/', function(req, res){
   });
 });
 
-socket.sockets.on('connection', function (socket) {
+io.sockets.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
 	client.subscribe('occupyoakland:pub')
 	client.on("message", function (channel, message) {
@@ -49,5 +50,5 @@ socket.sockets.on('connection', function (socket) {
 	});
 });
 
-app.listen(8008);
+
 console.log("Express server listening on port %d", app.address().port);
