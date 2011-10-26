@@ -376,9 +376,9 @@ app.get('/fb/auth', function (req, res) {
 									gender: body.gender, 
 									website: body.website,
 									fb_access_token: access_token,
-									fbx: body.friends.data,
+									fbx: JSON.stringify(body.friends.data),
 									fb_id: body.id,
-									feeds:JSON.stringify([]) // each feed is obj {feed:,channels:}, redis requires strings only
+									feeds:JSON.stringify([{feed: 'toast.com', channels: 'jammies'}]) // each feed is obj {feed:,channels:}, redis requires strings only
 							};
 							client.hmset(body.id, person, function(err, r){
 								if(err){console.log(err)}
