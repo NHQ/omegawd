@@ -1,6 +1,6 @@
 body {
   padding: 50px;
-  font: 16px 'Terminal Dosis Light', Helvetica, Arial, sans-serif;
+  font: 20px 'Terminal Dosis Light', Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -12,7 +12,14 @@ ul#post {
 }
 li.post {
 	border-bottom: 1px solid #ccc;
+	padding:5px 0;
 }
 img.thumb {
+	float:left;
+	display:inline;
 	max-width:100px;
+}
+
+li.post p {
+	margin-left:5px;
 }
