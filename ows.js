@@ -4,7 +4,8 @@ var fs = require('fs'),
 		redis = require('redis'),
 		client = redis.createClient(),
 		request = require('request'),
-		subscribe = require('./spfr_setup.js');
+		subscribe = require('./spfr_setup.js'),
+		pub = redis.createClient();
 		
 var jQ = fs.readFileSync('./lib/jquery-1.6.2.min.js').toString();
 		
@@ -73,6 +74,9 @@ var twit = new twitter({
 				var _id = data._id;
 				var hashtags = _.intersection(_.map(data.tags, function(e){return e.text.toLowerCase()}), this.tracklist);
 				if(hashtags.length){
+					hashtags.forEach(function(e){
+						pub.publish(tag+':pub', data)
+					});
 					if(data.links.length){
 						this.analyze(hashtags,data)
 					}
