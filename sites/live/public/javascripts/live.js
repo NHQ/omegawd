@@ -1,16 +1,5 @@
 var reg = new RegExp(/t.co/i), usr = new RegExp(/@[a-z0-9_]*/i);
 
-function loadimg (data){
-	var cut = data.indexOf("_normal");
-	var pic = data.slice(0, cut)+data.slice(cut+7);
-	console.log(pic)
-	var img = new Image;
-	img.src = pic;
-	console.log(pic);
-	return img
-}
-
-
 function append (datum){
 	var data = JSON.parse(datum);
 	var text = data.txt.split(" ");
@@ -24,8 +13,9 @@ function append (datum){
 			}
 			else return e
 		}).join(" ")
-	
-	var html = 	'<li class="post"><div class="img"><a href='+data.home+'>'+pic+'</a></div></div class="txt"><p>'+txt+'</p></div></li>';
+		var cut = data.pic.indexOf("_normal");
+		var pic = data.pic.slice(0, cut)+data.pic.slice(cut+7);
+	var html = 	'<li class="post"><div class="img"><a href='+data.home+'><img src='+pic+'></a></div></div class="txt"><p>'+txt+'</p></div></li>';
 			$('ul#post').append(html);
 }
 
