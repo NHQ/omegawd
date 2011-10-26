@@ -12,9 +12,15 @@ $(document).ready(function(){
 	$('#new').submit(function(e){
 		e.preventDefault();
 		console.log($('#channel').value)
-		add($('#channel').value)
+		add($('#channel').val())
 	})
 	$('.channy').click(function(e){
 		add(this.id)
+	})
+	$('#save').click(function(){
+		$.post('/followFeed', {
+			feed : window.location.search.slice(6),
+			channels : newFeedChans
+		})
 	})
 })
