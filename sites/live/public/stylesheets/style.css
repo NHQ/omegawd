@@ -17,7 +17,7 @@ li.post {
 }
 img.thumb {
 	display:inline;
-	max-width:100px;
+	max-width:200px;
 }
 .img {
 	height:150px;
@@ -27,11 +27,6 @@ img.thumb {
 	border: 2px dotted pink;
 }
 li.post p {
-	margin-left:120px;
-	margin-left:5px;
+	margin-left:220px;
 	border:2px solid green;
-}
-.txt {
-	margin-left:120px;
-		border:2px dotted green;
 }
