@@ -1,6 +1,6 @@
 body {
   padding: 50px;
-  font: 20px 'Terminal Dosis Light', Helvetica, Arial, sans-serif;
+  font: 23px 'Terminal Dosis Light', Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -12,7 +12,7 @@ ul#post {
 }
 li.post {
 	border-bottom: 1px solid #ccc;
-	padding:5px 0;
+	margin:5px 0;
 	height:150px;
 }
 img.thumb {
@@ -28,5 +28,5 @@ img.thumb {
 
 .txt {
 	margin-left:110px;
-		border:2px dotted green;
+	border:2px dotted green;
 }

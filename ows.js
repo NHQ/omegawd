@@ -62,8 +62,12 @@ var twit = new twitter({
 								'home': 'http://twitter.com/'+parsed.user.screen_name,
 								'score': new Date().getTime() 
 					};
-					parsed = null;
 					this.process(post);
+					if(parsed["retweeted_status"]){
+						var repost = JSON.stringify(parsed["retweeted_status"]);
+						this.parse(repost)
+					}
+					parsed = null;
 				}
 				else {
 					parsed = null;
