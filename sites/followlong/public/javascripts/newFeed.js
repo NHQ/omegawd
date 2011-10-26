@@ -11,7 +11,6 @@ $(document).ready(function(){
 	};
 	$('#new').submit(function(e){
 		e.preventDefault();
-		console.log($('#channel').value)
 		add($('#channel').val())
 	})
 	$('.channy').click(function(e){
