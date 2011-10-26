@@ -73,11 +73,6 @@ var twit = new twitter({
 				var _id = data._id;
 				var hashtags = _.intersection(_.map(data.tags, function(e){return e.text.toLowerCase()}), this.tracklist);
 				if(hashtags.length){
-				_.each(hashtags, function(tag){
-						this.mapper[tag].latest.unshift(_id);
-					//	this.file(tag, _id);
-						this.stat(tag);
-					},this);
 					if(data.links.length){
 						this.analyze(hashtags,data)
 					}
@@ -91,6 +86,7 @@ var twit = new twitter({
 					if(perma)
 					_.each(tags, 
 						function(tag){
+							console.log(tag);
 								client.zincrby(tag+':hotlinks', 1, perma, function(e,r){
 									if(e)console.log(e)
 								});
