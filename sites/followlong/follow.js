@@ -160,7 +160,7 @@ app.get('/userChannels', getSesh, function (req, res){
 app.post('/followFeed', getSesh, function (req, res){
   var feeds = JSON.parse(req.person.feeds);
   feeds.push({feed:decodeURIComponent(req.body.feed), chans:req.body.channels});
-	console.log(feeds);
+	console.log(JSON.stringify(feeds));
 	client.hset(req.session.id, 'feeds', JSON.stringify(feeds), function(e,r){
 		if(e)console.log(e);
 		console.log(r);

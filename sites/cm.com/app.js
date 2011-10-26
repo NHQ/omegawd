@@ -70,6 +70,18 @@ app.configure('production', function(){
 app.get('/', function(req,res){
 	res.redirect('/occupy')
 })
+
+app.get('/superfeedr/:tag', function(req,res){
+	zrevrangebyscore(req.params.tag+':superlinks', +inf, 0, function(e,r){
+		res.render('links', {
+			title: 'Results for superfeedr.com/track/'+req.params.tag+'&tumblr&-twitter.com&-twitter&-t.co&-wikipedia.org',
+			locals: {
+				links:r
+			}
+		})
+	})
+})
+
 app.get('/occupy', vhost, function(req, res){
 	console.log(req.card)
 	var otags = ['ows:hotlinks', 'occupy:hotlinks', '99:hotlinks', '99percent:hotlinks', 'occupywallstreet:hotlinks','occupywallst:hotlinks'];
