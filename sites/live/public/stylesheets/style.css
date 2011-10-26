@@ -13,20 +13,22 @@ ul#post {
 li.post {
 	border-bottom: 1px solid #ccc;
 	padding:5px 0;
+	height:300px;
 }
 img.thumb {
 	display:inline;
 	max-width:100px;
 }
 .img {
+	height:300px;
 	float:left;
 	display:inline;
-	height:100%;
 	border: 2px dotted pink;
 }
 li.post p {
+	margin-left:120px;
 	margin-left:5px;
 }
 .txt {
-	float:right;
+	margin-left:120px;
 }
