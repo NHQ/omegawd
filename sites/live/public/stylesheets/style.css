@@ -1,8 +1,18 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 16px 'Terminal Dosis Light', Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+ul#post {
+	list-style-type:none;
+	width: 600px;
+}
+li.post {
+	border-bottom: 1px solid #ccc;
+}
+img.thumb {
+	max-width:100px;
 }
