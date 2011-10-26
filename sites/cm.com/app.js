@@ -72,7 +72,7 @@ app.get('/', function(req,res){
 })
 
 app.get('/superfeedr/:tag', function(req,res){
-	zrevrangebyscore(req.params.tag+':superlinks', '+inf', 0, function(e,r){
+	client.zrevrangebyscore(req.params.tag+':superlinks', '+inf', 0, function(e,r){
 		res.render('links', {
 			title: 'Results for superfeedr.com/track/'+req.params.tag+'&tumblr&-twitter.com&-twitter&-t.co&-wikipedia.org',
 			locals: {
