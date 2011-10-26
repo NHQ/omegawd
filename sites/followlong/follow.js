@@ -124,6 +124,8 @@ app.get('/logout', function(req,res){
 });
 
 app.get('/init', getSesh, function (req, res){
+	console.log(req.person.feeds);
+/*	
   var feeds = JSON.parse(req.person.feeds);
   channels = [];
   async.map(feeds, function(each, callback){
@@ -147,6 +149,7 @@ app.get('/init', getSesh, function (req, res){
       req.content = content;
       res.render('index', {locals: {feeds: req.content, channels:_.uniq(_.flatten(channels))}});
   })
+*/
 });
 
 app.get('/userChannels', getSesh, function (req, res){
