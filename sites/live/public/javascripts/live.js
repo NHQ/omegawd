@@ -23,7 +23,7 @@ function append (datum){
 			else return e
 		}).join(" ")
 	
-	var html = 	'<li class="post"><div class="img"><a href='+data.home+'><img class="thumb" src='+pic+'></img></a></div></div class="txt"><p>'+txt+'</p></div></li>';
+	var html = 	'<li class="post"><div class="img"><a href='+data.home+'>'+pic+'</a></div></div class="txt"><p>'+txt+'</p></div></li>';
 			$('ul#post').append(html);
 }
 
