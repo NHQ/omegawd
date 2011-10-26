@@ -3,7 +3,6 @@ var reg = new RegExp(/t.co/i), usr = new RegExp(/@[a-z0-9_]*/i);
 function append (datum){
 	var data = JSON.parse(datum);
 	var text = data.txt.split(" ");
-	var pic = loadimg(data.pic)
 	var txt = _.map(text, function(e){
 			if(reg.test(e)){
 				return '<a href='+e+'>'+e+'</a>'
