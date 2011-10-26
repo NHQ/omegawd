@@ -4,7 +4,7 @@ function append (datum){
 	var data = JSON.parse(datum);
 	var text = data.txt.split(" ");
 	
-	var txt = _.map(arr, function(e){
+	var txt = _.map(text, function(e){
 			if(reg.test(e)){
 				return '<a href='+e+'>'+e+'</a>'
 			} 
