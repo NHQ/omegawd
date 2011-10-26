@@ -365,7 +365,7 @@ app.get('/fb/auth', function (req, res) {
   			fb.apiCall('GET', '/me',
  				{access_token: access_token, fields:'id,gender,first_name, middle_name,last_name,location,locale,friends,website'},
  				function (err, response, body){
-					console.log(body);
+					console.log(JSON.stringify(body));
     			client.exists(body.id, function(err,que){
       			console.log(que);
       			if (que == 0){
@@ -378,7 +378,7 @@ app.get('/fb/auth', function (req, res) {
 									fb_access_token: access_token,
 									fbx: JSON.stringify(body.friends.data),
 									fb_id: body.id,
-									feeds:JSON.stringify([{feed: 'toast.com', channels: 'jammies'}]) // each feed is obj {feed:,channels:}, redis requires strings only
+									feeds:[{feed: 'toast.com', channels: 'jammies'}] // each feed is obj {feed:,channels:}, redis requires strings only
 							};
 							client.hmset(body.id, person, function(err, r){
 								if(err){console.log(err)}
