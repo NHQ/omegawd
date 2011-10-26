@@ -57,7 +57,8 @@ function getSesh (req, res, next){
 		res.redirect('/fb');
 	if(req.session.id)
 	{
-		client.hgetall(req.session.id, function(err, p){
+		console.log(req.session._id)
+		client.hgetall(req.session._id, function(err, p){
 			console.log(p);
 			req.person = p;
 			next();
@@ -368,7 +369,7 @@ app.get('/fb/auth', function (req, res) {
   			fb.apiCall('GET', '/me',
  				{access_token: access_token, fields:'id,gender,first_name, middle_name,last_name,location,locale,friends,website'},
  				function (err, response, body){
-					console.log(JSON.stringify(body));
+					req.session._id = body.id;
     			client.exists(body.id, function(err,que){
       			console.log(que);
       			if (que == 0){
@@ -385,15 +386,12 @@ app.get('/fb/auth', function (req, res) {
 							};
 							client.hmset(body.id, person, function(err, r){
 								if(err){console.log(err)}
-								req.session.id = body.id;
 								res.redirect('/init')
 							})
 						}
       			if (que == 1){
-          		console.log('mack old');
           		client.hset(body.id, 'fb_access_token', 'access_token', 'fbx', 'body.friends.data', function(e,r){
             		if(err)console.log(err)
-								req.session.id = body.id;
 								res.redirect('/init')
               })            
         		}
