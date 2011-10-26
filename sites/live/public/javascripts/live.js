@@ -14,7 +14,7 @@ function append (datum){
 		}).join(" ")
 		var cut = data.pic.indexOf("_normal");
 		var pic = data.pic.slice(0, cut)+data.pic.slice(cut+7);
-	var html = 	'<li class="post"><div class="img"><a href='+data.home+'><img src='+pic+'></a></div></div class="txt"><p>'+txt+'</p></div></li>';
+	var html = 	'<li class="post"><div class="img"><a href='+data.home+'><img class="thumb" src='+pic+'></a></div></div class="txt"><p>'+txt+'</p></div></li>';
 			$('ul#post').append(html);
 }
 
