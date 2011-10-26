@@ -5,8 +5,9 @@ $(document).ready(function(){
 			return
 		}
 		else {
-			$('#subs').append('<li id='+x+'>'+x+'</li>')
-			newFeedChans.unshift(x)
+			$('ul#sub').append('<li id='+x+'>'+x+'</li>')
+			newFeedChans.push(x);
+			console.log(x)
 		}
 	};
 	$('#new').submit(function(e){
