@@ -360,7 +360,7 @@ app.get('/fb/auth', function (req, res) {
 		'190292354344532'
 		, 'ac9d7f273a15e91ac035871d04ef1915'
 		, req.param('code')
-		, 'http://74.207.246.247:3001/fb/auth'
+		, 'http://74.207.246.247:8002/fb/auth'
 		, function (error, access_token, refresh_token) {
   			fb.apiCall('GET', '/me',
  				{access_token: access_token, fields:'id,gender,first_name, middle_name,last_name,location,locale,friends,website'},
