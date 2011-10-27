@@ -1,25 +1,27 @@
-doctype 5
+!!! 5
 html
   head
     link(href='http://fonts.googleapis.com/css?family=Terminal+Dosis+Light', rel='stylesheet', type='text/css')
     link(href='/stylesheets/style.css', rel='stylesheet')
     link(rel='stylesheet', href='/stylesheets/chosen.css')
     script(src='/javascripts/jquery-1.6.2.min.js')
-    script(type="text/javascript", src="/javascripts/chosen.jquery.js")
+    script(type="text/javascript", src="/javascripts/chosen.jquery.min.js")
     script(src='/socket.io/socket.io.js')
     script(src='/javascripts/underscore-min.js')
   body
     ul#post
     div#sidebar
-      form(action='', class='chzn-select')
-        h3 Follow States, Cities, Both, Any:
-        select(multiple='multiple', name='states', data-placeholder='States', class='chzn-select')
-          each KEY in states
-            option(value=KEY) 
-              =KEY
-        select(multiple='multiple', name='cities', data-placeholder='Cities', class='chzn-select')
-          each KEY in cities
-            option(value=KEY) 
-              =KEY
+      form(action='', method='post', id='form')
+        h4 Follow States, Cities, Both, Any:
+        select(multiple='multiple', name='states', data-placeholder='States', id='select1', class='chzn-select')
+          - each state in states
+            option(name=state, value=state) 
+              !{state}
+        br
+        select(multiple='multiple', name='cities', data-placeholder='Cities', id='select2', class='chzn-select')
+          - each city in cities
+            option(name=city, value=city) 
+              !{city}
+      p.note * NOTE: if you select a state and also a city of that state, you will get double results
 
   script(src='/javascripts/live.js')

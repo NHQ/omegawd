@@ -7,7 +7,8 @@ var express = require('express')
 ,		redis = require('redis')
 ,		client = redis.createClient()
 , 	RedisStore = require('connect-redis')(express)
-,	  trackmap = require('../../makeData.js');
+,	  trackmap = require('../../makeData.js')
+,		_ = require('underscore');
 
 var app = module.exports = express.createServer();
 app.listen(8008);
@@ -41,15 +42,31 @@ app.get('/', function(req, res){
 		layout: false,
     title: 'Express',
 		states: Object.keys(trackmap.states),
-		cities: Object.keys(trackmap.tagCity)
+		cities: Object.keys(trackmap.tagCity).sort()
   });
 });
 
 io.sockets.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
-	client.subscribe('occupyoakland:pub')
+	socket.on('subscribe', function(data){
+	console.log(data)
+		var tags = _.map(trackmap.mapTags(data), function(k){
+			return 'occupy'+k+':pub';
+		});
+		console.log(tags)
+		tags.forEach(function(e){client.subscribe(e)})
+	})
+	socket.on('unsubscribe', function(data){
+	console.log(data)
+		var tags = _.map(trackmap.mapTags(data), function(k){
+			return 'occupy'+k+':pub';
+		});
+		console.log(tags)
+		tags.forEach(function(e){client.unsubscribe(e)})
+	})
+	
 	client.on("message", function (channel, message) {
-			socket.emit('news', message)
+			socket.emit('news', message) // can add channel to the emittance
 	});
 });
 
