@@ -1,6 +1,7 @@
+$('.select').chosen();
 var reg = new RegExp(/t.co/i), usr = new RegExp(/@[a-z0-9_]*/i);
 $(document).ready(function(){
-	$.getJSON('/javascripts/USA.json', function(data){		
+	$.getJSON('/javascripts/USA.json', function(data){})		
 })
 
 function append (datum){

@@ -11,15 +11,14 @@ html
     ul#post
     div#sidebar
       form(action='', class='select')
-        select(multiple='multiple')
+        h3 Follow States, Cities, Both, Any:
+        select(multiple='multiple', data-placeholder='States')
           each val, key in states
             option(value=key) 
               =key
-        select(multiple='multiple')
+        select(multiple='multiple', data-placeholder='Cities')
           each val, key in cities
             option(value=key) 
               =key
-            
-  script(type="text/javascript")
-    $(".select").chosen()
+
   script(src='/javascripts/live.js')
