@@ -39,8 +39,7 @@ app.configure('production', function(){
 app.get('/', function(req, res){
   res.render('index', {
 		layout: false,
-    title: 'Express',
-		states: trackMap.states
+    title: 'Express'
   });
 });
 
