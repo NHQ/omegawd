@@ -40,7 +40,7 @@ app.get('/', function(req, res){
   res.render('index', {
 		layout: false,
     title: 'Express',
-		states: trackmap.states,
+		states: Object.keys(trackmap.states),
 		cities: Object.keys(trackmap.tagCity)
   });
 });

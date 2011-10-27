@@ -13,13 +13,13 @@ html
     div#sidebar
       form(action='', class='chzn-select')
         h3 Follow States, Cities, Both, Any:
-        select(multiple='multiple', data-placeholder='States', class='chzn-select')
-          each val, key in states
-            option(value=key) 
-              =key
-        select(multiple='multiple', data-placeholder='Cities', class='chzn-select')
-          each val, key in cities
-            option(value=key) 
-              =key
+        select(multiple='multiple', name='states', data-placeholder='States', class='chzn-select')
+          each KEY in states
+            option(value=KEY) 
+              =KEY
+        select(multiple='multiple', name='cities', data-placeholder='Cities', class='chzn-select')
+          each KEY in cities
+            option(value=KEY) 
+              =KEY
 
   script(src='/javascripts/live.js')
