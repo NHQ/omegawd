@@ -98,7 +98,7 @@ app.get('/occupy', vhost, function(req, res){
 	else if(Object.keys(req.card).length == 1){ //state or city
 		var state = req.card.state;
 		var tags = _.map(trackmap.mapTags(state), function(k){
-			return 'occupy'+k+':links';
+			return 'occupy'+k+':hotlinks';
 		});
 		if (state.toUpperCase().replace(/-/g, " ") == 'NEW YORK'){tags.push('ows:links', 'occupywallstreet:links', 'occupywallst:links')}
 		client.zunionstore(state+':hotlinks', tags.length, tags, function(e,r){
