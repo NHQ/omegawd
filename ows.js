@@ -44,7 +44,7 @@ var twit = new twitter({
 				}, this)
 
 				var spfdr = ['occupy', 'ows', 'occupywallstreet', '99percent'];
-				spfdr.forEach(function(e){
+				this.tracklist.forEach(function(e){
 					subscribe(e, 'tumblr')})
 			},
 			corral: {},

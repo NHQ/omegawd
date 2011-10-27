@@ -87,7 +87,7 @@ app.get('/occupy', vhost, function(req, res){
 	var otags = ['ows:hotlinks', 'occupy:hotlinks', '99:hotlinks', '99percent:hotlinks', 'occupywallstreet:hotlinks','occupywallst:hotlinks'];
 	if(Object.keys(req.card).length == 0){ // homepage
 		client.zunionstore('occupy:live', otags.length, otags, function(e,r){
-			client.zrevrangebyscore('occupy:live', '+inf', 7, function(e,r){
+			client.zrevrangebyscore('occupy:live', '+inf', 11, function(e,r){
 				res.render('links', {
 			    title: 'Occupy Links:',
 					locals: {links: r}
@@ -95,36 +95,21 @@ app.get('/occupy', vhost, function(req, res){
 			})
 		})
 	}
-	else if(Object.keys(req.card).length == 1){ //state
+	else if(Object.keys(req.card).length == 1){ //state or city
 		var state = req.card.state;
 		var tags = _.map(trackmap.mapTags(state), function(k){
 			return 'occupy'+k+':links';
 		});
 		if (state.toUpperCase().replace(/-/g, " ") == 'NEW YORK'){tags.push('ows:links', 'occupywallstreet:links', 'occupywallst:links')}
 		client.zunionstore(state+':links', tags.length, tags, function(e,r){
-			client.zrevrangebyscore(state+':links', '+inf', 3, function(e,r){
+			client.zrevrangebyscore(state+':links', '+inf', 1, function(e,r){
 				res.render('links', {
 			    title: 'Occupy Links:'+state,
 					locals: {links: r} // links going in as json, needs fix, use one link not array
 			  });
 			})
 		})
-	}
-	else if (Object.keys(req.card).length > 1){ // city, state
-		var city = req.card.city;
-		var tags = _.map(trackmap.mapTags(city), function(k){
-			return 'occupy'+k+':links';
-		});
-		client.zunionstore(city+':links', tags.length, tags, function(e,r){
-			client.zrevrangebyscore(city+':links', '+inf', 1, function(e,r){
-				console.log(e||r);
-				res.render('links', {
-			    title: 'Occupy Links:'+city,
-					locals: {links: _.map(r, function(links){return JSON.parse(links)})} // links going in as json, needs fix, use one link not array
-			  });
-		})
-	})
-	
+	}	
 }});
 
 app.listen(80);
