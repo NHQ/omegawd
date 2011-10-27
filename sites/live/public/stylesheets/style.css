@@ -41,6 +41,9 @@ img.thumb {
 /* sidebar */
 
 #sidebar {
+	position:fixed;
+	top:100px;
+	right:33px;
 	float:right;
 	width:300px;
 }
