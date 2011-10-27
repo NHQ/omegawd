@@ -6,7 +6,8 @@
 var express = require('express')
 ,		redis = require('redis')
 ,		client = redis.createClient()
-, 	RedisStore = require('connect-redis')(express);
+, 	RedisStore = require('connect-redis')(express)
+,	  trackmap = require('../../makeData.js');
 
 var app = module.exports = express.createServer();
 app.listen(8008);
@@ -38,7 +39,8 @@ app.configure('production', function(){
 app.get('/', function(req, res){
   res.render('index', {
 		layout: false,
-    title: 'Express'
+    title: 'Express',
+		states: trackMap.states
   });
 });
 
