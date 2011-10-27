@@ -103,6 +103,7 @@ app.get('/occupy', vhost, function(req, res){
 		console.log(tags);
 		if (state.toUpperCase().replace(/-/g, " ") == 'NEW YORK' || state.toUpperCase().replace(/-/g, " ") == 'NY'){tags.push('ows:hotlinks', 'occupywallstreet:hotlinks', 'occupywallst:hotlinks')}
 		client.zunionstore(state+':hotlinks', tags.length, tags, function(e,r){
+			console.log(e,r)
 			client.zrevrangebyscore(state+':hotlinks', '+inf', 1, function(e,r){
 				res.render('links', {
 			    title: 'Occupy Links:'+state,
