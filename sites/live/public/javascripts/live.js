@@ -1,7 +1,17 @@
 var reg = new RegExp(/t.co/i), usr = new RegExp(/@[a-z0-9_]*/i);
-$.getJSON('/javascripts/USA.json', function(data){
-	console.log(data)
+$(document).ready(function(){
+	$.getJSON('/javascripts/USA.json', function(data){
+		var states = data.states, map;
+		map = _.map(states, function(state){
+			map[state] = {}
+			if(_.isEmpty(state.cities)){
+				
+			}
+		})
+	})
+		
 })
+
 function append (datum){
 	var data = JSON.parse(datum);
 	var text = data.txt.split(" ");

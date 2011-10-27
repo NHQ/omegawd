@@ -39,7 +39,9 @@ app.configure('production', function(){
 app.get('/', function(req, res){
   res.render('index', {
 		layout: false,
-    title: 'Express'
+    title: 'Express',
+		states: trackmap.states,
+		cities: Object.keys(trackmap.tagCity)
   });
 });
 
