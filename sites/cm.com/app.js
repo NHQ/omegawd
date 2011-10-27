@@ -86,7 +86,7 @@ app.get('/occupy', vhost, function(req, res){
 	console.log(req.card)
 	var otags = ['ows:hotlinks', 'occupy:hotlinks', '99:hotlinks', '99percent:hotlinks', 'occupywallstreet:hotlinks','occupywallst:hotlinks'];
 	if(Object.keys(req.card).length == 0){ // homepage
-		client.zunionstore('occupy:live', otags.length, otags, function(e,r){
+		client.zunionstore(['occupy:live', otags.length].concat(otags), function(e,r){
 			console.log(e,r)
 			client.zrevrangebyscore('occupy:live', '+inf', 11, function(e,r){
 				res.render('links', {
