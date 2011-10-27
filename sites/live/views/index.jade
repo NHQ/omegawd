@@ -3,6 +3,7 @@ html
   head
     link(href='http://fonts.googleapis.com/css?family=Terminal+Dosis+Light', rel='stylesheet', type='text/css')
     link(href='/stylesheets/style.css', rel='stylesheet')
+    link(rel='stylesheet', href='/stylesheets/chosen.css')
     script(src='/javascripts/jquery-1.6.2.min.js')
     script(type="text/javascript", src="/javascripts/chosen.jquery.js")
     script(src='/socket.io/socket.io.js')
@@ -10,13 +11,13 @@ html
   body
     ul#post
     div#sidebar
-      form(action='', class='select')
+      form(action='', class='chzn-select')
         h3 Follow States, Cities, Both, Any:
-        select(multiple='multiple', data-placeholder='States')
+        select(multiple='multiple', data-placeholder='States', class='chzn-select')
           each val, key in states
             option(value=key) 
               =key
-        select(multiple='multiple', data-placeholder='Cities')
+        select(multiple='multiple', data-placeholder='Cities', class='chzn-select')
           each val, key in cities
             option(value=key) 
               =key
