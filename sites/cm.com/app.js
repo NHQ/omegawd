@@ -109,8 +109,8 @@ app.get('/occupy', vhost, function(req, res){
 			  });
 			})
 		})
-	}	
-}});
+	}
+});
 
 app.listen(80);
 console.log("Express server listening on port %d", app.address().port);
