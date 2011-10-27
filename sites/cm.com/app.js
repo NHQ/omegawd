@@ -100,7 +100,8 @@ app.get('/occupy', vhost, function(req, res){
 		var tags = _.map(trackmap.mapTags(state), function(k){
 			return 'occupy'+k+':hotlinks';
 		});
-		if (state.toUpperCase().replace(/-/g, " ") == 'NEW YORK'){tags.push('ows:links', 'occupywallstreet:links', 'occupywallst:links')}
+		console.log(tags);
+		if (state.toUpperCase().replace(/-/g, " ") == 'NEW YORK' || state.toUpperCase().replace(/-/g, " ") == 'NY'){tags.push('ows:hotlinks', 'occupywallstreet:hotlinks', 'occupywallst:hotlinks')}
 		client.zunionstore(state+':hotlinks', tags.length, tags, function(e,r){
 			client.zrevrangebyscore(state+':hotlinks', '+inf', 1, function(e,r){
 				res.render('links', {

@@ -75,7 +75,8 @@ data.mapTags = function (input){
 		 if(this.states[state].abbreviation == name){
 			st = this.tags(this.states[state], _.isEmpty(this.states[state].cities));
 			}
-		}, this)
+		}, this);
+		console.log(st);
 		return st
 	}
 	
