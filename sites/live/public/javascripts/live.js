@@ -1,5 +1,7 @@
 var reg = new RegExp(/t.co/i), usr = new RegExp(/@[a-z0-9_]*/i);
-
+$.getJSON('/javascripts/USA.json', function(e,r){
+	console.log(e,r)
+})
 function append (datum){
 	var data = JSON.parse(datum);
 	var text = data.txt.split(" ");
