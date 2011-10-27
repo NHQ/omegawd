@@ -9,11 +9,11 @@ html
   body
     ul#post
     div#sidebar
-      form( action='', class='select')
+      form(action='', class='select')
         select(multiple='multiple')
-          each val, key in states
+          - each val, key in states
             option(value=key) key
         select(multiple='multiple')
-          each val, key in cities
+          - each val, key in cities
             option(value=key) key
   script(src='/javascripts/live.js')
