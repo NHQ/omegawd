@@ -48,6 +48,9 @@ app.get('/', function(req, res){
 
 io.sockets.on('connection', function (socket) {
 	console.log(socket);
+	socket.on('disconnect', function(){
+		client.unsubscribe();
+	})
 	socket.on('subscribe', function(data){
 		var tags = _.map(trackmap.mapTags(data), function(k){
 			return 'occupy'+k+':pub';
@@ -64,15 +67,13 @@ io.sockets.on('connection', function (socket) {
 		var tags = _.map(trackmap.mapTags(data), function(k){
 			return 'occupy'+k+':pub';
 		});
-		console.log(tags)
 		tags.forEach(function(e){
 			socket.leave(e.toLowerCase());
 			client.unsubscribe(e.toLowerCase(), redis.print)})
 	});
 	
 	client.on('message', function (channel, message) {
-		console.log(channel)
-			socket.emit('news', message)
+	//		socket.emit('news', message)
 			socket.broadcast.to(channel).emit(message) // can add channel to the emittance
 	});
 	
