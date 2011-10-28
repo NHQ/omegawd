@@ -1,6 +1,6 @@
 
 $(window).load(function(e){
-	var reg = new RegExp(/t.co/i), usr = new RegExp(/@[a-z0-9_]*/i);
+	var reg = new RegExp(/t.co/i), usr = new RegExp(/^@[a-z0-9_]*/i);
 	var following = [];
 	following.states = store.get("states") || [];
 	following.cities = store.get("cities") || []
