@@ -66,6 +66,7 @@ var server = connect();
 						"created": d.items[x].postedTime,
 						"feed": d.status.feed
 					};
+					client.publish('all:pub', JSON.stringify({'source': 'spfdr', 'body': body}));
 					client.publish(tag+':pub', JSON.stringify({'source': 'spfdr', 'body': body}));
 					client.sadd(tag+':superfeedr', d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}})
 					client.zadd(tag+':links', new Date().getTime(), d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}});

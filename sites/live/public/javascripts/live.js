@@ -42,7 +42,6 @@ $(window).load(function(e){
 			// store.set("states", following) broken
 			if(sub.length){
 				socket.emit('subscribe', sub[0])
-				listen('occupy'+sub[0].toLowerCase+':sub')
 			}
 			if(unsub.length){
 				socket.emit('unsubscribe', unsub[0])

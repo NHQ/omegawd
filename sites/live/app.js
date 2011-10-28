@@ -53,33 +53,54 @@ io.sockets.on('connection', function (socket) {
 	})
 	socket.on('subscribe', function(data){
 		console.log(data)
-		var tags = _.map(trackmap.mapTags(data), function(k){
-			return 'occupy'+k+':pub';
-		});
-		
+				
 		if(data.toLowerCase() == 'occupy'){
-			tags = ['occupy:pub', 'ows:pub', '99percent:pub', 'occupywallst:pub', 'occupywallstreet:pub']
+			
+			tags = ['occupy:pub', 'ows:pub', '99percent:pub', 'occupywallst:pub', 'occupywallstreet:pub'];
+	
+			tags.forEach(function(e){
+				socket.join(e.toLowerCase());
+				client.subscribe(e.toLowerCase(), redis.print)
+			})
 		}
 		
-		tags.forEach(function(e){
-			socket.join(e.toLowerCase());
-			client.subscribe(e.toLowerCase(), redis.print)
-		})
+		else {
+			
+			var tags = _.map(trackmap.mapTags(data), function(k){
+				return 'occupy'+k+':pub';
+			});	
+			
+			tags.forEach(function(e){
+				socket.join(e.toLowerCase());
+				client.subscribe(e.toLowerCase(), redis.print)
+			})
+		}
+		
 	});
 
 	socket.on('unsubscribe', function(data){
 		console.log(data);
-		var tags = _.map(trackmap.mapTags(data), function(k){
-			return 'occupy'+k+':pub';
-		});
-		
 		if(data.toLowerCase() == 'occupy'){
+		
 			tags = ['occupy:pub', 'ows:pub', '99percent:pub', 'occupywallst:pub', 'occupywallstreet:pub']
+		
+			tags.forEach(function(e){
+				socket.leave(e.toLowerCase());
+				client.unsubscribe(e.toLowerCase(), redis.print)})
+		
 		}
 		
-		tags.forEach(function(e){
-			socket.leave(e.toLowerCase());
-			client.unsubscribe(e.toLowerCase(), redis.print)})
+		else {
+			
+			var tags = _.map(trackmap.mapTags(data), function(k){
+				return 'occupy'+k+':pub';
+			});
+
+			tags.forEach(function(e){
+				socket.leave(e.toLowerCase());
+				client.unsubscribe(e.toLowerCase(), redis.print)})
+		}
+
 	});
 	
 	client.on('message', function (channel, message) {
