@@ -53,7 +53,7 @@ io.sockets.on('connection', function (socket) {
 	});
 
 	socket.on('subscribe', function(data){
-	console.log('subscribe: '+data)
+
 		var tags = _.map(trackmap.mapTags(data), function(k){
 			return 'occupy'+k+':pub';
 		});

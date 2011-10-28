@@ -1,7 +1,7 @@
 
 $(window).load(function(e){
 	var reg = new RegExp(/t.co/i), usr = new RegExp(/@[a-z0-9_]*/i);
-	var following = {};
+	var following = [];
 	following.states = store.get("states") || [];
 	following.cities = store.get("cities") || []
 	
@@ -66,6 +66,7 @@ $(window).load(function(e){
 // initish
 
 	socket.on('connect', function(){
+		/*
 		if(following.states.length){
 			following.states.forEach(function(e){
 				socket.emit('subscribe', e)
@@ -82,6 +83,7 @@ $(window).load(function(e){
 				
 			})
 		}
+		*/
 	})
 })
 
