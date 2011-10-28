@@ -13,7 +13,7 @@ var express = require('express')
 var app = module.exports = express.createServer();
 app.listen(8008);
 var	io = require('socket.io').listen(app);
-
+io.set('log level', 0);
 // Configuration
 
 app.configure(function(){
@@ -54,8 +54,8 @@ io.sockets.on('connection', function (socket) {
 		});
 		console.log(tags)
 		tags.forEach(function(e){
-			socket.join(e);
-			client.subscribe(e, redis.print)
+			socket.join(e.toLowerCase());
+			client.subscribe(e.toLowerCase(), redis.print)
 		})
 	});
 
@@ -66,11 +66,13 @@ io.sockets.on('connection', function (socket) {
 		});
 		console.log(tags)
 		tags.forEach(function(e){
-			socket.leave(e);
-			client.unsubscribe(e, redis.print)})
+			socket.leave(e.toLowerCase());
+			client.unsubscribe(e.toLowerCase(), redis.print)})
 	});
 	
 	client.on('message', function (channel, message) {
+		console.log(channel)
+			socket.emit('news', message)
 			socket.broadcast.to(channel).emit(message) // can add channel to the emittance
 	});
 	
