@@ -47,18 +47,18 @@ app.get('/', function(req, res){
 });
 
 io.sockets.on('connection', function (socket) {
-
-	socket.on('disconnect', function(){
-		client.unsubscribe();
+	Object.keys(socket).forEach(function(e){
+		consnole.log(socket[e])
 	});
-
 	socket.on('subscribe', function(data){
-
 		var tags = _.map(trackmap.mapTags(data), function(k){
 			return 'occupy'+k+':pub';
 		});
 		console.log(tags)
-		tags.forEach(function(e){client.subscribe(e, redis.print)})
+		tags.forEach(function(e){
+			socket.join(e);
+			client.subscribe(e, redis.print)
+		})
 	});
 
 	socket.on('unsubscribe', function(data){
@@ -67,7 +67,13 @@ io.sockets.on('connection', function (socket) {
 			return 'occupy'+k+':pub';
 		});
 		console.log(tags)
-		tags.forEach(function(e){client.unsubscribe(e, redis.print)})
+		tags.forEach(function(e){
+			socket.leave(e);
+			client.unsubscribe(e, redis.print)})
+	});
+	
+	client.on('message', function (channel, message) {
+			socket.broadcast.to(channel).emit(message) // can add channel to the emittance
 	});
 	
 });
