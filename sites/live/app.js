@@ -51,7 +51,7 @@ io.sockets.on('connection', function (socket) {
 		client.unsubscribe();
 	});
 	socket.on('subscribe', function(data){
-	console.log(data)
+	console.log('subscribe: '+data)
 		var tags = _.map(trackmap.mapTags(data), function(k){
 			return 'occupy'+k+':pub';
 		});

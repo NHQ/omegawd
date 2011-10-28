@@ -42,7 +42,7 @@ $(document).ready(function(e){
 				$('#'+e).selected = true;
 			})
 		}
-		if(following.states.length){
+		if(following.cities.length){
 			following.cities.forEach(function(e){
 				socket.emit('subscribe', e)
 				$('#'+e).selected = true;
