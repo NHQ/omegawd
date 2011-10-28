@@ -73,8 +73,8 @@ io.sockets.on('connection', function (socket) {
 	});
 	
 	client.on('message', function (channel, message) {
-	//		socket.emit('news', message)
-			socket.broadcast.to(channel).emit(message) // can add channel to the emittance
+		io.sockets.in(channel).emit(message)
+//		socket.broadcast.to(channel).emit(message) // can add channel to the emittance
 	});
 	
 });
