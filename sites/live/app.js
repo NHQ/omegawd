@@ -58,16 +58,16 @@ io.sockets.on('connection', function (socket) {
 			return 'occupy'+k+':pub';
 		});
 		console.log(tags)
-		tags.forEach(function(e){client.subscribe(e)})
+		tags.forEach(function(e){client.subscribe(e, redis.print)})
 	});
 
 	socket.on('unsubscribe', function(data){
-	console.log(data)
+
 		var tags = _.map(trackmap.mapTags(data.toString()), function(k){
 			return 'occupy'+k+':pub';
 		});
 		console.log(tags)
-		tags.forEach(function(e){client.unsubscribe(e)})
+		tags.forEach(function(e){client.unsubscribe(e, redis.print)})
 	});
 	
 });
