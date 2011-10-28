@@ -47,9 +47,11 @@ app.get('/', function(req, res){
 });
 
 io.sockets.on('connection', function (socket) {
+
 	socket.on('disconnect', function(){
 		client.unsubscribe();
 	});
+
 	socket.on('subscribe', function(data){
 	console.log('subscribe: '+data)
 		var tags = _.map(trackmap.mapTags(data), function(k){
@@ -57,19 +59,17 @@ io.sockets.on('connection', function (socket) {
 		});
 		console.log(tags)
 		tags.forEach(function(e){client.subscribe(e)})
-	})
+	});
+
 	socket.on('unsubscribe', function(data){
 	console.log(data)
-		var tags = _.map(trackmap.mapTags(data), function(k){
+		var tags = _.map(trackmap.mapTags(data.toString()), function(k){
 			return 'occupy'+k+':pub';
 		});
 		console.log(tags)
 		tags.forEach(function(e){client.unsubscribe(e)})
-	})
-	
-	client.on("message", function (channel, message) {
-			socket.emit('news', message) // can add channel to the emittance
 	});
+	
 });
 
 
