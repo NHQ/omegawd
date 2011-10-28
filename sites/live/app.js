@@ -48,7 +48,7 @@ app.get('/', function(req, res){
 
 io.sockets.on('connection', function (socket) {
 	Object.keys(socket).forEach(function(e){
-		consnole.log(socket[e])
+		console.log(socket[e])
 	});
 	socket.on('subscribe', function(data){
 		var tags = _.map(trackmap.mapTags(data), function(k){
