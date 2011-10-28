@@ -1,5 +1,5 @@
 
-$(document).ready(function(){
+$(document).ready(function(e){
 	function append (datum){
 		var data = JSON.parse(datum);
 		var text = data.txt.split(" ");
@@ -24,40 +24,65 @@ $(document).ready(function(){
 		append(data);
   });
 
+// initish
 
+	var reg = new RegExp(/t.co/i), usr = new RegExp(/@[a-z0-9_]*/i);
 
-	var reg = new RegExp(/t.co/i), usr = new RegExp(/@[a-z0-9_]*/i)
-	,		following;
-
-
-	$('#select1').chosen().change(function(e,r){
-		var selects = _.map($('#form').serializeArray(), function(e){return e.value});
-		var sub = _.compact(_.difference(_.union(selects, following), following))
-		var unsub = _.compact(_.difference(_.union(selects, following), selects))
-		following = selects;
+		// local store load
+	var following = {};
+	following.states = store.get("states") || [];
+	following.cities = store.get("cities") || []
 	
-		if(sub.length){
-			socket.emit('subscribe', sub[0])
-		}
-		if(unsub.length){
-			socket.emit('unsubscribe', unsub[0])
-		}
 	
-	});
-	$('#select2').chosen().change(function(e,r){
-		var selects = _.map($('#form').serializeArray(), function(e){return e.value});
-		var sub = _.compact(_.difference(_.union(selects, following), following))
-		var unsub = _.compact(_.difference(_.union(selects, following), selects))
-		following = selects;
-
-		if(sub.length){
-			socket.emit('subscribe', sub[0])
+	socket.on('connect', function(){
+		selectors();
+		if(following.states.length){
+			following.states.forEach(function(e){
+				socket.emit('subscribe', e)
+				$('#'+e).selected = true;
+			})
 		}
-		if(unsub.length){
-			socket.emit('unsubscribe', unsub[0])
+		if(following.states.length){
+			following.cities.forEach(function(e){
+				socket.emit('subscribe', e)
+				$('#'+e).selected = true;
+			})
 		}
+	})
 
-	});
+
+
+	function selectors (){	
+			$('#states').chosen().change(function(e,r){
+			var selects = _.map($('#form').serializeArray(), function(e){return e.value});
+			var sub = _.compact(_.difference(_.union(selects, following), following))
+			var unsub = _.compact(_.difference(_.union(selects, following), selects))
+			following = selects;
+			store.set("states", following)
+			if(sub.length){
+				socket.emit('subscribe', sub[0])
+			}
+			if(unsub.length){
+				socket.emit('unsubscribe', unsub[0])
+			}
+	
+		});
+		$('#cities').chosen().change(function(e,r){
+			var selects = _.map($('#form').serializeArray(), function(e){return e.value});
+			var sub = _.compact(_.difference(_.union(selects, following), following))
+			var unsub = _.compact(_.difference(_.union(selects, following), selects))
+			following = selects;
+			store.set("cities", following)
+
+			if(sub.length){
+				socket.emit('subscribe', sub[0])
+			}
+			if(unsub.length){
+				socket.emit('unsubscribe', unsub[0])
+			}
+
+		});
+	}selectors();
 })
 
 

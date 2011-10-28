@@ -47,7 +47,9 @@ app.get('/', function(req, res){
 });
 
 io.sockets.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
+	socket.on('disconnect', function(){
+		client.unsubscribe();
+	});
 	socket.on('subscribe', function(data){
 	console.log(data)
 		var tags = _.map(trackmap.mapTags(data), function(k){
