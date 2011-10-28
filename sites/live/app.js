@@ -104,6 +104,7 @@ io.sockets.on('connection', function (socket) {
 	});
 	
 	client.on('message', function (channel, message) {
+		console.log(channel, message);
 		if(channel == 'all:pub'){
 			socket.emit('news', message)
 		}
