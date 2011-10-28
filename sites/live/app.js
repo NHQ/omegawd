@@ -47,9 +47,7 @@ app.get('/', function(req, res){
 });
 
 io.sockets.on('connection', function (socket) {
-	Object.keys(socket).forEach(function(e){
-		console.log(socket[e])
-	});
+	console.log(socket);
 	socket.on('subscribe', function(data){
 		var tags = _.map(trackmap.mapTags(data), function(k){
 			return 'occupy'+k+':pub';
@@ -63,7 +61,7 @@ io.sockets.on('connection', function (socket) {
 
 	socket.on('unsubscribe', function(data){
 
-		var tags = _.map(trackmap.mapTags(data.toString()), function(k){
+		var tags = _.map(trackmap.mapTags(data), function(k){
 			return 'occupy'+k+':pub';
 		});
 		console.log(tags)
