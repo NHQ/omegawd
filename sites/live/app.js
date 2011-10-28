@@ -52,10 +52,15 @@ io.sockets.on('connection', function (socket) {
 		client.unsubscribe();
 	})
 	socket.on('subscribe', function(data){
+		console.log(data)
 		var tags = _.map(trackmap.mapTags(data), function(k){
 			return 'occupy'+k+':pub';
 		});
-		console.log(tags)
+		
+		if(data.toLowerCase() == 'occupy'){
+			tags = ['occupy:pub', 'ows:pub', '99percent:pub', 'occupywallst:pub', 'occupywallstreet:pub']
+		}
+		
 		tags.forEach(function(e){
 			socket.join(e.toLowerCase());
 			client.subscribe(e.toLowerCase(), redis.print)
@@ -63,17 +68,21 @@ io.sockets.on('connection', function (socket) {
 	});
 
 	socket.on('unsubscribe', function(data){
-
+		console.log(data);
 		var tags = _.map(trackmap.mapTags(data), function(k){
 			return 'occupy'+k+':pub';
 		});
+		
+		if(data.toLowerCase() == 'occupy'){
+			tags = ['occupy:pub', 'ows:pub', '99percent:pub', 'occupywallst:pub', 'occupywallstreet:pub']
+		}
+		
 		tags.forEach(function(e){
 			socket.leave(e.toLowerCase());
 			client.unsubscribe(e.toLowerCase(), redis.print)})
 	});
 	
 	client.on('message', function (channel, message) {
-		console.log(channel);
 //			socket.emit('news', message);
 		io.sockets.in(channel).emit('news', message)
 //		socket.broadcast.to(channel).emit('news', message) // can add channel to the emittance

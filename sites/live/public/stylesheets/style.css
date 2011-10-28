@@ -1,18 +1,20 @@
 body {
+	background: url('tiles/polaroid.png') repeat;
   padding: 50px;
   font: 23px 'Terminal Dosis Light', Helvetica, Arial, sans-serif;
+	width:1000px;
 }
 
 a {
   color: #00B7FF;
 }
 
-p.note {
+.note {
 	font-size:16px;
 }
 
 ul#post {
-	float:left;
+	position:absolute;
 	list-style-type:none;
 	width: 600px;
 }
@@ -43,8 +45,9 @@ img.thumb {
 #sidebar {
 	position:fixed;
 	top:100px;
-	right:33px;
 	float:right;
 	width:300px;
 }
-
+input[type=checkbox] {
+	margin-right:2ex;
+}

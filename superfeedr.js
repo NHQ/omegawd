@@ -40,14 +40,14 @@ var server = connect();
 				var dl = d.items.length;
 				var unfurl = d.status.feed
 				for (x = 0; x < dl; ++x){
-					var picture = ""; // do what the green line says!
-					var content = "";	
-					var summary = "";
+					var picture = null; // need stock pic
+					var content = null;	
+					var summary = null;
 					if (d.items[x].standardLinks && d.items[x].standardLinks.picture){
 						picture = d.items[x].standardLinks.picture[0].href
 					};
 					if (d.items[x].content){
-						content = d.items[x].content
+						content = d.items[x].content.slice(0,200)
 					};
 					if (d.items[x].summary){
 						summary = d.items[x].summary
@@ -66,6 +66,7 @@ var server = connect();
 						"created": d.items[x].postedTime,
 						"feed": d.status.feed
 					};
+					client.publish(tag+':pub', JSON.stringify({'source': spfdr, 'body': body}));
 					client.sadd(tag+':superfeedr', d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}})
 					client.zadd(tag+':links', new Date().getTime(), d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}});
 					client.zadd(tag+':superlinks', new Date().getTime(), d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}});

@@ -4,9 +4,10 @@ html
     link(href='http://fonts.googleapis.com/css?family=Terminal+Dosis+Light', rel='stylesheet', type='text/css')
     link(href='/stylesheets/style.css', rel='stylesheet')
     link(rel='stylesheet', href='/stylesheets/chosen.css')
+    script(src='/socket.io/socket.io.js')
     script(src='/javascripts/jquery-1.6.2.min.js')
     script(type="text/javascript", src="/javascripts/chosen.jquery.min.js")
-    script(src='/socket.io/socket.io.js')
+    script(type="text/javascript", src="/javascripts/jquery.isotope.min.js")
     script(src='/javascripts/underscore-min.js')
     script(src='/javascripts/store.js')
   body
@@ -14,15 +15,30 @@ html
     div#sidebar
       form(action='', method='post', id='form')
         h4 Follow States, Cities, Both, Any:
-        select(multiple='multiple', name='states', data-placeholder='States', id='states', class='chzn-select')
+        select(multiple='multiple', name='states', data-placeholder='Click for States', id='states', class='chzn-select')
           - each state in states
             option(id=state, name=state, value=state) 
               !{state}
         br
-        select(multiple='multiple', name='cities', data-placeholder='Cities', id='cities', class='chzn-select')
+        select(multiple='multiple', name='cities', data-placeholder='Click for Cities', id='cities', class='chzn-select')
           - each city in cities
             option(id=city, name=city, value=city) 
               !{city}
-      p.note * NOTE: if you select a state and also a city of that state, you will get double results
-
+        br
+        input(type='checkbox', name='occupy', id='occupy', value='occupy') 
+        label(for='occupy', class='note') Track #OWS + related terms
+        
+      p.note * NOTE: States comprise city feeds. If you select a state and also a city of that state, you will get double results for the city.
+      p Filters
+      input(type='checkbox', name='links', id='links', value='links') 
+      label(for='links', class='note') Updates w/ Links Only
+      br
+      input(type='checkbox', name='twitter', id='twitter', value='twitter') 
+      label(for='twitter', class='note') Twitter
+      br
+      input(type='checkbox', name='web', id='web', value='web') 
+      label(for='web', class='note') Web Updates (not Twitter)
+      br
+      input(type='checkbox', name='tumblr', id='tumblr', value='tumblr')
+      label(for='tumblr', class='note') Tumblr Only
   script(src='/javascripts/live.js')

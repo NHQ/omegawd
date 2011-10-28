@@ -1,6 +1,6 @@
 /* @group Base */
 .chzn-select{
-	width:150px;
+	width:250px;
 }
 .chzn-container {
   font-size: 13px;
@@ -10,7 +10,7 @@
   *display: inline;
 }
 .chzn-container .chzn-drop {
-width:150px;
+width:250px;
   background: #fff;
   border: 1px solid #aaa;
   border-top: 0;
@@ -200,7 +200,7 @@ width:150px;
   width: 8px;
   height: 9px;
   font-size: 1px;
-  background: url(chosen-sprite.png) right top no-repeat;
+  background: url('chosen-sprite.png') right top no-repeat;
 }
 .chzn-container-multi .chzn-choices .search-choice .search-choice-close:hover {
   background-position: right -9px;
