@@ -4,7 +4,9 @@ body {
   font: 23px 'Terminal Dosis Light', Helvetica, Arial, sans-serif;
 	width:1000px;
 }
-
+p {
+	letter-spacing: 1px;
+}
 a {
   color: #00B7FF;
 }
@@ -49,10 +51,23 @@ img.thumb {
 
 #sidebar {
 	position:fixed;
-	top:100px;
+	top:22px;
 	float:right;
 	width:300px;
 }
+#next5, #count{
+	background-color: #0cc;
+	text-align: center;
+	vertical-align:bottom;
+	margin:0 0 5px;
+	padding:10px 0 15px;
+	width:250px;
+	border:1px solid green;
+	border-radius: 7px;
+	visibility:hidden;
+}
+
+
 input[type=checkbox] {
 	margin-right:2ex;
 }
