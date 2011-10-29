@@ -46,7 +46,8 @@ app.get('/', function(req, res){
 });
 
 io.sockets.on('connection', function (socket) {
-	var client = redis.createClient()
+	var client = redis.createClient();
+	socket.subs = [];
 	
 	console.log(socket);
 	
@@ -79,10 +80,10 @@ io.sockets.on('connection', function (socket) {
 			tags.forEach(function(e){
 				var e = e;
 				socket.join(e.toLowerCase());
-				
+				socket.subs.push[e];
 				client.zincrby('syndicate', 1, e, function(err,r){
 					console.log(err,r);
-					if (r == 1)
+					if (r === 1)
 					client.subscribe(e.toLowerCase())
 				})
 			})
