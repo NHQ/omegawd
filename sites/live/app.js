@@ -79,12 +79,15 @@ io.sockets.on('connection', function (socket) {
 			
 			tags.forEach(function(e){
 				var e = e;
+				function join(){
+					client.subscribe(e.toLowerCase())
+				};
 				socket.join(e.toLowerCase());
 				socket.subs.push[e];
 				client.zincrby('syndicate', 1, e, function(err,r){
 					console.log(err,r);
 					if (r === 1)
-					client.subscribe(e.toLowerCase())
+					join()
 				})
 			})
 		}
