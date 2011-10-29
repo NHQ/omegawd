@@ -74,7 +74,6 @@ io.sockets.on('connection', function (socket) {
 			tags.forEach(function(e){
 				socket.join(e.toLowerCase());
 				client.subscribe(e.toLowerCase())
-				console.log('subbed: '+e)
 			})
 		}
 		
@@ -101,14 +100,17 @@ io.sockets.on('connection', function (socket) {
 			tags.forEach(function(e){
 				socket.leave(e.toLowerCase());
 				client.unsubscribe(e.toLowerCase())
-				console.log('unsubbed: '+e)
 			})
 		}
 
 	});
-	
+	client.on('subscribe', function(channel, count){
+		console.log(channel, count)
+	});
+	client.on('unsubscribe', function(channel, count){
+		console.log(channel, count)
+	})
 	client.on('message', function (channel, message) {
-		console.log(channel)
 //			socket.emit('news', message);
 		io.sockets.in(channel).emit('news', message)
 //		socket.broadcast.to(channel).emit('news', message) // can add channel to the emittance
