@@ -86,7 +86,6 @@ io.sockets.on('connection', function (socket) {
 					this.sync.subscribe(e.toLowerCase())
 				}
 				client.zincrby('syndicate', 1, e, function(err,r){
-					console.log(e);
 					console.log(err,r);
 					if (r === 1)
 					join.apply(this,[e])
