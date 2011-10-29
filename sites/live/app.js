@@ -78,7 +78,7 @@ io.sockets.on('connection', function (socket) {
 			var tags = _.map(trackmap.mapTags(data), function(k){
 				return 'occupy'+k+':pub';
 			});	
-			
+			console.log(tags);
 			_.each(tags, function(e){
 				this.subs.push[e];
 				this.join(e.toLowerCase());
