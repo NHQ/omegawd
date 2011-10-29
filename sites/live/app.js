@@ -47,17 +47,17 @@ app.get('/', function(req, res){
 
 io.sockets.on('connection', function (socket) {
 	client = redis.createClient();
+	socket.synd = redis.createClient();
 	socket.subs = [];
-	
-	console.log(socket);
+	console.log(Object.keys(this))
+//	console.log(socket);
 	
 	socket.on('disconnect', function(){
 		socket.synd.unsubscribe();
 	})
 	
 	socket.on('subscribe', function(data){
-		console.log(arguments);
-		/*
+		console.log(this)
 		if(data.toLowerCase() == 'occupy'){
 			
 			tags = ['occupy:pub', 'ows:pub', '99percent:pub', 'occupywallst:pub', 'occupywallstreet:pub'];
@@ -97,7 +97,6 @@ io.sockets.on('connection', function (socket) {
 				})
 			})
 		}
-		*/
 	});
 
 	socket.on('unsubscribe', function(data){
