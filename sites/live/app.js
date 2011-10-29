@@ -46,17 +46,18 @@ app.get('/', function(req, res){
 });
 
 io.sockets.on('connection', function (socket) {
-	var client = redis.createClient();
+	socket.synd = redis.createClient();
 	socket.subs = [];
 	
 	console.log(socket);
 	
 	socket.on('disconnect', function(){
-		client.unsubscribe();
+		socket.synd.unsubscribe();
 	})
 	
 	socket.on('subscribe', function(data){
-		console.log(data)
+		console.log(arguments);
+		/*
 		if(data.toLowerCase() == 'occupy'){
 			
 			tags = ['occupy:pub', 'ows:pub', '99percent:pub', 'occupywallst:pub', 'occupywallstreet:pub'];
@@ -77,6 +78,10 @@ io.sockets.on('connection', function (socket) {
 				return 'occupy'+k+':pub';
 			});	
 			
+			_.each(tags, function(e){
+				
+			},this)
+			
 			tags.forEach(function(e){
 				var e = e;
 					client.subscribe(e.toLowerCase())
@@ -92,7 +97,7 @@ io.sockets.on('connection', function (socket) {
 				})
 			})
 		}
-		
+		*/
 	});
 
 	socket.on('unsubscribe', function(data){
