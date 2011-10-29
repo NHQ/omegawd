@@ -8,7 +8,8 @@ var express = require('express')
 , 	RedisStore = require('connect-redis')(express)
 ,	  trackmap = require('../../makeData.js')
 ,		_ = require('underscore')
-,		client = redis.createClient();
+,		client = redis.createClient()
+,		index = redis.createClient();
 
 var app = module.exports = express.createServer();
 app.listen(8008);
@@ -60,15 +61,17 @@ io.sockets.on('connection', function (socket) {
 			
 			tags = ['occupy:pub', 'ows:pub', '99percent:pub', 'occupywallst:pub', 'occupywallstreet:pub'];
 	
-			tags.forEach(function(e){
-				socket.join(e.toLowerCase());
-				client.zincrby('syndicate', 1, e, function(err,r){
-					console.log(err,r);
-					if (r == 1)
-					client.subscribe(e.toLowerCase())
+			_.each(tags, function(e){
+				this.subs.push[e];
+				this.join(e.toLowerCase());
+				index.zincrby('syndicate', 1, e, function(err,r){
+					console.log(r);
+					if (r == 1){	
+						console.log('subbin');
+						client.subscribe(e);
+					}
 				})
-			})
-		}
+			},this)
 		
 		else {
 			
@@ -79,7 +82,7 @@ io.sockets.on('connection', function (socket) {
 			_.each(tags, function(e){
 				this.subs.push[e];
 				this.join(e.toLowerCase());
-				client.zincrby('syndicate', 1, e, function(err,r){
+				index.zincrby('syndicate', 1, e, function(err,r){
 					console.log(r);
 					if (r == 1){	
 						console.log('subbin');
@@ -96,14 +99,17 @@ io.sockets.on('connection', function (socket) {
 		
 			tags = ['occupy:pub', 'ows:pub', '99percent:pub', 'occupywallst:pub', 'occupywallstreet:pub']
 		
-			tags.forEach(function(e){
-				socket.leave(e.toLowerCase());
-				client.zincrby('syndicate', -1, e, function(err,r){
-					console.log(err,r);
-					if (r == 0)
-					client.unsubscribe(e.toLowerCase())
+			_.each(tags, function(e){
+				this.subs = _.without(this.subs, e);
+				this.leave(e.toLowerCase());
+				index.zincrby('syndicate', -1, e, function(err,r){
+					console.log(r);
+					if (r == 0){	
+						console.log('unsubbin');
+						client.unsubscribe(e);
+					}
 				})
-			})
+			},this)
 		}
 		
 		else {
@@ -112,14 +118,17 @@ io.sockets.on('connection', function (socket) {
 				return 'occupy'+k+':pub';
 			});
 
-			tags.forEach(function(e){
-				socket.leave(e.toLowerCase());
-				client.zincrby('syndicate', -1, e, function(err,r){
-					console.log(err,r);
-					if (r == 0)
-					client.unsubscribe(e.toLowerCase())			
+			_.each(tags, function(e){
+				this.subs = _.without(this.subs, e);
+				this.leave(e.toLowerCase());
+				index.zincrby('syndicate', -1, e, function(err,r){
+					console.log(r);
+					if (r == 0){	
+						console.log('unsubbin');
+						client.unsubscribe(e);
+					}
 				})
-			})
+			},this)
 		}
 
 	});
