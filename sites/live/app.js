@@ -88,6 +88,7 @@ io.sockets.on('connection', function (socket) {
 						console.log('subbin');
 						client.subscribe(e);
 					}
+					else return
 				})
 			},this)
 		}
@@ -139,6 +140,7 @@ io.sockets.on('connection', function (socket) {
 		console.log('unsub', channel, count)
 	})
 	client.on('message', function (channel, message) {
+		console.log(channel, message.slice(0,100))
 //			socket.emit('news', message);
 		io.sockets.in(channel).emit('news', message)
 //		socket.broadcast.to(channel).emit('news', message) // can add channel to the emittance
