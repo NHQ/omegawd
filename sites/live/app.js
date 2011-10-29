@@ -62,7 +62,7 @@ io.sockets.on('connection', function (socket) {
 	
 			tags.forEach(function(e){
 				socket.join(e.toLowerCase());
-				client.zincrby('syndicate' 1, e, function(e,r){
+				client.zincrby('syndicate', 1, e, function(e,r){
 					console.log(e,r);
 					if (r == 1)
 					client.subscribe(e.toLowerCase())
@@ -79,7 +79,7 @@ io.sockets.on('connection', function (socket) {
 			tags.forEach(function(e){
 				socket.join(e.toLowerCase());
 				
-				client.zincrby('syndicate' 1, e, function(e,r){
+				client.zincrby('syndicate', 1, e, function(e,r){
 					console.log(e,r);
 					if (r == 1)
 					client.subscribe(e.toLowerCase())
@@ -97,7 +97,7 @@ io.sockets.on('connection', function (socket) {
 		
 			tags.forEach(function(e){
 				socket.leave(e.toLowerCase());
-				client.zincrby('syndicate' -1, e, function(e,r){
+				client.zincrby('syndicate', -1, e, function(e,r){
 					console.log(e,r);
 					if (r == 0)
 					client.unsubscribe(e.toLowerCase())
@@ -112,7 +112,7 @@ io.sockets.on('connection', function (socket) {
 
 			tags.forEach(function(e){
 				socket.leave(e.toLowerCase());
-				client.zincrby('syndicate' -1, e, function(e,r){
+				client.zincrby('syndicate', -1, e, function(e,r){
 					console.log(e,r);
 					if (r == 0)
 					client.unsubscribe(e.toLowerCase())			})
