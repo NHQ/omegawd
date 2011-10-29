@@ -81,7 +81,7 @@ io.sockets.on('connection', function (socket) {
 				this.join(e.toLowerCase());
 				client.zincrby('syndicate', 1, e, function(err,r){
 					console.log(r);
-					if (r === 1){	
+					if (r == 1){	
 						console.log('subbin');
 						client.subscribe(e);
 					}
