@@ -82,7 +82,7 @@ $(window).load(function(e){
 	function spfdr (data){
 		var txt = data.summary ? data.summary : data.content;
 		var pic = data.pic;
-		var link = data.link;
+		var link = function(){if (data.link.length < 110){return data.link} else return data.link.slice(0,110)+' ...'};
 		var source = link.slice(0,link.indexOf())
 		var html = 	'<li class="post"><h3 class="title">'+data.title+'</h3>Link: <a href='+link+' target="_blank" class="link">'+link.slice(0,51)+' ...'+'</a></li>';
 		$('ul#post').prepend(html);
