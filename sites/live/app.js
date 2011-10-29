@@ -80,10 +80,11 @@ io.sockets.on('connection', function (socket) {
 				this.subs.push[e];
 				this.join(e.toLowerCase());
 				client.zincrby('syndicate', 1, e, function(err,r){
+					console.log(e)
+					var z = e;
 					console.log(err,r);
 					if (r === 1){
-						console.log(e)
-						client.subscribe(e)
+						client.subscribe(z)
 					}
 				})
 			},this)
