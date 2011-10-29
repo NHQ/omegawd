@@ -79,6 +79,7 @@ io.sockets.on('connection', function (socket) {
 			
 			tags.forEach(function(e){
 				var e = e;
+					client.subscribe(e.toLowerCase())
 				function join(){
 					client.subscribe(e.toLowerCase())
 				};
