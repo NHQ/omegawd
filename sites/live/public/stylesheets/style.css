@@ -1,6 +1,6 @@
 body {
-	background: url('tiles/polaroid.png') repeat;
-  padding: 50px;
+
+	background:url('tiles/fancy_deboss.png') repeat;
   font: 23px 'Terminal Dosis Light', Helvetica, Arial, sans-serif;
 	width:1000px;
 }
@@ -14,14 +14,19 @@ a {
 }
 
 ul#post {
+	background-color: rgba(100,100,100,.05);
 	position:absolute;
 	list-style-type:none;
 	width: 600px;
+	border-radius: 5px;
+	padding:0;
+	
 }
 li.post {
 	border-bottom: 1px solid #ccc;
-	margin:5px 0;
+	margin:5px 15px;
 	height:150px;
+	padding:0;
 }
 img.thumb {
 	display:inline;

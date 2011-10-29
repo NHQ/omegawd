@@ -79,45 +79,47 @@ $(window).load(function(e){
 
 		});
 	}selectors();
-	function scrub (datum){
-		var data = JSON.parse(datum);
-		if(data.source == 'twtr'){
-			twtr(data.body)
-		}
-		if(data.souce == 'spfdr'){
-			spfdr(data.body)
-		}
-	}
 	function spfdr (data){
 		var txt = data.summary ? data.summary : data.content;
 		var pic = data.pic;
 		var link = data.link;
-		var html = 	'<li class="post"><div class="img"><a href='+link+'><img class="thumb" src='+pic+'></a></div></div class="txt"><p>'+txt+'</p></div><br /><a href='+link+' class="linkTitle">'+data.title+'</a></li>';
+		var source = link.slice(0,link.indexOf())
+		var html = 	'<li class="post"><h3 class="title">'+data.title+'</h3>Link: <a href='+link+' target="_blank" class="link">'+link.slice(0,51)+' ...'+'</a></li>';
 		$('ul#post').prepend(html);
+
 	}
+	
 	function twtr (data){
 		var text = data.txt.split(" ");
 		var txt = _.map(text, function(e){
 				if(reg.test(e)){
-					return '<a href='+e+'>'+e+'</a>'
+					return '<a href='+e+' target="_blank">'+e+'</a>'
 				} 
 				else if(usr.test(e)){
-					return '<a href=http://twitter.com/#!/'+e.slice(1)+'>'+e+'</a>'
+					return '<a href=http://twitter.com/#!/'+e.slice(1)+' target="_blank">'+e+'</a>'
 				}
 				else return e
 			}).join(" ")
 			var cut = data.pic.indexOf("_normal");
 			var pic = data.pic.slice(0, cut)+data.pic.slice(cut+7);
-		var html = 	'<li class="post"><div class="img"><a href='+data.home+'><img class="thumb" src='+pic+'></a></div></div class="txt"><p>'+txt+'</p></div></li>';
+		var html = 	'<li class="post"><div class="img"><a href='+data.home+' target="_blank"><img class="thumb" src='+pic+'></a></div></div class="txt"><p>'+txt+'</p></div></li>';
 				$('ul#post').prepend(html);
 	}
-
+	function scrub (datum){
+		
+		var data = JSON.parse(datum);
+		if(data.source === 'twtr'){
+			twtr(data.body)
+		}
+		else if(data.source === 'spfdr'){
+			spfdr(data.body)
+		}
+	}
 //	var socket = io.connect('http://127.0.0.1:8008');
 
 	var socket = io.connect('http://74.207.246.247:8008');
 
   socket.on('news', function (data) {
-	console.log(JSON.parse(data));
 		scrub(data);
   });
 
