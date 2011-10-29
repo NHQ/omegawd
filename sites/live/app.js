@@ -102,6 +102,7 @@ io.sockets.on('connection', function (socket) {
 					if (r == 0)
 					client.unsubscribe(e.toLowerCase())
 				})
+			})
 		}
 		
 		else {
@@ -115,7 +116,9 @@ io.sockets.on('connection', function (socket) {
 				client.zincrby('syndicate', -1, e, function(e,r){
 					console.log(e,r);
 					if (r == 0)
-					client.unsubscribe(e.toLowerCase())			})
+					client.unsubscribe(e.toLowerCase())			
+				})
+			})
 		}
 
 	});
