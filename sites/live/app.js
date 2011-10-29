@@ -46,7 +46,7 @@ app.get('/', function(req, res){
 });
 
 io.sockets.on('connection', function (socket) {
-	socket.synd = redis.createClient();
+	client = redis.createClient();
 	socket.subs = [];
 	
 	console.log(socket);
