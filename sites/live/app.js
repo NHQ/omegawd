@@ -80,8 +80,10 @@ io.sockets.on('connection', function (socket) {
 				this.subs.push[e];
 				this.join(e.toLowerCase());
 				client.zincrby('syndicate', 1, e, function(err,r){
+					console.log(r);
 					if (r === 1){	
-						client.subscribe(e)
+						console.log('subbin');
+						client.subscribe(e);
 					}
 				})
 			},this)
@@ -122,10 +124,10 @@ io.sockets.on('connection', function (socket) {
 
 	});
 	client.on('subscribe', function(channel, count){
-		console.log(channel, count)
+		console.log('sub', channel, count)
 	});
 	client.on('unsubscribe', function(channel, count){
-		console.log(channel, count)
+		console.log('unsub', channel, count)
 	})
 	client.on('message', function (channel, message) {
 //			socket.emit('news', message);
