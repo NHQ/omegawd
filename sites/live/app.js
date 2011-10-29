@@ -73,7 +73,8 @@ io.sockets.on('connection', function (socket) {
 			
 			tags.forEach(function(e){
 				socket.join(e.toLowerCase());
-				client.subscribe(e.toLowerCase(), function(){console.log('subbed: '+e)})
+				client.subscribe(e.toLowerCase())
+				console.log('subbed: '+e)
 			})
 		}
 		
@@ -99,7 +100,9 @@ io.sockets.on('connection', function (socket) {
 
 			tags.forEach(function(e){
 				socket.leave(e.toLowerCase());
-				client.unsubscribe(e.toLowerCase(), function(){console.log('unsubbed: '+e)})})
+				client.unsubscribe(e.toLowerCase())
+				console.log('unsubbed: '+e)
+			})
 		}
 
 	});
