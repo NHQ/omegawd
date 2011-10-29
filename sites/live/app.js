@@ -7,7 +7,8 @@ var express = require('express')
 ,		redis = require('redis')
 , 	RedisStore = require('connect-redis')(express)
 ,	  trackmap = require('../../makeData.js')
-,		_ = require('underscore');
+,		_ = require('underscore')
+,		client = redis.createClient();
 
 var app = module.exports = express.createServer();
 app.listen(8008);
@@ -46,7 +47,6 @@ app.get('/', function(req, res){
 });
 
 io.sockets.on('connection', function (socket) {
-	client = redis.createClient();
 	socket.synd = redis.createClient();
 	socket.subs = [];
 	console.log(Object.keys(this))
@@ -79,23 +79,17 @@ io.sockets.on('connection', function (socket) {
 			});	
 			
 			_.each(tags, function(e){
-				
-			},this)
-			
-			tags.forEach(function(e){
-				var e = e;
-					client.subscribe(e.toLowerCase())
+				this.subs.push[e];
+				this.join(e.toLowerCase());
 				function join(){
-					client.subscribe(e.toLowerCase())
-				};
-				socket.join(e.toLowerCase());
-				socket.subs.push[e];
+					this.sync.subscribe(e.toLowerCase())
+				}
 				client.zincrby('syndicate', 1, e, function(err,r){
 					console.log(err,r);
 					if (r === 1)
-					join()
+					join.apply(this)
 				})
-			})
+			},this)
 		}
 	});
 
