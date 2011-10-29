@@ -81,13 +81,14 @@ io.sockets.on('connection', function (socket) {
 			_.each(tags, function(e){
 				this.subs.push[e];
 				this.join(e.toLowerCase());
-				function join(){
+				function join(e){
 					this.sync.subscribe(e.toLowerCase())
 				}
 				client.zincrby('syndicate', 1, e, function(err,r){
+					console.log(e);
 					console.log(err,r);
 					if (r === 1)
-					join.apply(this)
+					join.apply(this,[e])
 				})
 			},this)
 		}
