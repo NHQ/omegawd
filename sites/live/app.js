@@ -72,7 +72,7 @@ io.sockets.on('connection', function (socket) {
 					}
 				})
 			},this)
-		
+		}
 		else {
 			
 			var tags = _.map(trackmap.mapTags(data), function(k){
