@@ -49,7 +49,6 @@ app.get('/', function(req, res){
 io.sockets.on('connection', function (socket) {
 	socket.synd = redis.createClient();
 	socket.subs = [];
-	console.log(Object.keys(this))
 //	console.log(socket);
 	
 	socket.on('disconnect', function(){
@@ -57,7 +56,6 @@ io.sockets.on('connection', function (socket) {
 	})
 	
 	socket.on('subscribe', function(data){
-		console.log(this)
 		if(data.toLowerCase() == 'occupy'){
 			
 			tags = ['occupy:pub', 'ows:pub', '99percent:pub', 'occupywallst:pub', 'occupywallstreet:pub'];
@@ -81,14 +79,12 @@ io.sockets.on('connection', function (socket) {
 			_.each(tags, function(e){
 				this.subs.push[e];
 				this.join(e.toLowerCase());
-				function join(e){
-					console.log(e)
-					this.sync.subscribe(e.toLowerCase())
-				}
 				client.zincrby('syndicate', 1, e, function(err,r){
 					console.log(err,r);
-					if (r === 1)
-					join.apply(this,[e])
+					if (r === 1){
+						console.log(e)
+						client.subscribe(e)
+					}
 				})
 			},this)
 		}
