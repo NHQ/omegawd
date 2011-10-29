@@ -5,7 +5,6 @@
 
 var express = require('express')
 ,		redis = require('redis')
-,		client = redis.createClient()
 , 	RedisStore = require('connect-redis')(express)
 ,	  trackmap = require('../../makeData.js')
 ,		_ = require('underscore');
@@ -47,6 +46,8 @@ app.get('/', function(req, res){
 });
 
 io.sockets.on('connection', function (socket) {
+	var client = redis.createClient()
+	
 	console.log(socket);
 	
 	socket.on('disconnect', function(){
