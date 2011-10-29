@@ -77,6 +77,7 @@ io.sockets.on('connection', function (socket) {
 			});	
 			
 			tags.forEach(function(e){
+				var e = e;
 				socket.join(e.toLowerCase());
 				
 				client.zincrby('syndicate', 1, e, function(err,r){
