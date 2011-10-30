@@ -16,7 +16,7 @@ html
       p#next5 Display next 5
       p#count Display All New 
       form(action='', method='post', id='form')
-        h4 Follow States, Cities, Both, Any:
+        p(class='note', style='font-weight:900') Follow States, Cities, Both, Any:
         select(multiple='multiple', name='states', data-placeholder='Click for States', id='states', class='chzn-select')
           - each state in states
             option(id=state, name=state, value=state) 

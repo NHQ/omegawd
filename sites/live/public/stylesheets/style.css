@@ -30,11 +30,14 @@ li.post {
 	height:150px;
 	padding:0;
 }
+li.post p {
+}
 img.thumb {
 	display:inline;
-	max-width:100px;
+	width:100px;
 	max-height:140px;
 	margin-bottom:10px;
+	overflow:hidden;
 }
 .img {
 	margin-right:10px;
@@ -46,7 +49,9 @@ img.thumb {
 	margin-left:110px;
 	border:2px dotted green;
 }
-
+.redness {
+	color: red;
+}
 /* sidebar */
 
 #sidebar {
@@ -66,7 +71,9 @@ img.thumb {
 	border-radius: 7px;
 	visibility:hidden;
 }
-
+#next5:hover, #count:hover {
+	cursor: pointer;
+}
 
 input[type=checkbox] {
 	margin-right:2ex;

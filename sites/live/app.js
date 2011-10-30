@@ -53,7 +53,16 @@ io.sockets.on('connection', function (socket) {
 //	console.log(socket);
 	
 	socket.on('disconnect', function(){
-		socket.synd.unsubscribe();
+		_.each(socket.subs, function(e){
+			this.leave(e.toLowerCase());
+			index.zincrby('syndicate', -1, e, function(err,r){
+				console.log(r);
+				if (r == 0){	
+					console.log('unsubbin');
+					client.unsubscribe(e);
+				}
+			})
+		}, this)
 	})
 	
 	socket.on('subscribe', function(data){
