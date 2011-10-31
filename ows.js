@@ -29,7 +29,7 @@ var twit = new twitter({
 			mapper: {},
 			wipe: [],
 			data : require('./makeData.js'),
-			tracklist: ['ows', 'occupy', '99', '99percent', 'occupywallstreet','occupywallst', 'occupydc'],
+			tracklist: ['ows', 'occupy', '99', '99percent', 'occupywallstreet','occupywallst', 'occupydc', 'generalstrike'],
 			init: function(track){
 				_.each(this.tracklist, function(tag){
 					this.mapper[tag] = {},

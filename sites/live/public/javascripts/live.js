@@ -1,20 +1,19 @@
 $('#sidebar').hide();
-$('#post').hide();
+$('#posts').hide();
 $(window).load(function(e){
 	var winx = window.innerWidth
 	,		winy = window.innerHeight;
-	var $container = $('#post');
 	$('#sidebar').css({
 		'right': ((winx-$('body').width())/2)
 	}).show(200)
-	$('#post').css({
+	$('#posts').css({
 		'left': ((winx-$('body').width())/2)
 	}).show(200)
 	tuner.init();
 })
 var tuner = Object.create(null);
 tuner = {
-	init: function(){
+	init: function(){		
 		this.select();
 		this.reg = new RegExp(/t.co/i);
 		this.usr = new RegExp(/^@[a-z0-9_]*/i);
@@ -31,8 +30,20 @@ tuner = {
 		this.socket.on('news', function(data){tuner.scrub(data)});
 	},
 	select: function(){
+		$('#posts').isotope({
+			itemSelector : '.post',
+			layoutMode : 'straightDown',
+			cellsByRow : {
+				rowWidth: 600,
+			}
+		});
+		$('input#links').change(function(){
+			console.log('click');
+			$('#posts').isotope({ filter: '.links' });
+			return false
+		});
 			$('#next5').click(function(){
-				$('post').scrollTop();
+				$('#posts').scrollTop();
 				tuner.display(5);
 				this.style.visibility = 'hidden';  
 				tuner.corral();
@@ -107,7 +118,7 @@ tuner = {
 				} 
 				else if(this.usr.test(e)){
 					e = e.slice(0,e.indexOf(':'))
-					return '<a href=http://twitter.com/#!/'+e.slice(1)+' target="_blank">'+e+'</a>'
+					return '<a class="user" href=http://twitter.com/#!/'+e.slice(1)+' target="_blank">'+e+'</a>'
 				}
 				else if(this.regtag.test(e.toLowerCase())) {
 					return '<span class="redness"><i>'+e.toUpperCase()+'</i></span>'
@@ -116,8 +127,8 @@ tuner = {
 			}, this).join(" ")
 			var cut = data.pic.indexOf("_normal");
 			var pic = data.pic.slice(0, cut)+data.pic.slice(cut+7);
-			var html = 	'<li class="post '+links+'"><div class="picFrame"><a href='+data.home+' target="_blank">';
-					html += '<img class="thumb" src='+pic+'></a></div></div class="txt"><p>'+txt+'</p></div></li>';
+			var html = 	'<div class="post '+links+'"><div class="picFrame"><a href='+data.home+' target="_blank">';
+					html += '<img class="thumb" src='+pic+'></a></div><div class="txt"><p>'+txt+'</p></div></div>';
 			this.corral(html)
 			//$('ul#post').prepend(html);
 	},
@@ -142,7 +153,7 @@ tuner = {
 		var display = this.pen.splice(this.pen.length - count, this.pen.length);
 		console.log(display.length)
 		display.forEach(function(html){
-			$('ul#post').prepend(html);
+			$('#posts').isotope('insert', $(html));
 		})
 		$('body').scrollTop(0)
 	},
