@@ -1,15 +1,15 @@
+$('#sidebar').hide();
+$('#post').hide();
 $(window).load(function(e){
 	var winx = window.innerWidth
 	,		winy = window.innerHeight;
 	var $container = $('#post');
-	
-	
 	$('#sidebar').css({
 		'right': ((winx-$('body').width())/2)
-	})
+	}).show(200)
 	$('#post').css({
 		'left': ((winx-$('body').width())/2)
-	})
+	}).show(200)
 	tuner.init();
 })
 var tuner = Object.create(null);
@@ -35,13 +35,13 @@ tuner = {
 				$('post').scrollTop();
 				tuner.display(5);
 				this.style.visibility = 'hidden';  
-				tuner.corral()
+				tuner.corral();
 			});
 			$('#count').click(function(){
 				tuner.display(tuner.pen.length);
 				this.style.visibility = 'hidden';
 				$('#next5').css('visibility', 'hidden')
-				tuner.corral()
+				tuner.corral();
 			});
 			$('#states').chosen().change(function(e,r){
 				var selects = _.map($('#form').serializeArray(), function(e){return e.value});
@@ -103,20 +103,20 @@ tuner = {
 		var text = data.txt.split(" ");
 		var txt = _.map(text, function(e){
 				if(this.reg.test(e)){
-					return '<a href='+e+' target="_blank">'+e+'</a>'
+					return '<a class="link" href='+e+' target="_blank">'+e+'</a>'
 				} 
 				else if(this.usr.test(e)){
 					e = e.slice(0,e.indexOf(':'))
 					return '<a href=http://twitter.com/#!/'+e.slice(1)+' target="_blank">'+e+'</a>'
 				}
 				else if(this.regtag.test(e.toLowerCase())) {
-					return '<span class="redness">'+e+'</span>'
+					return '<span class="redness"><i>'+e.toUpperCase()+'</i></span>'
 				}
 				else return e
 			}, this).join(" ")
 			var cut = data.pic.indexOf("_normal");
 			var pic = data.pic.slice(0, cut)+data.pic.slice(cut+7);
-			var html = 	'<li class="post "'+links+'><div class="img"><a href='+data.home+' target="_blank">';
+			var html = 	'<li class="post '+links+'"><div class="picFrame"><a href='+data.home+' target="_blank">';
 					html += '<img class="thumb" src='+pic+'></a></div></div class="txt"><p>'+txt+'</p></div></li>';
 			this.corral(html)
 			//$('ul#post').prepend(html);
@@ -144,6 +144,7 @@ tuner = {
 		display.forEach(function(html){
 			$('ul#post').prepend(html);
 		})
+		$('body').scrollTop(0)
 	},
 	corral: function(html){
 		if(html){

@@ -55,6 +55,7 @@ var server = connect();
 					var title = d.items[x].title.replace(/&nbsp;/g, " ");
 					console.log(d.items[x].permalinkUrl);
 					var body = {
+						'_id': Math.random().toString().slice(2), 
 						"title": title,
 						"content": content,
 						"summary": summary,
