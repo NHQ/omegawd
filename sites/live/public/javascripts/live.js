@@ -37,7 +37,7 @@ tuner = {
 				rowWidth: 600,
 			}
 		});
-		$('input#links').change(function(){
+		$('#links').change(function(){
 			console.log('click');
 			$('#posts').isotope({ filter: '.links' });
 			return false
@@ -153,7 +153,7 @@ tuner = {
 		var display = this.pen.splice(this.pen.length - count, this.pen.length);
 		console.log(display.length)
 		display.forEach(function(html){
-			$('#posts').isotope('insert', $(html));
+			$('#posts').prepend($(html));
 		})
 		$('body').scrollTop(0)
 	},
