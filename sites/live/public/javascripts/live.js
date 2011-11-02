@@ -35,7 +35,12 @@ tuner = {
 			layoutMode : 'straightDown',
 			cellsByRow : {
 				rowWidth: 600,
-			}
+			},
+			animationOptions: {
+			     duration: 0,
+			     easing: 'linear',
+			     queue: false
+			   }
 		});
 		$('#links').change(function(){
 			console.log('click');
