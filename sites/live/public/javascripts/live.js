@@ -36,16 +36,17 @@ tuner = {
 			cellsByRow : {
 				rowWidth: 600,
 			},
+			animationEngine: 'css',
 			animationOptions: {
 			     duration: 0,
-			     easing: 'linear',
 			     queue: false
 			   }
 		});
 		$('#links').change(function(){
-			console.log('click');
-			$('#posts').isotope({ filter: '.links' });
-			return false
+			if(this.checked){
+				$('#posts').isotope({ filter: '.links' });
+			}
+			else $('#posts').isotope({ filter: '' });
 		});
 			$('#next5').click(function(){
 				$('#posts').scrollTop();
