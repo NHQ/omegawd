@@ -153,7 +153,8 @@ tuner = {
 		var display = this.pen.splice(this.pen.length - count, this.pen.length);
 		console.log(display.length)
 		display.forEach(function(html){
-			$('#posts').prepend($(html));
+			$('#posts').prepend($(html))
+			.isotope( 'reloadItems' ).isotope({ sortBy: 'original-order' });			
 		})
 		$('body').scrollTop(0)
 	},
