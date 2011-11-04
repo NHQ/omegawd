@@ -52,6 +52,7 @@ var twit = new twitter({
 				var parsed = JSON.parse(data);
 				if(parsed.entities.hashtags.length){
 					var post = {
+					      'retweeted': parsed.retweeted ? parsed.retweet_count : false,
 								'_id' : parsed.id_str,
 								'txt': parsed.text, 
 								'tags': parsed.entities.hashtags, 
@@ -59,6 +60,7 @@ var twit = new twitter({
 								'pic': parsed.user.profile_image_url || parsed.user.profile_image_url_https, 
 								'time': parsed.created_at,
 								'author': parsed.user.name,
+								'location': parsed.user.location ? parsed.user.location : false,
 								'home': 'http://twitter.com/'+parsed.user.screen_name,
 								'score': new Date().getTime() 
 					};
