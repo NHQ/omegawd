@@ -9,7 +9,8 @@ var express = require('express')
 ,  trackmap = require('../../makeData.js')
 ,  _ = require('underscore')
 ,  fs = require('fs')
-,  async = require('async');
+,  async = require('async')
+,	live = require('../live/app');
 
 var client = redis.createClient();
 
@@ -67,8 +68,11 @@ app.configure('production', function(){
 		}
 	}
 
-app.get('/', function(req,res){
+app.get('/', vhost, function(req,res){
 	res.redirect('/occupy')
+})
+app.get('/occupy/live', vhost, function(req,res){
+	live(req, res)
 })
 
 app.get('/superfeedr/:tag', function(req,res){

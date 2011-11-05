@@ -10,7 +10,7 @@ var express = require('express')
 ,		_ = require('underscore');
 
 var app = module.exports = express.createServer();
-app.listen(8008);
+//app.listen(8008);
 var	io = require('socket.io').listen(app);
 io.set('log level', 0);
 // Configuration
