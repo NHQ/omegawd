@@ -20,7 +20,7 @@ tuner = {
 		this.regtag = new RegExp(/^#[a-z0-9]*/i)
 		this.following = [];
 		this.noRepeat = [];
-		this.socket = io.connect('http://74.207.246.247:8008');
+		this.socket = io.connect('http://citizenmission.com/');
 		this.socket.on('reconnect', function(){
 			_.each(tuner.following, function(e){
 				tuner.socket.emit('subscribe', e)
