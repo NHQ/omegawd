@@ -10,11 +10,18 @@ var express = require('express')
 ,  _ = require('underscore')
 ,  fs = require('fs')
 ,  async = require('async')
-,	live = require('../live/app');
+,	 live = require('../live/app')
+,	 RedisStore = require('connect-redis')(express)
+;
 
 var client = redis.createClient();
 
 var app = module.exports = express.createServer();
+app.listen(80);
+console.log("Express server listening on port %d", app.address().port);
+var	io = require('socket.io').listen(app);
+io.set('log level', 0);
+
 
 // Configuration
 
@@ -72,7 +79,12 @@ app.get('/', vhost, function(req,res){
 	res.redirect('/occupy')
 })
 app.get('/occupy/live', vhost, function(req,res){
-	live(req, res)
+	res.render('live', {
+		layout: false,
+    title: 'Express',
+		states: Object.keys(trackmap.states),
+		cities: Object.keys(trackmap.tagCity).sort()
+  });
 })
 
 app.get('/superfeedr/:tag', function(req,res){
@@ -119,5 +131,116 @@ app.get('/occupy', vhost, function(req, res){
 	}
 });
 
-app.listen(80);
-console.log("Express server listening on port %d", app.address().port);
+
+io.sockets.on('connection', function (socket) {
+	var	client = redis.createClient()
+	,		index = redis.createClient();
+	socket.synd = redis.createClient();
+	socket.subs = [];
+	console.log(socket);
+	
+	socket.on('disconnect', function(){
+		_.each(socket.subs, function(e){
+			this.leave(e.toLowerCase());
+			index.zincrby('syndicate', -1, e, function(err,r){
+				console.log(r);
+				if (r == 0){	
+					console.log('unsubbin');
+					client.unsubscribe(e);
+				}
+			})
+		}, this)
+	})
+	
+	socket.on('subscribe', function(data){
+		if(data.toLowerCase() == 'occupy'){
+			
+			tags = ['occupy:pub', 'ows:pub', '99percent:pub', 'occupywallst:pub', 'occupywallstreet:pub'];
+	
+			_.each(tags, function(e){
+				this.subs.push[e];
+				this.join(e.toLowerCase());
+				index.zincrby('syndicate', 1, e, function(err,r){
+					console.log(r);
+					if (r == 1){	
+						console.log('subbin');
+						client.subscribe(e);
+					}
+				})
+			},this)
+		}
+		else {
+			
+			var tags = _.map(trackmap.mapTags(data), function(k){
+				return 'occupy'+k+':pub';
+			});	
+			
+			_.each(tags, function(e){
+				this.subs.push[e];
+				this.join(e.toLowerCase());
+				index.zincrby('syndicate', 1, e, function(err,r){
+					console.log(r);
+					if (r == 1){	
+						console.log('subbin');
+						client.subscribe(e);
+					}
+				})
+			},this)
+		}
+	});
+
+	socket.on('unsubscribe', function(data){
+		console.log(data);
+		if(data.toLowerCase() == 'occupy'){
+		
+			tags = ['occupy:pub', 'ows:pub', '99percent:pub', 'occupywallst:pub', 'occupywallstreet:pub']
+		
+			_.each(tags, function(e){
+				this.subs = _.without(this.subs, e);
+				this.leave(e.toLowerCase());
+				index.zincrby('syndicate', -1, e, function(err,r){
+					console.log(r);
+					if (r == 0){	
+						console.log('unsubbin');
+						client.unsubscribe(e);
+					}
+				})
+			},this)
+		}
+		
+		else {
+			
+			var tags = _.map(trackmap.mapTags(data), function(k){
+				return 'occupy'+k+':pub';
+			});
+
+			_.each(tags, function(e){
+				this.subs = _.without(this.subs, e);
+				this.leave(e.toLowerCase());
+				index.zincrby('syndicate', -1, e, function(err,r){
+					console.log(r);
+					if (r == 0){	
+						console.log('unsubbin');
+						client.unsubscribe(e);
+					}
+				})
+			},this)
+		}
+
+	});
+	client.on('subscribe', function(channel, count){
+		console.log('sub', channel, count)
+	});
+	client.on('unsubscribe', function(channel, count){
+		console.log('unsub', channel, count)
+	})
+	client.on('message', function (channel, message) {
+		console.log(channel, message.slice(0,100))
+//			socket.emit('news', message);
+		io.sockets.in(channel).emit('news', message)
+//		socket.broadcast.to(channel).emit('news', message) // can add channel to the emittance
+	});
+	
+});
+
+

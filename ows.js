@@ -104,7 +104,7 @@ var twit = new twitter({
 								client.zadd(tag+':links', data.score, perma, function(e,r){
 									if(e)console.log(e)
 								});
-								client.hmset(perma, data, function(e,r){
+								client.hmset(data._id, data, function(e,r){
 									if(e)console.log(e)
 								});
 						})
