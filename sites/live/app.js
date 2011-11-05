@@ -50,7 +50,7 @@ io.sockets.on('connection', function (socket) {
 	,		index = redis.createClient();
 	socket.synd = redis.createClient();
 	socket.subs = [];
-//	console.log(socket);
+	console.log(socket);
 	
 	socket.on('disconnect', function(){
 		_.each(socket.subs, function(e){
