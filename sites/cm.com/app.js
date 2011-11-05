@@ -48,7 +48,8 @@ app.configure('production', function(){
 // Routes
 
 	function vhost (req,res,next){
-		console.log(req.headers);
+		console.log(req.connection.remoteAddress);
+		console.log(req.connection);
 		req.card = {};
 		var host = req.headers.host.split(".")
 		switch (host.length)
