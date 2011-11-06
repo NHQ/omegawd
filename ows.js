@@ -53,7 +53,7 @@ var twit = new twitter({
 				var parsed = JSON.parse(data);
 				if(parsed.entities.hashtags.length){
 					var post = {
-					      'retweeted': parsed.retweeted ? parsed.retweet_count : false,
+					      'retweeted': parsed.retweeted ? parsed.retweet_count : 0,
 								'_id' : parsed.id_str,
 								'txt': parsed.text, 
 								'tags': parsed.entities.hashtags, 
@@ -92,6 +92,11 @@ var twit = new twitter({
 			},
 			analyze: function(tags, datum){
 				var data = datum, tags = tags;
+				if(data.retweeted){
+					client.zincrby(tag+':rt', data.retweeted, perma, function(e,r){
+						if(e)console.log(e)
+					});
+				}
 				_.each(data.links, function(url){
 					var link = url.url, perma = url.expanded_url;
 					if(perma)
@@ -104,9 +109,9 @@ var twit = new twitter({
 								client.zadd(tag+':links', data.score, perma, function(e,r){
 									if(e)console.log(e)
 								});
-								client.hmset(data._id, data, function(e,r){
-									if(e)console.log(e)
-								});
+						//		client.hmset(data._id, data, function(e,r){
+							//		if(e)console.log(e)
+								//});
 						})
 				})
 			},

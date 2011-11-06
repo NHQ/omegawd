@@ -153,6 +153,11 @@ io.sockets.on('connection', function (socket) {
 			})
 		}, this)
 	})
+	socket.on('post', function(post){
+		var tags = _.map(trackmap.mapTags(post.state), function(k){
+			return 'occupy'+k+':pub';
+		});
+	})
 	
 	socket.on('subscribe', function(data){
 		if(data.toLowerCase() == 'occupy'){

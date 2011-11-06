@@ -55,7 +55,7 @@ var server = connect();
 					var title = d.items[x].title.replace(/&nbsp;/g, " ");
 					console.log(d.items[x].permalinkUrl);
 					var body = {
-						'_id': Math.random().toString().slice(2), 
+						'_id': 'spfdr' + Math.random().toString().slice(2), 
 						"title": title,
 						"content": content,
 						"summary": summary,
@@ -72,7 +72,7 @@ var server = connect();
 					client.zadd(tag+':links', new Date().getTime(), d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}});
 					client.zadd(tag+':superlinks', new Date().getTime(), d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}});
 					client.zincrby(tag+':hotlinks', 5, d.items[x].permalinkUrl,  function(err, reply){if (err){console.log(err)}});
-					client.hmset(d.items[x].permalinkUrl, body, function(err, reply){if (err){console.log(err)}});					
+					// client.hmset(body._id, body, function(err, reply){if (err){console.log(err)}});					
 				};
 			});
 		}))
