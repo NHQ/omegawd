@@ -19,6 +19,7 @@ var client = redis.createClient();
 var app = module.exports = express.createServer();
 app.listen(80);
 console.log("Express server listening on port %d", app.address().port);
+console.log(Object.keys(Object)); // intro spection
 var	io = require('socket.io').listen(app);
 io.set('log level', 0);
 
@@ -102,7 +103,7 @@ app.get('/superfeedr/:tag', function(req,res){
 
 app.get('/occupy', vhost, function(req, res){
 	console.log(req.card)
-	var otags = ['ows:hotlinks', 'occupy:hotlinks', '99:hotlinks', '99percent:hotlinks', 'occupywallstreet:hotlinks','occupywallst:hotlinks'];
+	var otags = ['ows:hotlinks', 'occupy:hotlinks', '99:hotlinks', '99percent:hotlinks', 'occupywallstreet:hotlinks','occupywallst:hotlinks', 'generalstrike:hotlinks'];
 	if(Object.keys(req.card).length == 0){ // homepage
 		client.zunionstore(['occupy:live', otags.length].concat(otags), function(e,r){
 			console.log(e,r)
@@ -117,7 +118,7 @@ app.get('/occupy', vhost, function(req, res){
 	else if(Object.keys(req.card).length == 1){ //state or city
 		var state = req.card.state;
 		var tags = _.map(trackmap.mapTags(state), function(k){
-			return 'occupy'+k+':hotlinks';
+			return k+':hotlinks';
 		});
 		console.log(tags);
 		if (state.toUpperCase().replace(/-/g, " ") == 'NEW YORK' || state.toUpperCase().replace(/-/g, " ") == 'NY'){tags.push('ows:hotlinks', 'occupywallstreet:hotlinks', 'occupywallst:hotlinks')}
@@ -155,14 +156,14 @@ io.sockets.on('connection', function (socket) {
 	})
 	socket.on('post', function(post){
 		var tags = _.map(trackmap.mapTags(post.state), function(k){
-			return 'occupy'+k+':pub';
+			return k+':pub';
 		});
 	})
 	
 	socket.on('subscribe', function(data){
 		if(data.toLowerCase() == 'occupy'){
 			
-			tags = ['occupy:pub', 'ows:pub', '99percent:pub', 'occupywallst:pub', 'occupywallstreet:pub'];
+			tags = ['occupy:pub', 'ows:pub', '99percent:pub', 'occupywallst:pub', 'occupywallstreet:pub', 'generalstrike:pub'];
 	
 			_.each(tags, function(e){
 				this.subs.push[e];
@@ -179,7 +180,7 @@ io.sockets.on('connection', function (socket) {
 		else {
 			
 			var tags = _.map(trackmap.mapTags(data), function(k){
-				return 'occupy'+k+':pub';
+				return k+':pub';
 			});	
 			
 			_.each(tags, function(e){
@@ -200,7 +201,7 @@ io.sockets.on('connection', function (socket) {
 		console.log(data);
 		if(data.toLowerCase() == 'occupy'){
 		
-			tags = ['occupy:pub', 'ows:pub', '99percent:pub', 'occupywallst:pub', 'occupywallstreet:pub']
+			tags = ['occupy:pub', 'ows:pub', '99percent:pub', 'occupywallst:pub', 'occupywallstreet:pub', 'generalstrike:pub']
 		
 			_.each(tags, function(e){
 				this.subs = _.without(this.subs, e);
@@ -218,7 +219,7 @@ io.sockets.on('connection', function (socket) {
 		else {
 			
 			var tags = _.map(trackmap.mapTags(data), function(k){
-				return 'occupy'+k+':pub';
+				return k+':pub';
 			});
 
 			_.each(tags, function(e){

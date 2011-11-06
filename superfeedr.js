@@ -37,6 +37,7 @@ var server = connect();
 				res.end();
 				var tag = req.params.tag;
 				var d = req.body;
+				console.log(d);
 				var dl = d.items.length;
 				var unfurl = d.status.feed
 				for (x = 0; x < dl; ++x){
@@ -53,8 +54,8 @@ var server = connect();
 						summary = d.items[x].summary
 					};
 					var title = d.items[x].title.replace(/&nbsp;/g, " ");
-					console.log(d.items[x].permalinkUrl);
 					var body = {
+						'tag': tag,
 						'_id': 'spfdr' + Math.random().toString().slice(2), 
 						"title": title,
 						"content": content,
@@ -70,7 +71,7 @@ var server = connect();
 					client.publish(tag+':pub', JSON.stringify({'source': 'spfdr', 'body': body}));
 					client.sadd(tag+':superfeedr', d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}})
 					client.zadd(tag+':links', new Date().getTime(), d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}});
-					client.zadd(tag+':superlinks', new Date().getTime(), d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}});
+					client.zadd(tag+':superlinks', new Date().getTime(), JSON.stringify(body), function(err, reply){if (err){console.log(err)}});
 					client.zincrby(tag+':hotlinks', 5, d.items[x].permalinkUrl,  function(err, reply){if (err){console.log(err)}});
 					// client.hmset(body._id, body, function(err, reply){if (err){console.log(err)}});					
 				};

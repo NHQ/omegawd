@@ -4,18 +4,15 @@ var arr = [], tags = {};
 
 _.each(JSON.parse(trackmap).states, function(val, key){
 	key = key.toLowerCase().replace(/\s/g, "")
-	arr.push(key, val.abbreviation.toLowerCase());
-	if(_.isEmpty(val.cities)){
-		arr.push(val.capital.toLowerCase().replace(/\s/g, ""), val["most-populous-city"].toLowerCase().replace(/\s/g, ""))
-	}
-	else if (!_.isEmpty(val.cities)){
-		arr.push(val.capital.toLowerCase().replace(/\s/g, ""))
+		val.keywords.forEach(function(e){
+			arr.push(e.toLowerCase().replace(/\s/g, ""))
+		})
 		_.each(val.cities, function(city,k){
 			city.keywords.forEach(function(e){
 				arr.push(e.toLowerCase().replace(/\s/g, ""))
 			})
 		})
-	}
+
 })
 
 _.map(JSON.parse(trackmap).states, function(val, key){
@@ -38,7 +35,7 @@ _.map(JSON.parse(trackmap).states, function(val, key){
 var str = _.uniq(arr).join()
 
 var data = {trackstring: str, tracklist: _.uniq(arr), states: JSON.parse(trackmap).states, tagCity : tags}
-
+console.log(data.tracklist.length);
 data.mapTags = function (input){
 	this.tags = function (state, bool){
 				var tagged = [];
@@ -91,4 +88,32 @@ data.mapTags = function (input){
 	else {return null}
 }
 
+/*
+var stats = JSON.parse(trackmap);
+var states = {'states':{}};
+
+_.each(stats.states, function(v,k){
+		v.keywords = ['occupy'+k.replace(/\s/g,""), 'occupy'+v.abbreviation.replace(/\s/g,"")]
+		if(_.isEmpty(v.cities)){
+			if(v.capital == v['most-populous-city']){
+				v.cities[v.capital] = {keywords : ['occupy'+v.capital.replace(/\s/g,"")]}
+			}
+			else {
+				v.cities[v['most-populous-city']] = {keywords : ['occupy'+v['most-populous-city'].replace(/\s/g,"")]};
+				v.cities[v.capital] = {keywords : ['occupy'+v.capital.replace(/\s/g,"")]}
+			}
+		}
+		else {
+		//	console.log('poo')
+		 	_.each(v.cities, function(city, name){
+				v.cities[name] =  { 'keywords' : _.map(city.keywords, function(e){ return 'occupy'+e.replace(/\s/g,"")})};
+
+			})
+		}
+		states.states[k] = v;
+	})
+	*/
+//fs.writeFileSync('./lib/USA.beta.json', JSON.stringify(states))
+//console.log(Object.keys(stats.states))
+//console.log(stats)
 module.exports = data;

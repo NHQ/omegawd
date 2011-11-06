@@ -37,7 +37,7 @@ var twit = new twitter({
 					this.mapper[tag].latest = []
 				}, this)
 				_.map(this.data.tracklist, function(value, key, list){
-					var hash = 'occupy'+value;
+					var hash = value;
 					this.mapper[hash] = {};
 					this.mapper[hash].latest = [];
 					this.tracklist.push(hash);

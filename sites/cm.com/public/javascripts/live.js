@@ -13,6 +13,7 @@ $(window).load(function(e){
 })
 var tuner = Object.create(null);
 tuner = {
+	library: {},
 	init: function(){		
 		this.select();
 		this.reg = new RegExp(/t.co/i);
@@ -42,9 +43,9 @@ tuner = {
 			     queue: false
 			   }
 		});
-		$('#links').change(function(){
+		$('.filter').change(function(){
 			if(this.checked){
-				$('#posts').isotope({ filter: '.links' });
+				$('#posts').isotope({ filter: this.id });
 			}
 			else $('#posts').isotope({ filter: '' });
 		});
@@ -105,15 +106,22 @@ tuner = {
 				tuner.socket.emit('unsubscribe', unsub[0])
 			}
 		});
+		this.ghost = $('.ghost');
+		this.ghost.
+	},
+	expire: function (obj){
+				
 	},
 	spfrd: function(data){
 		var txt = data.summary ? data.summary : data.content;
 		var pic = data.pic;
 		var link = function(){if (data.link.length < 110){return data.link} else return data.link.slice(0,110)+' ...'};
 		var source = link.slice(0,link.indexOf())
-		var html = 	'<li class="post links"><h3 class="title">'+data.title+'</h3>Link: <a href='+link+' target="_blank" class="link">'+link.slice(0,51)+' ...'+'</a></li>';
+		var html = 	'<li class="post links spfdr" id='+data._id+'><h3 class="title">'+data.title+'</h3><span class="redness"#'+data.tag.toUpperCase()+'></span><br />Link: <a href='+link+' target="_blank" class="link">'+link.slice(0,51)+' ...'+'</a></li>';
 		this.corral(html)
 		//$('ul#post').prepend(html);
+		this.library[data._id] = data;
+//		this.expire(this.library[data._id])
 	},
 	twtr: function(data){
 		var links = data.links.length ? 'links' : '';
@@ -133,9 +141,10 @@ tuner = {
 			}, this).join(" ")
 			var cut = data.pic.indexOf("_normal");
 			var pic = data.pic.slice(0, cut)+data.pic.slice(cut+7);
-			var html = 	'<div class="post '+links+'"><div class="picFrame"><a href='+data.home+' target="_blank">';
+			var html = 	'<div class="post '+links+'" id='+data._id+'><div class="picFrame"><a href='+data.home+' target="_blank">';
 					html += '<img class="thumb" src='+pic+'></a></div><div class="txt"><p>'+txt+'</p></div></div>';
 			this.corral(html)
+			this.library[data._id] = data;
 			//$('ul#post').prepend(html);
 	},
 	scrub: function(datum){
