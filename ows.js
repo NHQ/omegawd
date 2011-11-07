@@ -111,7 +111,7 @@ var twit = new twitter({
 								});
 						    client.zadd(tag+':latest', data.score, data, function(e,r){
 									if(e)console.log(e)
-									client.zremrangebyrank(tag+':latest', 0, (new Date().getTime() / 1000) - (3600 * 5),function(err){if (err)console.log(err)})
+									client.zremrangebyrank(tag+':latest', 0, Math.floor((new Date().getTime() / 1000) - (3600 * 5)),function(err){if (err)console.log(err)})
 								});
 						})
 				})

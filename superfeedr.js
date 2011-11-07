@@ -20,6 +20,7 @@ var server = connect();
 				var challenge = req.query['hub.challenge'];
 				res.write(challenge);
 				res.end();
+			}
 				else
 				{
 					res.writeHead('200');
@@ -70,7 +71,7 @@ var server = connect();
 					client.zincrby(tag+':hotlinks', 5, d.items[x].permalinkUrl,  function(err, reply){if (err){console.log(err)}});
 					client.zadd(tag+':latest', body.score, body, function(e,r){
 						if(e)console.log(e)
-						client.zremrangebyrank(tag+':latest', 0, (new Date().getTime() / 1000) - (3600 * 5),function(err){if (err)console.log(err)})
+						client.zremrangebyrank(tag+':latest', 0, Math.floor((new Date().getTime() / 1000) - (3600 * 5)),function(err){if (err)console.log(err)})
 					});
 					// client.hmset(body._id, body, function(err, reply){if (err){console.log(err)}});					
 				};
