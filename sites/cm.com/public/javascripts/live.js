@@ -106,8 +106,6 @@ tuner = {
 				tuner.socket.emit('unsubscribe', unsub[0])
 			}
 		});
-		this.ghost = $('.ghost');
-		this.ghost.
 	},
 	expire: function (obj){
 				
