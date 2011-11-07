@@ -63,7 +63,7 @@ var twit = new twitter({
 								'author': parsed.user.name,
 								'location': parsed.user.location ? parsed.user.location : false,
 								'home': 'http://twitter.com/'+parsed.user.screen_name,
-								'score': new Date().getTime() 
+								'score': new Date().getTime() / 1000
 					};
 					this.process(post);
 					if(parsed["retweeted_status"]){
@@ -109,9 +109,10 @@ var twit = new twitter({
 								client.zadd(tag+':links', data.score, perma, function(e,r){
 									if(e)console.log(e)
 								});
-						//		client.hmset(data._id, data, function(e,r){
-							//		if(e)console.log(e)
-								//});
+						    client.zadd(tag+':latest', data.score, data, function(e,r){
+									if(e)console.log(e)
+									client.zremrangebyrank(tag+':latest', 0, (new Date().getTime() / 1000) - (3600 * 5),function(err){if (err)console.log(err)})
+								});
 						})
 				})
 			},

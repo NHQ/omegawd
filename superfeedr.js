@@ -13,7 +13,6 @@ var server = connect();
 		server.use(connect.router(function(app){
 			
 			app.get('/feed/:tag', function(req, res){
-				console.log(req.params.tag);
 				if (req.query['hub.challenge'])
 				{	res.writeHead('200');
 				//path = url.parse(req.url).query;
@@ -21,8 +20,6 @@ var server = connect();
 				var challenge = req.query['hub.challenge'];
 				res.write(challenge);
 				res.end();
-				console.log(req.headers);
-				console.log(challenge);}
 				else
 				{
 					res.writeHead('200');
@@ -31,8 +28,6 @@ var server = connect();
 			});
 			
 			app.post('/feed/:tag', function(req, res){
-				console.log('spfrd post')
-				console.log(req.params.tag)
 				res.writeHead('200');
 				res.end();
 				var tag = req.params.tag;
@@ -73,6 +68,10 @@ var server = connect();
 					client.zadd(tag+':links', new Date().getTime(), d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}});
 					client.zadd(tag+':superlinks', new Date().getTime(), JSON.stringify(body), function(err, reply){if (err){console.log(err)}});
 					client.zincrby(tag+':hotlinks', 5, d.items[x].permalinkUrl,  function(err, reply){if (err){console.log(err)}});
+					client.zadd(tag+':latest', body.score, body, function(e,r){
+						if(e)console.log(e)
+						client.zremrangebyrank(tag+':latest', 0, (new Date().getTime() / 1000) - (3600 * 5),function(err){if (err)console.log(err)})
+					});
 					// client.hmset(body._id, body, function(err, reply){if (err){console.log(err)}});					
 				};
 			});
