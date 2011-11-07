@@ -110,7 +110,7 @@ tuner = {
 	expire: function (obj){
 				
 	},
-	spfrd: function(data){
+	spfdr: function(data){
 		var txt = data.summary ? data.summary : data.content;
 		var pic = data.pic;
 		var link = function(){if (data.link.length < 110){return data.link} else return data.link.slice(0,110)+' ...'};
