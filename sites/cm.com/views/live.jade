@@ -34,13 +34,13 @@ html
       br
       div#filters
         p Filters
-        input(type='radio', class='filter', name='links', id='links', value='links') 
+        input(type='checkbox', class='filter', name='links', id='links', value='links') 
         label(for='links', class='note') Updates w/ Links Only
         br
-        input(type='radio', class='filter', name='twitter', id='twitter', value='twitter') 
+        input(type='checkbox', class='filter', name='twitter', id='twitter', value='twitter') 
         label(for='twitter', class='note') Twitter
         br
-        input(type='radio', class='filter', name='spfdr', id='spfdr', value='spfdr') 
+        input(type='checkbox', class='filter', name='spfdr', id='spfdr', value='spfdr') 
         label(for='web', class='note') Web Updates (not Twitter)
 
   script(src='/javascripts/live.js')
