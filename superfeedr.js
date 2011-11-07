@@ -33,10 +33,11 @@ var server = connect();
 				res.end();
 				var tag = req.params.tag;
 				var d = req.body;
-				console.log(d);
 				var dl = d.items.length;
 				var unfurl = d.status.feed
 				for (x = 0; x < dl; ++x){
+				  console.log(d.items[x].categories);
+				  var categories = d.items[x].categories || null;
 					var picture = null; // need stock pic
 					var content = null;	
 					var summary = null;
