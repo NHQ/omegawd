@@ -113,8 +113,8 @@ tuner = {
 	spfdr: function(data){
 		var txt = data.summary ? data.summary : data.content;
 		var pic = data.pic;
-		var link = function(){if (data.link.length < 110){return data.link} else return data.link.slice(0,110)+' ...'};
-		var html = 	'<li class="post links spfdr" id='+data._id+'><h3 class="title">'+data.title+'</h3><span class="redness"#'+data.tag.toUpperCase()+'></span><br />Link: <a href='+link+' target="_blank" class="link">'+link+' ...'+'</a></li>';
+		var link = data.link;
+		var html = 	'<li class="post links spfdr" id='+data._id+'><h3 class="title">'+data.title+'</h3><span class="redness"#'+data.tag.toUpperCase()+'></span><br />Link: <a href='+link+' target="_blank" class="link">'+link.slice(0,110)+' ...'+'</a></li>';
 		this.corral(html)
 		//$('ul#post').prepend(html);
 		this.library[data._id] = data;
