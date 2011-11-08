@@ -1,3 +1,7 @@
+/*
+[OF, BY, FOR] The People
+*/
+
 
 /**
  * Module dependencies.
