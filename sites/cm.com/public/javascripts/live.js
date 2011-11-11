@@ -114,7 +114,7 @@ tuner = {
 		var txt = data.summary ? data.summary : data.content;
 		var pic = data.pic;
 		var link = data.link;
-		var html = 	'<li class="post links spfdr" id='+data._id+'><h3 class="title">'+data.title+'</h3><span class="redness"#'+data.tag.toUpperCase()+'></span><br />Link: <a href='+link+' target="_blank" class="link">'+link.slice(0,110)+' ...'+'</a></li>';
+		var html = 	'<div class="post links spfdr" id='+data._id+'><h3 class="title">'+data.title+'</h3><span class="redness"#'+data.tag.toUpperCase()+'></span><br />Link: <a href='+link+' target="_blank" class="link">'+link.slice(0,110)+' ...'+'</a></div>';
 		this.corral(html)
 		//$('ul#post').prepend(html);
 		this.library[data._id] = data;
@@ -140,6 +140,7 @@ tuner = {
 			var pic = data.pic.slice(0, cut)+data.pic.slice(cut+7);
 			var html = 	'<div class="post '+links+'" id='+data._id+'><div class="picFrame"><a href='+data.home+' target="_blank">';
 					html += '<img class="thumb" src='+pic+'></a></div><div class="txt"><p>'+txt+'</p></div></div>';
+					html += '<div class="action"><a href="#" onclick="action">action</a></div>'
 			this.corral(html)
 			this.library[data._id] = data;
 			//$('ul#post').prepend(html);
