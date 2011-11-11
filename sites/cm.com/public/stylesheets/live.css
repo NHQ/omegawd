@@ -96,6 +96,7 @@ img.thumb {
 	clear:both;
 	width:100%;
 	height:19px;
+	border: 2px dotted green;
 	background:hsla(1,1,50%,.3);
 }
 

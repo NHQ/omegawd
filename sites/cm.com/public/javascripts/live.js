@@ -139,7 +139,7 @@ tuner = {
 			var cut = data.pic.indexOf("_normal");
 			var pic = data.pic.slice(0, cut)+data.pic.slice(cut+7);
 			var html = 	'<div class="post '+links+'" id='+data._id+'><div class="picFrame"><a href='+data.home+' target="_blank">';
-					html += '<img class="thumb" src='+pic+'></a></div><div class="txt"><p>'+txt+'</p></div></div>';
+					html += '<img class="thumb" src='+pic+'></a></div><div class="txt"><p>'+txt+'</p></div></div><br />	';
 					html += '<div class="action"><a href="#" onclick="">action</a></div>';
 			this.corral(html)
 			this.library[data._id] = data;
