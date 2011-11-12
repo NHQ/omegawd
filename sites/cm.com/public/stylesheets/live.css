@@ -9,6 +9,7 @@ p {
 	-webkit-margin-before: 0;
 	-webkit-margin-after: 0;
 	padding:0 1.5ex 0 0;
+  margin:0;
 }
 a {
 	font-family:'Courier New';
@@ -90,13 +91,24 @@ img.thumb {
 
 
 /* Admin publish etc */
+#actionBlock {
+  margin:0;
+  padding:0;
+  float:right;
+	width:300px;
+	border: 2px dotted pink;	
+}
 
-.action {
-	clear:both;
-	float:right;
-	height:19px;
-	border: 2px dotted green;
+p.action {
+  position:absolute;
+  right:0;
+  margin:0;
+  top:130px;
+  text-align:right;
 	padding:2px 3px;
+}
+p.action a {
+  margin: 0 11px;  
 }
 
 /* sidebar */
