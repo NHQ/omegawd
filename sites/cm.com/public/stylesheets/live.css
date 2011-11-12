@@ -90,10 +90,15 @@ img.thumb {
 
 
 /* Admin publish etc */
-
-.action {
-	clear:both;
+#actionBlock {
+	text-align:right;
 	float:right;
+	width:300px;
+	border: 2px dotted pink;
+	
+}
+.action {
+	display:inline;
 	height:19px;
 	border: 2px dotted green;
 	padding:2px 3px;
