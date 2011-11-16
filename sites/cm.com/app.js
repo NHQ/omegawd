@@ -82,7 +82,12 @@ app.configure('production', function(){
 				
 		}
 	}
-
+app.get('/post', vhost, function(req,res){
+  res.render('post', {
+    layout:false,
+    title: 'Posit'
+  })
+})
 app.get('/', vhost, function(req,res){
 	res.redirect('/occupy')
 })
@@ -147,7 +152,8 @@ io.sockets.on('connection', function (socket) {
 	socket.subs = [];
 	console.log(socket);
 	
-	socket.on('disconnect', function(){
+	socket.on('disconnect', function(data){
+    console.log(data, 'disconnected');
 		_.each(socket.subs, function(e){
 			this.leave(e.toLowerCase());
 			index.zincrby('syndicate', -1, e, function(err,r){
