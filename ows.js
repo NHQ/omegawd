@@ -42,6 +42,11 @@ var twit = new twitter({
 					this.mapper[hash].latest = [];
 					this.tracklist.push(hash);
 				}, this)
+				_.map(this.data.states, function(value, key, list){
+					var hash = key;
+          Object.keys(value.cities).forEach(function(e){this.tracklist.push(e)}, this)
+					this.tracklist.push(hash);
+				}, this)
 
 				var spfdr = ['occupy', 'ows', 'occupywallstreet', '99percent'];
 				this.tracklist.forEach(function(e){
