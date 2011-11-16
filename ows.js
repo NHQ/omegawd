@@ -42,7 +42,16 @@ var twit = new twitter({
 					this.mapper[hash].latest = [];
 					this.tracklist.push(hash);
 				}, this)
+<<<<<<< HEAD
 /*
+=======
+				_.map(this.data.states, function(value, key, list){
+					var hash = key;
+          Object.keys(value.cities).forEach(function(e){this.tracklist.push(e)}, this)
+					this.tracklist.push(hash);
+				}, this)
+
+>>>>>>> 0321914521feeefb7137c566d82e3cc8a192e3bd
 				var spfdr = ['occupy', 'ows', 'occupywallstreet', '99percent'];
 				this.tracklist.forEach(function(e){
 					subscribe(e, 'tumblr')})
@@ -83,6 +92,7 @@ var twit = new twitter({
 				var hashtags = _.intersection(_.map(data.tags, function(e){return e.text.toLowerCase()}), this.tracklist);
 				if(hashtags.length){
 					hashtags.forEach(function(tag){
+					  console.log(tag)
 						pub.publish(tag+':pub', JSON.stringify({'source' : 'twtr', 'body': data}))
 					});
 					if(data.links.length){
