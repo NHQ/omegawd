@@ -88,6 +88,7 @@ var twit = new twitter({
 				var hashtags = _.intersection(_.map(data.tags, function(e){return e.text.toLowerCase()}), this.tracklist);
 				if(hashtags.length){
 					hashtags.forEach(function(tag){
+					  console.log(tag)
 						pub.publish(tag+':pub', JSON.stringify({'source' : 'twtr', 'body': data}))
 					});
 					if(data.links.length){
