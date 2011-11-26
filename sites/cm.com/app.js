@@ -1,5 +1,6 @@
 /*
 [OF, BY, FOR] The People
+mysql root@localhost:sqlcity2020
 */
 
 
@@ -24,15 +25,15 @@ var app = module.exports = express.createServer();
 app.listen(80);
 client.del('syndicate', redis.print)
 console.log("Express server listening on port %d", app.address().port);
-console.log(Object.keys(Object)); // intro spection
+//console.log(Object.keys(Object)); // intro spection
 var	io = require('socket.io').listen(app);
-io.set('log level', 0);
+io.set('log level', 3);
 
 
 // Configuration
 
 app.configure(function(){
-	app.use(express.profiler());
+//	app.use(express.profiler());
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
@@ -54,8 +55,6 @@ app.configure('production', function(){
 // Routes
 
 	function vhost (req,res,next){
-		console.log(req.connection.remoteAddress);
-		console.log(req.connection);
 		req.card = {};
 		var host = req.headers.host.split(".")
 		switch (host.length)
@@ -93,6 +92,14 @@ app.get('/', vhost, function(req,res){
 })
 app.get('/occupy/live', vhost, function(req,res){
 	res.render('live', {
+		layout: false,
+    title: 'Express',
+		states: Object.keys(trackmap.states),
+		cities: Object.keys(trackmap.tagCity).sort()
+  });
+})
+app.get('/superfeedr', vhost, function(req,res){
+  res.render('spfdr', {
 		layout: false,
     title: 'Express',
 		states: Object.keys(trackmap.states),
@@ -145,12 +152,33 @@ app.get('/occupy', vhost, function(req, res){
 });
 
 
-io.sockets.on('connection', function (socket) {
+
+var spfdr = io.of('/spfdr').
+  on('connection', function(socket){
+    var	index = redis.createClient();
+    var socket = socket;
+    console.log('connected', socket.id || socket._id);
+    spfdr.emit('data', {txt:'connected'});
+    socket.emit('data', {txt:'connected'});
+    socket.on('data', function(data){  
+      console.log(data);
+//    zcard(key), zrevrangebyscore(max, min, withscores), zrank(member), zscore(member)
+//    data = {command:[key,[values]]}
+    var target = data.target || null;
+    index[data.command](data.$et, function(err, data){
+      spfdr.emit('data', [err, data, target])
+    })
+    
+
+    })
+  });
+
+var occupy = io.of('/theoccupation').on('connection', function (socket) {
 	var	client = redis.createClient()
 	,		index = redis.createClient();
 	socket.synd = redis.createClient();
 	socket.subs = [];
-	console.log(socket);
+//	console.log(socket);
 	
 	socket.on('disconnect', function(data){
     console.log(data, 'disconnected');

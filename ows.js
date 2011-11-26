@@ -5,7 +5,8 @@ var fs = require('fs'),
 		client = redis.createClient(),
 		request = require('request'),
 		subscribe = require('./spfr_setup.js'),
-		pub = redis.createClient();
+		pub = redis.createClient(),
+    hurl = require('url');
 		
 var jQ = fs.readFileSync('./lib/jquery-1.6.2.min.js').toString();
 		
@@ -31,6 +32,7 @@ var twit = new twitter({
 			data : require('./makeData.js'),
 			tracklist: ['ows', 'occupy', '99', '99percent', 'occupywallstreet','occupywallst', 'occupydc', 'generalstrike'],
 			init: function(track){
+        this.begin = new Date().getTime() / 1000;
 				_.each(this.tracklist, function(tag){
 					this.mapper[tag] = {},
 					this.mapper[tag].key = 'Occupy Wall Street'
@@ -42,23 +44,26 @@ var twit = new twitter({
 					this.mapper[hash].latest = [];
 					this.tracklist.push(hash);
 				}, this)
-<<<<<<< HEAD
-/*
-=======
 				_.map(this.data.states, function(value, key, list){
 					var hash = key;
-          Object.keys(value.cities).forEach(function(e){this.tracklist.push(e)}, this)
-					this.tracklist.push(hash);
+          Object.keys(value.cities).forEach(function(e){this.tracklist.push(e.replace(/\s/g, "").toLowerCase())}, this)
+					this.tracklist.push(hash.toLowerCase());
 				}, this)
-
->>>>>>> 0321914521feeefb7137c566d82e3cc8a192e3bd
+/*       
 				var spfdr = ['occupy', 'ows', 'occupywallstreet', '99percent'];
 				this.tracklist.forEach(function(e){
 					subscribe(e, 'tumblr')})
-*/					
+*/        
 			},
 			corral: {},
+      rly: true,
+      count: 0,
+      tps: function(){
+        return this.count / ((new Date().getTime() / 1000) - this.begin)
+      },
 			parse: function(data){
+        ++this.count;
+        console.log(this.tps());
 				var parsed = JSON.parse(data);
 				if(parsed.entities.hashtags.length){
 					var post = {
@@ -89,17 +94,19 @@ var twit = new twitter({
 			process: function(data){
 				var data = data;
 				var _id = data._id;
-				var hashtags = _.intersection(_.map(data.tags, function(e){return e.text.toLowerCase()}), this.tracklist);
-				if(hashtags.length){
+				var hashtags = _.map(data.tags, function(e){return e.text.toLowerCase()}) //_.intersection(_.map(data.tags, function(e){return e.text.toLowerCase()}) ,_.map(this.tracklist, function(e){return e.toLowerCase()}));
+				if(data.links.length){
+					this.analyze(hashtags,data)
+				}
+        if(hashtags.length){
 					hashtags.forEach(function(tag){
-					  console.log(tag)
+            client.zincrby('twtr:tags:analytics', 1, tag, function(e,r){if(e)console.log(e)})
 						pub.publish(tag+':pub', JSON.stringify({'source' : 'twtr', 'body': data}))
 					});
-					if(data.links.length){
-						this.analyze(hashtags,data)
-					}
 				}
-				else return
+				else {
+
+        }
 			},
 			analyze: function(tags, datum){
 				var data = datum, tags = tags;
@@ -111,8 +118,15 @@ var twit = new twitter({
 				_.each(data.links, function(url){
 					var link = url.url, perma = url.expanded_url;
 					if(perma)
+            var host = hurl.parse(perma).host;
+            client.zadd('twtr:'+host, new Date().getTime()/1000, perma, function(err, reply){if (err){console.log(err)}})  
+            client.zincrby('twtr:sources', 1, host, function(err, reply){if (err){console.log(err)}});
+
 					_.each(tags, 
-						function(tag){
+						function(tag){      
+                client.zincrby('twtr:'+tag+':analytics', 1, host, function(err, reply){if (err){console.log(err)}});
+                client.zincrby('twtr:'+tag+':links', new Date().getTime()/1000, perma, function(err, reply){if (err){console.log(err)}});
+
 								client.zincrby(tag+':hotlinks', 1, perma, function(e,r){
 									if(e)console.log(e)
 								});
@@ -160,8 +174,9 @@ var twit = new twitter({
 		};
 		
 		switchBoard.init();
-//		console.log(_.map(switchBoard.tracklist, function(t){return '#'+t}).join());
-		twit.stream('statuses/filter', {track: _.map(switchBoard.tracklist, function(t){return '#'+t}).join()}, function(stream) {
+		console.log(_.map(switchBoard.tracklist, function(t){return t}).join());
+
+		twit.stream('statuses/filter', {track: _.map(switchBoard.tracklist, function(t){return t}).join()}, function(stream) {
 		    stream.on('data', function (data) {
 					  switchBoard.parse(data);
 		    });
@@ -169,5 +184,4 @@ var twit = new twitter({
 					console.log('error here', err)
 				})
 		});
-
 module.exports = switchBoard;
