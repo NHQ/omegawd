@@ -72,14 +72,15 @@ var server = connect();
 						"feed": d.status.feed
 					};
           var host = url.parse(d.items[x].permalinkUrl).host;
-          client.zincrby('tags:analytics', 1, tag, function(err, reply){if (err){console.log(err)}})
-          client.zincrby(tag+':analytics', 1, host, function(err, reply){if (err){console.log(err)}});
-          client.zincrby(tag+':links', new Date().getTime()/1000, body.perma, function(err, reply){if (err){console.log(err)}});
-          client.zincrby('source:analytics', 1, host, function(err, reply){if (err){console.log(err)}});
-          client.zincrby('spfdr:'+tag, 1, host, function(err, reply){if (err){console.log(err)}});
-          client.zincrby('spfdr:sources', 1, host, function(err, reply){if (err){console.log(err)}});
-          client.zincrby('tags:'+host, 1, tag, function(err, reply){if (err){console.log(err)}});
-          client.zadd('spfdr:'+host, new Date().getTime()/1000, body.perma, function(err, reply){if (err){console.log(err)}})
+          var src = 'spfdr';
+          client.zincrby(src+':tags:all', 1, tag, function(err, reply){if (err){console.log(err)}})
+          client.zincrby(src+':hosts:all', 1, host, function(err, reply){if (err){console.log(err)}});
+
+          client.zincrby(src+':'+tag+':hosts', 1, host, function(err, reply){if (err){console.log(err)}});
+          client.zincrby(src+':'+tag+':links', 1, body.perma, function(err, reply){if (err){console.log(err)}});
+
+          client.zincrby(src+':'+host+':tags', 1, tag, function(err, reply){if (err){console.log(err)}});
+          client.zincrby(src+':'+host+':links', 1, perma, function(err, reply){if (err){console.log(err)}});
 
           client.publish(tag+':pub', JSON.stringify({'source': 'spfdr', 'body': body}));
 //					client.sadd(tag+':superfeedr', d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}})
