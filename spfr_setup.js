@@ -34,7 +34,6 @@ spfdr.pubsub = function(mode, feed){ // arrays only please!
     function(tag){
       spfdr.api(mode, url + feed + '&-' + anti, tag)
     }); return}
-  )
   else 
     {spfdr.api(mode, feed, null); return}
       
