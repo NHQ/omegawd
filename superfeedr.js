@@ -24,6 +24,7 @@ var server = connect();
 				var challenge = req.query['hub.challenge'];
 				res.write(challenge);
 				res.end();
+        console.log('chalenge met', challenge)
 			}
 				else
 				{

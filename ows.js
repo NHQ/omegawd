@@ -32,7 +32,7 @@ var twit = new twitter({
 			mapper: {},
 			wipe: [],
 			data : require('./makeData.js'),
-			tracklist: ['ows', 'occupy', '99', '99percent', 'occupywallstreet','occupywallst', 'occupydc', 'generalstrike'],
+			tracklist: ['ows', 'occupy', '#99', '99percent', 'occupywallstreet','occupywallst', 'occupydc', 'generalstrike'],
 			init: function(track){
         this.begin = new Date().getTime() / 1000;
 				_.each(this.tracklist, function(tag){
@@ -54,11 +54,11 @@ var twit = new twitter({
         fs.writeFileSync('lib/all-tracks.json', JSON.stringify(switchBoard.tracklist));
         this.reglist = _.map(this.tracklist, function(tag){return new RegExp(tag, "i")})
         console.log(this.reglist);
-/*       
+       
 				var spfdr = ['occupy', 'ows', 'occupywallstreet', '99percent'];
 				this.tracklist.forEach(function(e){
 					subscribe(e, 'tumblr')})
-*/        
+        
 			},
 			corral: {},
       rly: true,
@@ -68,7 +68,7 @@ var twit = new twitter({
       },
 			parse: function(data){
         this.count += Buffer.byteLength(data, 'utf8')
-//        console.log(this.tps());
+        console.log(this.tps());
 				var parsed = JSON.parse(data);
 				if(parsed.entities.urls && parsed.entities.urls.length){
 					var post = {
@@ -98,7 +98,6 @@ var twit = new twitter({
 			},
       regTest: function(word){
         return _.find(switchBoard.tracklist, function(tag){
-            console.log(word.match(tag))
             return word.match(tag)
         })
       },
@@ -156,7 +155,7 @@ var twit = new twitter({
 			analyze: function(tags, datum){
 				var data = datum, tags = tags;
 				if(data.retweeted){ // most retweeted links here, by RT count
-					client.zincrby(src+'.'+tag+':rt', data.retweeted, perma, function(e,r){
+					client.zincrby(src+':'+tag+':rt', data.retweeted, perma, function(e,r){
 						if(e)console.log(e)
 					});
 				}
@@ -164,14 +163,14 @@ var twit = new twitter({
 					var link = url.url, perma = url.expanded_url;
 					if(perma)
             var host = hurl.parse(perma).host;
-//            client.zadd('twtr.'+host, new Date().getTime()/1000, perma, function(err, reply){if (err){console.log(err)}})  
-            client.zincrby(src+'.hosts.all', 1, host, function(err, reply){if (err){console.log(err)}});
-            client.zincrby(src+'.'+host+'.links', 1, perma, function(err, reply){if (err){console.log(err)}});
+//            client.zadd('twtr:'+host, new Date().getTime()/1000, perma, function(err, reply){if (err){console.log(err)}})  
+            client.zincrby(src+':hosts:all', 1, host, function(err, reply){if (err){console.log(err)}});
+            client.zincrby(src+':'+host+':links', 1, perma, function(err, reply){if (err){console.log(err)}});
 					_.each(tags, 
 						function(tag){      
-                client.zincrby(src+'.'+host+'.tags', 1, tag, function(err, reply){if (err){console.log(err)}});
-                client.zincrby(src+'.'+tag+'.hosts', 1, host, function(err, reply){if (err){console.log(err)}});
-                client.zincrby(src+'.'+tag+':links', 1, perma, function(err, reply){if (err){console.log(err)}});
+                client.zincrby(src+':'+host+':tags', 1, tag, function(err, reply){if (err){console.log(err)}});
+                client.zincrby(src+':'+tag+':hosts', 1, host, function(err, reply){if (err){console.log(err)}});
+                client.zincrby(src+':'+tag+':links', 1, perma, function(err, reply){if (err){console.log(err)}});
 /*
 								client.zincrby(tag+':hotlinks', 1, perma, function(e,r){
 									if(e)console.log(e)

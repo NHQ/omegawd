@@ -11,7 +11,7 @@ var server = connect();
 			function vhost (str){
 				req.card = {}
 				var host = req.header.host.split(".")
-				switch host.length
+				switch (host.length)
 				{
 					case 2:
 						next()

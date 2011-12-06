@@ -3,8 +3,9 @@ var http = require('http'), fs = require('fs');
 var buff = new Buffer('citizen:peapod2011').toString('base64')
 
 module.exports = subscribe;
-
+var num = 0;
 function subscribe (word, src){
+    console.log(++num)
 		var tag = word+'&-twitter&-wikipedia&-etsy&-raveis&-getglue';
 		var url = encodeURIComponent("http://superfeedr.com/track/"+tag)
 		var spfdr = http.createClient(80, 'superfeedr.com');
@@ -17,6 +18,8 @@ function subscribe (word, src){
 		});
 		request.write(dataw, encoding='utf8');
 		request.on('response', function (response){
+          console.log(response)
+
 			response.on('data', function (stuff){
 			})
 		})
