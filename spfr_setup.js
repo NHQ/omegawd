@@ -27,16 +27,16 @@ spfdr.api = function(mode, url, tag){
   		request.end();
 };
 spfdr.pubsub = function(mode, feed){ // arrays only please!
-  if (Array.isArray(feed))
+  if (Array.isArray(feed)){
     var anti = antiTags.join('&-')
     ,   url = "http://superfeedr.com/track/";
     feed.forEach(
     function(tag){
       spfdr.api(mode, url + feed + '&-' + anti, tag)
-    } return
+    }; return}
   )
   else 
-    spfdr.api(mode, feed, null) return;
+    {spfdr.api(mode, feed, null); return;}
       
 }
 spfdr.addSpam = function(tag){
