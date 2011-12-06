@@ -4,7 +4,7 @@ var fs = require('fs'),
 		redis = require('redis'),
 		client = redis.createClient(),
 		request = require('request'),
-		subscribe = require('./spfr_setup.js'),
+		spfdr = require('./spfr_setup.js'),
 		pub = redis.createClient(),
     hurl = require('url'),
     src = 'twtr',
@@ -55,9 +55,7 @@ var twit = new twitter({
         this.reglist = _.map(this.tracklist, function(tag){return new RegExp(tag, "i")})
         console.log(this.reglist);
        
-				var spfdr = ['occupy', 'ows', 'occupywallstreet', '99percent'];
-				this.tracklist.forEach(function(e){
-					subscribe(e, 'tumblr')})
+				spfdr.pubsub('subscribe', [this.tracklist])
         
 			},
 			corral: {},
