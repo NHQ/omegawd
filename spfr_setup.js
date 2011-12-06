@@ -33,10 +33,10 @@ spfdr.pubsub = function(mode, feed){ // arrays only please!
     feed.forEach(
     function(tag){
       spfdr.api(mode, url + feed + '&-' + anti, tag)
-    }; return}
+    }); return}
   )
   else 
-    {spfdr.api(mode, feed, null); return;}
+    {spfdr.api(mode, feed, null); return}
       
 }
 spfdr.addSpam = function(tag){
