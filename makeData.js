@@ -35,7 +35,7 @@ _.map(JSON.parse(trackmap).states, function(val, key){
 var str = _.uniq(arr).join()
 
 var data = {trackstring: str, tracklist: _.uniq(arr), states: JSON.parse(trackmap).states, tagCity : tags}
-console.log(data.tracklist.length);
+
 data.mapTags = function (input){
 	this.tags = function (state, bool){
 				var tagged = [];

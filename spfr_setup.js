@@ -4,13 +4,14 @@ var http = require('http'), fs = require('fs')
 ,   tracks = []
 ;
 
-module.exports = spfdr;
 
 var spfdr = Object.create(null);
 spfdr.api = function(mode, url, tag){
+  tracks.push(url);
+  console.log(url)
   var spfdr = http.createClient(80, 'superfeedr.com')
   ,   address = tag ? encodeURI(tag) : ''
-  ,   data = "hub.mode="+mode+"&hub.verify=async&hub.topic="+encodeURIComponent(url)+"&hub.callback=http://74.207.246.247:8001/feed/"+tag
+  ,   data = "hub.mode="+mode+"&hub.verify=async&hub.topic="+encodeURIComponent(url)+"&hub.callback=http://74.207.246.247:8001/feed/"+address
   ,   request = spfdr.request('POST', '/hubbub', {
 		    'Host':'superfeedr.com',
 		    "Authorization":"basic "+buff,
@@ -20,20 +21,23 @@ spfdr.api = function(mode, url, tag){
   			
 	    });
 	    request.write(data, encoding='utf8');
-  		request.on('response', function (response){
-  			response.on('data', function (stuff){
+  		request.on('response', function (res){
+        console.log(res.headers);
+  			res.on('data', function (stuff){
   			})
   		})
   		request.end();
 };
 spfdr.pubsub = function(mode, feed){ // arrays only please!
   if (Array.isArray(feed)){
-    var anti = antiTags.join('&-')
+    console.log('array');
+    var anti = antitags.length ? '&-'+antiTags.join('&-') : ''
     ,   url = "http://superfeedr.com/track/";
-    feed.forEach(
-    function(tag){
-      spfdr.api(mode, url + feed + '&-' + anti, tag)
-    }); return}
+    feed.forEach(function(tag){
+      console.log(tag);
+      spfdr.api(mode, url + tag + anti, tag)
+    }); 
+    return}
   else 
     {spfdr.api(mode, feed, null); return}
       
@@ -79,4 +83,5 @@ spfdr.subscribe = function (word, src){
 		})
 		request.end();
 };
+module.exports = spfdr;
 

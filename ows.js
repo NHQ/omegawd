@@ -9,7 +9,7 @@ var fs = require('fs'),
     hurl = require('url'),
     src = 'twtr',
     ben = require('ben');
-		
+		console.log(spfdr)
 var jQ = fs.readFileSync('./lib/jquery-1.6.2.min.js').toString();
 		
 		client.on("error", function (err) {
@@ -53,9 +53,9 @@ var twit = new twitter({
 				}, this)
         fs.writeFileSync('lib/all-tracks.json', JSON.stringify(switchBoard.tracklist));
         this.reglist = _.map(this.tracklist, function(tag){return new RegExp(tag, "i")})
-        console.log(this.reglist);
+//        console.log(this.reglist);
        
-				spfdr.pubsub('subscribe', [this.tracklist])
+				spfdr.pubsub('subscribe', this.tracklist)
         
 			},
 			corral: {},
@@ -66,7 +66,7 @@ var twit = new twitter({
       },
 			parse: function(data){
         this.count += Buffer.byteLength(data, 'utf8')
-        console.log(this.tps());
+//        console.log(this.tps());
 				var parsed = JSON.parse(data);
 				if(parsed.entities.urls && parsed.entities.urls.length){
 					var post = {
@@ -219,7 +219,7 @@ var twit = new twitter({
 		};
 		var timeout = 1000
 		switchBoard.init();
-		console.log(_.map(switchBoard.tracklist, function(t){return t}).join());
+//		console.log(_.map(switchBoard.tracklist, function(t){return t}).join());
     function streamOn(){
       	twit.stream('statuses/filter', {track: _.map(switchBoard.tracklist, function(t){return t}).join()}, function(stream) {
 		    stream.on('data', function (data) {
@@ -235,5 +235,6 @@ var twit = new twitter({
           setTimeout(streamOn,timeout);
 				})        
 		});
-    }streamOn();
+    }
+    //streamOn();
 module.exports = switchBoard;
