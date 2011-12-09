@@ -18,7 +18,7 @@ tuner = {
 		this.select();
 		this.reg = new RegExp(/t.co/i);
 		this.usr = new RegExp(/^@[a-z0-9_]*/i);
-		this.regtag = new RegExp(/^#[a-z0-9]*/i)
+		this.regtag = new RegExp(/^#[a-z0-9]*/i);
 		this.following = [];
 		this.noRepeat = [];
 		this.socket = io.connect('http://citizenmission.com/');
@@ -113,7 +113,7 @@ tuner = {
 	spfdr: function(data){
 		var txt = data.summary ? data.summary : data.content;
 		var pic = data.pic;
-		var link = data.link;
+		var link = data.perma;
 		var html = 	'<div class="post links spfdr" id='+data._id+'><h3 class="title">'+data.title+'</h3><span class="redness"#'+data.tag.toUpperCase()+'></span><br />Link: <a href='+link+' target="_blank" class="link">'+link.slice(0,110)+' ...'+'</a></div>';
 		this.corral(html)
 		//$('ul#post').prepend(html);
@@ -122,7 +122,7 @@ tuner = {
 	},
 	twtr: function(data){
 		var links = data.links.length ? 'links' : '';
-		var text = data.txt.split(" ");
+		var text = data.content.split(" ");
 		var txt = _.map(text, function(e){
 				if(this.reg.test(e)){
 					return '<a class="link" href='+e+' target="_blank">'+e+'</a>'
@@ -138,9 +138,15 @@ tuner = {
 			}, this).join(" ")
 			var cut = data.pic.indexOf("_normal");
 			var pic = data.pic.slice(0, cut)+data.pic.slice(cut+7);
+<<<<<<< HEAD
 			var html = 	'<div class="post '+links+'" id='+data._id+'><div class="picFrame"><a href='+data.home+' target="_blank">';
 					html += '<img class="thumb" src='+pic+'></a></div><div class="txt"><p>'+txt+'</p></div><br />';
 					html += '<div id="actionBlock"><a  class="action" href="#" onclick="">post</a> <a  class="action" href="#" onclick="">RT</a></div></div>';
+=======
+			var html = 	'<div class="post '+links+'" id='+data._id+'><div class="picFrame"><a href='+data.author_home+' target="_blank">';
+					html += '<img class="thumb" src='+pic+'></a></div><div class="txt"><p>'+txt+'</p></div>';
+					html += '<div><p class="action"><a  href="#" onclick="">post</a> <a href="#" onclick="">RT</a></p></div></div>';
+>>>>>>> ab751c9914b1ba3c8d9e42f6fe9fab11e9a04427
 			this.corral(html)
 			this.library[data._id] = data;
 			//$('ul#post').prepend(html);

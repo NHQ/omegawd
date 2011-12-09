@@ -53,16 +53,17 @@ var twit = new twitter({
 				var parsed = JSON.parse(data);
 				if(parsed.entities.hashtags.length){
 					var post = {
+                'title': null,
 					      'retweeted': parsed.retweeted ? parsed.retweet_count : 0,
 								'_id' : parsed.id_str,
-								'txt': parsed.text, 
+								'content': parsed.text, 
 								'tags': parsed.entities.hashtags, 
 								'links': parsed.entities.urls, 
 								'pic': parsed.user.profile_image_url || parsed.user.profile_image_url_https, 
 								'time': parsed.created_at,
 								'author': parsed.user.name,
 								'location': parsed.user.location ? parsed.user.location : false,
-								'home': 'http://twitter.com/'+parsed.user.screen_name,
+								'author_home': 'http://twitter.com/'+parsed.user.screen_name,
 								'score': new Date().getTime() / 1000
 					};
 					this.process(post);
