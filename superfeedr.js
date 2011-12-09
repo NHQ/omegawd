@@ -3,15 +3,19 @@ var connect = require('connect')
 ,		_ = require('underscore')
 ,		redis = require('redis')
 ,		client = redis.createClient()
-, sys = require('util');
+,   sys = require('util')
+,   url = require('url');
 
 var server = connect();
-		server.use(connect.profiler());
-		server.use(connect.logger());
 		server.use(connect.query());
 		server.use(connect.bodyParser());
 		server.use(connect.router(function(app){
-			
+	    var begin = new Date().getTime()/1000;
+      var count=  0;
+      var tps = function(){
+        return count / ((new Date().getTime() / 1000) - begin)
+      };
+  
 			app.get('/feed/:tag', function(req, res){
 				if (req.query['hub.challenge'])
 				{	res.writeHead('200');
@@ -20,6 +24,7 @@ var server = connect();
 				var challenge = req.query['hub.challenge'];
 				res.write(challenge);
 				res.end();
+        console.log('chalenge met', challenge)
 			}
 				else
 				{
@@ -36,7 +41,8 @@ var server = connect();
 				var dl = d.items.length;
 				var unfurl = d.status.feed
 				for (x = 0; x < dl; ++x){
-				  console.log(d.items[x].categories);
+          ++count;
+          console.log(tps());
 				  var categories = d.items[x].categories || null;
 					var picture = null; // need stock pic
 					var content = null;	
@@ -66,15 +72,27 @@ var server = connect();
 						"created": d.items[x].postedTime,
 						"feed": d.status.feed
 					};
-					client.publish(tag+':pub', JSON.stringify({'source': 'spfdr', 'body': body}));
-					client.sadd(tag+':superfeedr', d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}})
-					client.zadd(tag+':links', new Date().getTime(), d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}});
-					client.zadd(tag+':superlinks', new Date().getTime(), JSON.stringify(body), function(err, reply){if (err){console.log(err)}});
-					client.zincrby(tag+':hotlinks', 5, d.items[x].permalinkUrl,  function(err, reply){if (err){console.log(err)}});
-					client.zadd(tag+':latest', body.score, body, function(e,r){
-						if(e)console.log(e)
-						client.zremrangebyrank(tag+':latest', 0, Math.floor((new Date().getTime() / 1000) - (3600 * 5)),function(err){if (err)console.log(err)})
-					});
+          var host = url.parse(d.items[x].permalinkUrl).host;
+          var src = 'spfdr';
+          console.log(tag, host)
+          client.zincrby(src+':tags:all', 1, tag, function(err, reply){if (err){console.log(err)}})
+          client.zincrby(src+':hosts:all', 1, host, function(err, reply){if (err){console.log(err)}});
+
+          client.zincrby(src+':'+tag+':hosts', 1, host, function(err, reply){if (err){console.log(err)}});
+          client.zincrby(src+':'+tag+':links', 1, body.perma, function(err, reply){if (err){console.log(err)}});
+
+          client.zincrby(src+':'+host+':tags', 1, tag, function(err, reply){if (err){console.log(err)}});
+          client.zincrby(src+':'+host+':links', 1, body.perma, function(err, reply){if (err){console.log(err)}});
+
+          client.publish(tag+':pub', JSON.stringify({'source': 'spfdr', 'body': body}));
+//					client.sadd(tag+':superfeedr', d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}})
+//					client.zadd(tag+':links', new Date().getTime(), d.items[x].permalinkUrl, function(err, reply){if (err){console.log(err)}});
+//					client.zadd(tag+':superlinks', new Date().getTime(), JSON.stringify(body), function(err, reply){if (err){console.log(err)}});
+//					client.zincrby(tag+':hotlinks', 5, d.items[x].permalinkUrl,  function(err, reply){if (err){console.log(err)}});
+//					client.zadd(tag+':latest', body.score, body, function(e,r){
+//						if(e)console.log(e)
+//						client.zremrangebyrank(tag+':latest', 0, Math.floor((new Date().getTime() / 1000) - (3600 * 5)),function(err){if (err)console.log(err)})
+//					});
 					// client.hmset(body._id, body, function(err, reply){if (err){console.log(err)}});					
 				};
 			});

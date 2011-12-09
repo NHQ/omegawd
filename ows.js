@@ -4,9 +4,12 @@ var fs = require('fs'),
 		redis = require('redis'),
 		client = redis.createClient(),
 		request = require('request'),
-		subscribe = require('./spfr_setup.js'),
-		pub = redis.createClient();
-		
+		spfdr = require('./spfr_setup.js'),
+		pub = redis.createClient(),
+    hurl = require('url'),
+    src = 'twtr',
+    ben = require('ben');
+		console.log(spfdr)
 var jQ = fs.readFileSync('./lib/jquery-1.6.2.min.js').toString();
 		
 		client.on("error", function (err) {
@@ -29,29 +32,43 @@ var twit = new twitter({
 			mapper: {},
 			wipe: [],
 			data : require('./makeData.js'),
-			tracklist: ['ows', 'occupy', '99', '99percent', 'occupywallstreet','occupywallst', 'occupydc', 'generalstrike'],
+			tracklist: ['ows', 'occupy', '#99', '99percent', 'occupywallstreet','occupywallst', 'occupydc', 'generalstrike'],
 			init: function(track){
+        this.begin = new Date().getTime() / 1000;
 				_.each(this.tracklist, function(tag){
 					this.mapper[tag] = {},
 					this.mapper[tag].key = 'Occupy Wall Street'
 					this.mapper[tag].latest = []
 				}, this)
 				_.map(this.data.tracklist, function(value, key, list){
-					var hash = value;
+					var hash = value.replace(/\s/g,"");
 					this.mapper[hash] = {};
 					this.mapper[hash].latest = [];
 					this.tracklist.push(hash);
 				}, this)
-
-				var spfdr = ['occupy', 'ows', 'occupywallstreet', '99percent'];
-				this.tracklist.forEach(function(e){
-					subscribe(e, 'tumblr')})
-					
+				_.map(this.data.states, function(value, key, list){
+					var hash = key;
+          Object.keys(value.cities).forEach(function(e){this.tracklist.push(e.replace(/\s/g, "").toLowerCase())}, this)
+					this.tracklist.push(hash.toLowerCase());
+				}, this)
+        fs.writeFileSync('lib/all-tracks.json', JSON.stringify(switchBoard.tracklist));
+        this.reglist = _.map(this.tracklist, function(tag){return new RegExp(tag, "i")})
+//        console.log(this.reglist);
+       
+				spfdr.pubsub('subscribe', this.tracklist)
+        
 			},
 			corral: {},
+      rly: true,
+      count: 0,
+      tps: function(){
+        return this.count / ((new Date().getTime() / 1000) - this.begin)
+      },
 			parse: function(data){
+        this.count += Buffer.byteLength(data, 'utf8')
+//        console.log(this.tps());
 				var parsed = JSON.parse(data);
-				if(parsed.entities.hashtags.length){
+				if(parsed.entities.urls && parsed.entities.urls.length){
 					var post = {
                 'title': null,
 					      'retweeted': parsed.retweeted ? parsed.retweet_count : 0,
@@ -77,33 +94,82 @@ var twit = new twitter({
 					parsed = null;
 				}
 			},
+      regTest: function(word){
+        return _.find(switchBoard.tracklist, function(tag){
+            return word.match(tag)
+        })
+      },
+      apt: function(a,b){
+       console.log(b-a);
+      },
 			process: function(data){
+        var a = new Date().getTime()/1000, b;
 				var data = data;
 				var _id = data._id;
-				var hashtags = _.intersection(_.map(data.tags, function(e){return e.text.toLowerCase()}), this.tracklist);
-				if(hashtags.length){
+        var natty = data.content.toLowerCase().split(/\s/);
+        var tags = _.compact(_.map(this.tracklist, function(reg){
+          var match = data.content.indexOf(reg);
+          if (match > -1){return reg};
+          return
+        },this));
+/*        var tags = _.compact(_.map(natty, function(word){
+          var match = _.find(switchBoard.reglist, function(reg){
+//            var winning = word.match(reg);
+//            if (winning) return winning[0];
+            return word.match(reg)
+          })
+          return word.match(match)[0] || null 
+          b = new Date().getTime()/1000;
+
+        }))
+       var tags = _.filter(natty, function(word){
+          var word = word;
+          return _.find(switchBoard.reglist, function(reg){
+//            var winning = word.match(reg);
+//            if (winning) return winning[0];
+            return word.match(reg)
+          })
+        }, this)
+*///        var tags = _.intersection(_.map(switchBoard.tracklist, function(e){return e.toLowerCase()}) ,_.map(natty, function(e){return reg.exec(e.toLowerCase()}));
+//        if(!tags.length)console.log('no tags', natty);
+        tags.forEach(function(tag){
+          console.log(tag);
+          client.zincrby(src+':tags:all', 1, tag, function(err, reply){if (err){console.log(err)}})  
+        })
+        //var hashtags = _.map(data.tags, function(e){return e.text.toLowerCase()}) //_.intersection(_.map(data.tags, function(e){return e.text.toLowerCase()}) ,_.map(this.tracklist, function(e){return e.toLowerCase()}));
+//				if(data.links.length){
+					this.analyze(tags,data) // <-- you stoopid
+//				}
+/*        if(hashtags.length){
 					hashtags.forEach(function(tag){
+            client.zincrby('twtr:tags:analytics', 1, tag, function(e,r){if(e)console.log(e)})
 						pub.publish(tag+':pub', JSON.stringify({'source' : 'twtr', 'body': data}))
 					});
-					if(data.links.length){
-						this.analyze(hashtags,data)
-					}
 				}
-				else return
-			},
+				else {
+
+        }
+*/			},
 			analyze: function(tags, datum){
 				var data = datum, tags = tags;
-				if(data.retweeted){
-					client.zincrby(tag+':rt', data.retweeted, perma, function(e,r){
+				if(data.retweeted){ // most retweeted links here, by RT count
+					client.zincrby(src+':'+tag+':rt', data.retweeted, perma, function(e,r){
 						if(e)console.log(e)
 					});
 				}
 				_.each(data.links, function(url){
 					var link = url.url, perma = url.expanded_url;
 					if(perma)
+            var host = hurl.parse(perma).host;
+//            client.zadd('twtr:'+host, new Date().getTime()/1000, perma, function(err, reply){if (err){console.log(err)}})  
+            client.zincrby(src+':hosts:all', 1, host, function(err, reply){if (err){console.log(err)}});
+            client.zincrby(src+':'+host+':links', 1, perma, function(err, reply){if (err){console.log(err)}});
 					_.each(tags, 
-						function(tag){
-							console.log(tag);
+						function(tag){      
+                client.zincrby(src+':'+host+':tags', 1, tag, function(err, reply){if (err){console.log(err)}});
+                client.zincrby(src+':'+tag+':hosts', 1, host, function(err, reply){if (err){console.log(err)}});
+                client.zincrby(src+':'+tag+':links', 1, perma, function(err, reply){if (err){console.log(err)}});
+/*
 								client.zincrby(tag+':hotlinks', 1, perma, function(e,r){
 									if(e)console.log(e)
 								});
@@ -114,12 +180,13 @@ var twit = new twitter({
 									if(e)console.log(e)
 									client.zremrangebyrank(tag+':latest', 0, Math.floor((new Date().getTime() / 1000) - (3600 * 5)),function(err){if (err)console.log(err)})
 								});
+*/
 						})
 				})
 			},
 			domit: function(b,tags){
-				console.log(tags)
 				var dom = jsdom.env({
+          parser: 'someday set this parser to browser spec',
 					html: b,
 					scripts: jQ,
 					done: function(err, window) {
@@ -150,16 +217,24 @@ var twit = new twitter({
 				
 			}
 		};
-		
+		var timeout = 1000
 		switchBoard.init();
-		console.log(_.map(switchBoard.tracklist, function(t){return '#'+t}).join());
-		twit.stream('statuses/filter', {track: _.map(switchBoard.tracklist, function(t){return '#'+t}).join()}, function(stream) {
+//		console.log(_.map(switchBoard.tracklist, function(t){return t}).join());
+    function streamOn(){
+      	twit.stream('statuses/filter', {track: _.map(switchBoard.tracklist, function(t){return t}).join()}, function(stream) {
 		    stream.on('data', function (data) {
 					  switchBoard.parse(data);
 		    });
 				stream.on('error', function(err){
 					console.log('error here', err)
-				})
+				});
+  			stream.on('end', function(){
+          stream.destroy();
+					console.log('end here');
+          timeout = timeout * 1.5;
+          setTimeout(streamOn,timeout);
+				})        
 		});
-
+    }
+    //streamOn();
 module.exports = switchBoard;
