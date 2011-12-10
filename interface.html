@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+	<meta charset='utf-8'>
+	<link rel='stylesheet' href='sites/live/public/stylesheets/interface.style.css'>
+</head>	
+<body>
+	<div id='console'>
+	</div>
+	<div id='remote'>
+		<ul id='channel'>
+			<li class='channels'>Text</li>
+			<li class='channels'>Images</li>
+			<li class='channels'>Audio</li>
+			<li class='channels'>Video</li>
+			<li class='channels'>Meta</li>
+		</ul>
+		<div id='dropFile'></div>
+	</div>
+</body>
+<script type='text/javascript' src='lib/jquery-1.6.2.min.js'></script>
+<script type='text/javascript'>
+	var ui = {}
+	ui.cancel = function (e) {
+	  if (e.preventDefault) e.preventDefault(); // required by FF + Safari
+	  e.dataTransfer.dropEffect = 'copy'; // tells the browser what drop effect is allowed here
+	  return false; // required by IE
+	};
+	ui.drop = function (e) {
+	  e.stopPropagation();
+	  e.preventDefault();
+	  var dt = e.dataTransfer;
+	  var files = dt.files;
+  	  var File = files[0];
+	  var fileReader = new FileReader();
+        if (File.webkitSlice) {
+		  var blob = File.webkitSlice(0, 13277);
+		} else if (theFile.mozSlice) {
+		  var blob = File.mozSlice(0, 6);
+		}
+	  
+	fileReader.onloadend = function(evt){
+		if (evt.target.readyState == FileReader.DONE) { // DONE == 2
+		        $('#console').html(evt.target.result);
+		      }	}
+	  fileReader.readAsBinaryString(blob)
+}
+	ui.init = function(){
+		
+		var dropFile;
+
+		dropFile = document.getElementById("dropFile");
+		dropFile.addEventListener("dragenter", ui.cancel, false);
+		dropFile.addEventListener("dragover", ui.cancel, false);
+		dropFile.addEventListener("drop", ui.drop, false);
+		
+		this.x = window.innerHeight,
+		this.y = window.innerWidth;
+		$('#console').css({
+			left : ( ui.y - 667 ) / 2
+		})
+		$(window).one('resize', function(e){ui.init()})
+	};
+	ui.init()
+</script>
+</html>
