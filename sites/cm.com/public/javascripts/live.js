@@ -138,9 +138,15 @@ tuner = {
 			}, this).join(" ")
 			var cut = data.pic.indexOf("_normal");
 			var pic = data.pic.slice(0, cut)+data.pic.slice(cut+7);
+<<<<<<< HEAD
+			var html = 	'<div class="post '+links+'" id='+data._id+'><div class="picFrame"><a href='+data.home+' target="_blank">';
+					html += '<img class="thumb" src='+pic+'></a></div><div class="txt"><p>'+txt+'</p></div><br />';
+					html += '<div id="actionBlock"><a  class="action" href="#" onclick="">post</a> <a  class="action" href="#" onclick="">RT</a></div></div>';
+=======
 			var html = 	'<div class="post '+links+'" id='+data._id+'><div class="picFrame"><a href='+data.author_home+' target="_blank">';
 					html += '<img class="thumb" src='+pic+'></a></div><div class="txt"><p>'+txt+'</p></div>';
 					html += '<div><p class="action"><a  href="#" onclick="">post</a> <a href="#" onclick="">RT</a></p></div></div>';
+>>>>>>> ab751c9914b1ba3c8d9e42f6fe9fab11e9a04427
 			this.corral(html)
 			this.library[data._id] = data;
 			//$('ul#post').prepend(html);
