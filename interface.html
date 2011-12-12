@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" dir="ltr">
 <head>
-	<meta charset='utf-8'>
+	<meta charset='utf-8' />
 	<link rel='stylesheet' href='sites/live/public/stylesheets/interface.style.css'>
 </head>	
 <body>
@@ -21,29 +21,46 @@
 <script type='text/javascript' src='lib/jquery-1.6.2.min.js'></script>
 <script type='text/javascript'>
 	var ui = {}
+	ui.readFile = function (file) {
+    console.log(file);
+    var reader = new FileReader();
+     var blob = file.mozSlice(0, 140);
+    reader.onload = function(event) {
+//      document.getElementById('console').textContent = event.target.result;
+        $('#console').html(event.target.result)
+        
+    };
+
+    reader.onerror = function(x) {
+//      document.getElementById('console').innerHTML = 'Unable to read ' + file.fileName;
+      console.log(x, 'error summin abt', file.fileName)
+    };
+
+    reader.readAsArrayBuffer(blob);
+  }
 	ui.cancel = function (e) {
-	  if (e.preventDefault) e.preventDefault(); // required by FF + Safari
-	  e.dataTransfer.dropEffect = 'copy'; // tells the browser what drop effect is allowed here
-	  return false; // required by IE
+	  e.preventDefault()
+	  return false
 	};
 	ui.drop = function (e) {
-	  e.stopPropagation();
 	  e.preventDefault();
 	  var dt = e.dataTransfer;
 	  var files = dt.files;
   	  var File = files[0];
+  	  ui.readFile(File);
+  	  return false
 	  var fileReader = new FileReader();
         if (File.webkitSlice) {
-		  var blob = File.webkitSlice(0, 13277);
+		  var blob = File.webkitSlice(0, 12);
 		} else if (theFile.mozSlice) {
-		  var blob = File.mozSlice(0, 6);
+		  var blob = File.mozSlice(0, 13277);
 		}
 	  
 	fileReader.onloadend = function(evt){
 		if (evt.target.readyState == FileReader.DONE) { // DONE == 2
 		        $('#console').html(evt.target.result);
 		      }	}
-	  fileReader.readAsBinaryString(blob)
+//	  fileReader.readAsText(blob)
 }
 	ui.init = function(){
 		

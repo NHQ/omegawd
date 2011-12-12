@@ -10,7 +10,7 @@ var express = require('express')
 ,		_ = require('underscore');
 
 var app = module.exports = express.createServer();
-//app.listen(8008);
+app.listen(8008);
 var	io = require('socket.io').listen(app);
 io.set('log level', 0);
 // Configuration
@@ -45,12 +45,19 @@ app.get('/', function(req, res){
   });
 });
 
+app.get('/interface', function(req, res){
+  res.render('interface', {
+		layout: false,
+    title: 'Interface'
+  });
+});
+
 io.sockets.on('connection', function (socket) {
 	var	client = redis.createClient()
 	,		index = redis.createClient();
 	socket.synd = redis.createClient();
 	socket.subs = [];
-	console.log(socket);
+//	console.log(socket);
 	
 	socket.on('disconnect', function(){
 		_.each(socket.subs, function(e){
@@ -101,9 +108,32 @@ io.sockets.on('connection', function (socket) {
 			},this)
 		}
 	});
+	var xeon = 0;
+	var buff = new Buffer(608);
+	var llen = 0;
+	var stuff = ''
+	socket.on('blob', function(data){
+		++xeon;
+		var offset = xeon;
+		var base64 = function (encoded) {
+			var buff = new Buffer(encoded, 'base64'),
+					end = buff.byteLength;
+		  return buff.write('utf8', 0, end);
+		};
+//		console.log(data)
+		
+		if(typeof data === 'object'){
+		}
+		if(Array.isArray(data)){
+			var buff = new Buffer(data[1]);
+			console.log(buff.toString('utf8'))
 
+	//		buff.writeUInt8(data, xeon - 1);
+	//		console.log(buff.toString('utf8', xeon, xeon + 1 ))
+		}
+		this.emit('conf', 'aye aye!')
+	});
 	socket.on('unsubscribe', function(data){
-		console.log(data);
 		if(data.toLowerCase() == 'occupy'){
 		
 			tags = ['occupy:pub', 'ows:pub', '99percent:pub', 'occupywallst:pub', 'occupywallstreet:pub']
