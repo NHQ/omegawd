@@ -39,7 +39,7 @@ var connections = [];
   
   app.get('/ping', function(req, res){
 		connections.push(req.socket.remoteAddress)
-		var data = JSON.stringigy({connections: connections})
+		var data = JSON.stringify({connections: connections})
 		res.write(data);
   });
 
