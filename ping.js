@@ -40,5 +40,6 @@ var connections = [];
 		console.log(connections)
 		var data = JSON.stringify({connections: connections})
 		res.write(data);
+		res.end()
   });
 
