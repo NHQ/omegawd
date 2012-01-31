@@ -2,9 +2,14 @@
 <head>
 <title>OMEGAWD</title>
 <link rel=stylsheet media=screen href=normalize.css>
+<link type="text/css" href="../../../lib/jScrollPane/style/jquery.jscrollpane.css" rel="stylesheet" media="all" />
+<script type=text/javascript src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="../../../lib/jScrollPane/script/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="../../../lib/jScrollPane/script/mwheelIntent.js"></script>
+<script type="text/javascript" src="../../../lib/jScrollPane/script/jquery.jscrollpane.min.js"></script>
 <style>
 	body {
-		background-color: hsla(1, 50%, 45%, 1);
+		background-color: hsla(100, 30%, 95%, 1);
 		padding:0;
 		margin:0;
 		
@@ -12,19 +17,55 @@
 	#container {
 		padding:0;
 		margin:0;
+		margin:0 auto; 
+		background-color:hsla(100, 30%, 95%, 1);
 	}
-	.text {
+  .writer {
+    width:90%;
+    height:90%;
 		font-size:22px;
 		font-family:Courier;
+		background-color:hsla(100, 30%, 95%, 1);
+		border:none;
+		padding-bottom:50px;
+		padding-top:300px;
+	}
+	.writer:hover {
+	  cursor:pointer;
+	}
+	.writer:focus {
+	  border:none;
+	  outline:none;
+	  box-shadow:none;	  
+	}
+	.title {
+	  text-align:center;
+	}
+	#text_box {
+	  width:500px;
+	  height:400px;
+    margin: 0 auto;
+	  overflow:auto;
 	}
 </style>
+<script type="text/javascript" id="sourcecode">
+			$(function()
+			{
+        jsp = $('#text_box').jScrollPane({maintainPosition:true})  
+        $('.writer').focus()
+			});
+</script>
 </head>
 <body>
-	<div id=container>
-		<p contenteditable=true class=text>
-		</p>
+	<div id="container">
+	  <div id="text_box">
+		  <div class="writer" contenteditable="true">
+		   
+	    </div>
+		</div>
 	</div>
 </body>
-<script type=text/javascript src=../../sites/cm.com/public/javascripts/jquery-1.6.2.min.js></script>
+
+<script type=text/javascript src=../../../lib/transformjs.js></script>
 <script type=text/javascript src=./editor.js></script>
 </html>
