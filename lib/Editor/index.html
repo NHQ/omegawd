@@ -3,10 +3,46 @@
 <title>OMEGAWD</title>
 <link rel=stylsheet media=screen href=normalize.css>
 <link type="text/css" href="../../../lib/jScrollPane/style/jquery.jscrollpane.css" rel="stylesheet" media="all" />
-<script type=text/javascript src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type=text/javascript src="../jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="../../../lib/jScrollPane/script/jquery.mousewheel.js"></script>
 <script type="text/javascript" src="../../../lib/jScrollPane/script/mwheelIntent.js"></script>
 <script type="text/javascript" src="../../../lib/jScrollPane/script/jquery.jscrollpane.min.js"></script>
+<script type="text/javascript" src="../html2text.js"></script>
+
+<script type="text/javascript">
+  function handlePaste(elem, e){
+    //e.preventDefault();
+    $this = $(elem)
+    $('#tarea').val('').focus();
+    setTimeout(function() //then this will be executed immediately after the paste actually occurs
+    {
+        $this.focus();
+        document.execCommand('insertHTML', true, $('#tarea').val().replace(/\n/g, '<br/>'));
+    });
+    
+    /*
+    if (/text\/html/.test(e.clipboardData.types)) {
+                x = e.clipboardData.getData('text/html');
+            }
+            else if (/text\/plain/.test(e.clipboardData.types)) {
+                x = e.clipboardData.getData('text/plain');
+            }
+    // x or x.toString()?
+    var range = window.getSelection().getRangeAt(0)
+    console.log(x)
+    var x = htmlToText(x)
+    console.log(x)
+    */
+//    x=x.replace(/<br>/gi, "\n");
+//    x=x.replace(/<p.*>/gi, "\n");
+//    x=x.replace(/<a.*href="(.*?)".*>(.*?)<\/a>/gi, " $2 (Link->$1) ");
+//    x=x.replace(/<(?:.|\s)*?>/g, "");
+    
+//    range.insertNode(document.createTextNode(x))    
+
+  }
+
+</script>
 <style>
 	body {
 		background-color: hsla(100, 30%, 95%, 1);
@@ -21,13 +57,12 @@
 		background-color:hsla(100, 30%, 95%, 1);
 	}
   .writer {
-    width:90%;
+    max-width:90%;
     height:90%;
 		font-size:22px;
 		font-family:Courier;
 		background-color:hsla(100, 30%, 95%, 1);
 		border:none;
-		padding-bottom:50px;
 		padding-top:300px;
 	}
 	.writer:hover {
@@ -42,7 +77,7 @@
 	  text-align:center;
 	}
 	#text_box {
-	  width:500px;
+	  max-width:500px;
 	  height:400px;
     margin: 0 auto;
 	  overflow:auto;
@@ -59,10 +94,10 @@
 <body>
 	<div id="container">
 	  <div id="text_box">
-		  <div class="writer" contenteditable="true">
-		   
-	    </div>
-		</div>
+		  <p class="writer" onpaste="handlePaste(this, event)" contenteditable="true"></div>
+		</p>
+		<textarea id="tarea" style="height:300;width:100;"></textarea>
+	  
 	</div>
 </body>
 
