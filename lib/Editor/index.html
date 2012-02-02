@@ -13,11 +13,12 @@
   function handlePaste(elem, e){
     //e.preventDefault();
     $this = $(elem)
+
     $('#tarea').val('').focus();
     setTimeout(function() //then this will be executed immediately after the paste actually occurs
     {
         $this.focus();
-        document.execCommand('insertHTML', true, $('#tarea').val().replace(/\n/g, '<br/>'));
+        document.execCommand('insertNode', true, document.createTextNode(htmlToText($('#tarea').val()).replace('/\n/g', '<br />')));
     });
     
     /*
@@ -94,8 +95,8 @@
 <body>
 	<div id="container">
 	  <div id="text_box">
-		  <p class="writer" onpaste="handlePaste(this, event)" contenteditable="true"></div>
-		</p>
+		  <pre class="writer" onpaste="handlePaste(this, event)" contenteditable="true"></div>
+		</pre>
 		<textarea id="tarea" style="height:300;width:100;"></textarea>
 	  
 	</div>
