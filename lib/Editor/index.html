@@ -11,17 +11,32 @@
 
 <script type="text/javascript">
   function handlePaste(elem, e){
-    //e.preventDefault();
+    e.preventDefault();
     $this = $(elem)
-
-    $('#tarea').val('').focus();
+    if (/text\/html/.test(e.clipboardData.types)) {
+        var x = e.clipboardData.getData('text/html');
+    }
+    else if (/text\/plain/.test(e.clipboardData.types)) {
+        var x = e.clipboardData.getData('text/plain');
+    }
+    var text = htmlToText(x);
+    var range = window.getSelection().getRangeAt(0)
+    console.log($('.writer').height())
+    
+    range.insertNode(document.createTextNode(text))
+    console.log($('.writer').height())
+    $('.writer').width(420)
+    
+        /*
+        $('#tarea').val('').focus();
+        
     setTimeout(function() //then this will be executed immediately after the paste actually occurs
     {
         $this.focus();
-        document.execCommand('insertNode', true, document.createTextNode(htmlToText($('#tarea').val()).replace('/\n/g', '<br />')));
+        document.execCommand('insertHTML', true, $('#tarea').val());
     });
     
-    /*
+
     if (/text\/html/.test(e.clipboardData.types)) {
                 x = e.clipboardData.getData('text/html');
             }
@@ -58,7 +73,7 @@
 		background-color:hsla(100, 30%, 95%, 1);
 	}
   .writer {
-    max-width:90%;
+    max-width:420px;
     height:90%;
 		font-size:22px;
 		font-family:Courier;
