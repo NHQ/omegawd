@@ -31,7 +31,7 @@ spfdr.api = function(mode, url, tag){
 spfdr.pubsub = function(mode, feed){ // arrays only please!
   if (Array.isArray(feed)){
     console.log('array');
-    var anti = antitags.length ? '&-'+antiTags.join('&-') : ''
+    var anti = antiTags.length ? '&-'+antiTags.join('&-') : ''
     ,   url = "http://superfeedr.com/track/";
     feed.forEach(function(tag){
       console.log(tag);
