@@ -21,9 +21,9 @@ var express = require('express')
 var client = redis.createClient();
 
 var app = module.exports = express.createServer();
-app.listen(80);
+app.listen(8101);
 client.del('syndicate', redis.print)
-console.log("Express server listening on port %d", app.address().port);
+//console.log("Express server listening on port %d", app.address().port);
 console.log(Object.keys(Object)); // intro spection
 var	io = require('socket.io').listen(app);
 io.set('log level', 0);
