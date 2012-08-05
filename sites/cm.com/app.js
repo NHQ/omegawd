@@ -21,10 +21,10 @@ var express = require('express')
 var client = redis.createClient();
 
 var app = module.exports = express.createServer();
-app.listen(8101);
+app.listen(8101, '127.0.0.1');
 client.del('syndicate', redis.print)
 //console.log("Express server listening on port %d", app.address().port);
-var	io = require('socket.io').listen(app);
+var	io = require('socket.io').listen(8102);
 io.set('log level', 0);
 
 
