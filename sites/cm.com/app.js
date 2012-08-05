@@ -82,7 +82,7 @@ app.configure('production', function(){
 	}
 
 app.get('/', vhost, function(req,res){
-	res.redirect('/occupy')
+	res.redirect('/links')
 })
 app.get('/occupy/live', vhost, function(req,res){
 	res.render('live', {
@@ -104,14 +104,14 @@ app.get('/superfeedr/:tag', function(req,res){
 	})
 })
 
-app.get('/occupy', vhost, function(req, res){
+app.get('/links', vhost, function(req, res){
 	var otags = ['ows:hotlinks', 'occupy:hotlinks', '99:hotlinks', '99percent:hotlinks', 'occupywallstreet:hotlinks','occupywallst:hotlinks', 'generalstrike:hotlinks'];
 	if(Object.keys(req.card).length == 0){ // homepage
 		client.zunionstore(['occupy:live', otags.length].concat(otags), function(e,r){
 //			console.log(e,r)
 			client.zrevrangebyscore('occupy:live', '+inf', 11, function(e,r){
 				res.render('links', {
-			    title: 'Occupy Links:',
+			    title: 'Live Links: ',
 					locals: {links: r}
 			  });
 			})

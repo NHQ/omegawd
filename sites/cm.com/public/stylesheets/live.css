@@ -93,9 +93,7 @@ img.thumb {
 #actionBlock {
 	text-align:right;
 	float:right;
-	width:300px;
-	border: 2px dotted pink;
-	
+	width:300px;	
 }
 .action {
 	display:inline;
