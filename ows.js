@@ -45,7 +45,7 @@ var twit = new twitter({
 
 				var spfdr = ['occupy', 'ows', 'occupywallstreet', '99percent'];
 				this.tracklist.forEach(function(e){
-					subscribe(e, 'tumblr')})
+	//				subscribe(e, 'tumblr')})
 					
 			},
 			corral: {},
@@ -102,7 +102,6 @@ var twit = new twitter({
 					if(perma)
 					_.each(tags, 
 						function(tag){
-							console.log(tag);
 								client.zincrby(tag+':hotlinks', 1, perma, function(e,r){
 									if(e)console.log(e)
 								});
@@ -117,7 +116,6 @@ var twit = new twitter({
 				})
 			},
 			domit: function(b,tags){
-				console.log(tags)
 				var dom = jsdom.env({
 					html: b,
 					scripts: jQ,
@@ -151,7 +149,6 @@ var twit = new twitter({
 		};
 		
 		switchBoard.init();
-		console.log(_.map(switchBoard.tracklist, function(t){return '#'+t}).join());
 		twit.stream('statuses/filter', {track: _.map(switchBoard.tracklist, function(t){return '#'+t}).join()}, function(stream) {
 		    stream.on('data', function (data) {
 					  switchBoard.parse(data);

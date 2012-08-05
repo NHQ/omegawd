@@ -24,7 +24,6 @@ var app = module.exports = express.createServer();
 app.listen(8101);
 client.del('syndicate', redis.print)
 //console.log("Express server listening on port %d", app.address().port);
-console.log(Object.keys(Object)); // intro spection
 var	io = require('socket.io').listen(app);
 io.set('log level', 0);
 
@@ -54,8 +53,7 @@ app.configure('production', function(){
 // Routes
 
 	function vhost (req,res,next){
-		console.log(req.connection.remoteAddress);
-		console.log(req.connection);
+
 		req.card = {};
 		var host = req.headers.host.split(".")
 		switch (host.length)
@@ -107,11 +105,10 @@ app.get('/superfeedr/:tag', function(req,res){
 })
 
 app.get('/occupy', vhost, function(req, res){
-	console.log(req.card)
 	var otags = ['ows:hotlinks', 'occupy:hotlinks', '99:hotlinks', '99percent:hotlinks', 'occupywallstreet:hotlinks','occupywallst:hotlinks', 'generalstrike:hotlinks'];
 	if(Object.keys(req.card).length == 0){ // homepage
 		client.zunionstore(['occupy:live', otags.length].concat(otags), function(e,r){
-			console.log(e,r)
+//			console.log(e,r)
 			client.zrevrangebyscore('occupy:live', '+inf', 11, function(e,r){
 				res.render('links', {
 			    title: 'Occupy Links:',
@@ -125,10 +122,9 @@ app.get('/occupy', vhost, function(req, res){
 		var tags = _.map(trackmap.mapTags(state), function(k){
 			return k+':hotlinks';
 		});
-		console.log(tags);
 		if (state.toUpperCase().replace(/-/g, " ") == 'NEW YORK' || state.toUpperCase().replace(/-/g, " ") == 'NY'){tags.push('ows:hotlinks', 'occupywallstreet:hotlinks', 'occupywallst:hotlinks')}
 		client.zunionstore([state+':hotlinks', tags.length].concat(tags), function(e,r){
-			console.log(e,r)
+	//		console.log(e,r)
 			client.zrevrangebyscore(state+':hotlinks', '+inf', 1, function(e,r){
 				res.render('links', {
 			    title: 'Occupy Links:'+state,
@@ -145,15 +141,13 @@ io.sockets.on('connection', function (socket) {
 	,		index = redis.createClient();
 	socket.synd = redis.createClient();
 	socket.subs = [];
-	console.log(socket);
 	
 	socket.on('disconnect', function(){
 		_.each(socket.subs, function(e){
 			this.leave(e.toLowerCase());
 			index.zincrby('syndicate', -1, e, function(err,r){
-				console.log(r);
 				if (r == 0){	
-					console.log('unsubbin');
+	//				console.log('unsubbin');
 					client.unsubscribe(e);
 				}
 			})
@@ -174,9 +168,7 @@ io.sockets.on('connection', function (socket) {
 				this.subs.push[e];
 				this.join(e.toLowerCase());
 				index.zincrby('syndicate', 1, e, function(err,r){
-					console.log(r);
 					if (r == 1){	
-						console.log('subbin');
 						client.subscribe(e);
 					}
 				})
@@ -192,9 +184,7 @@ io.sockets.on('connection', function (socket) {
 				this.subs.push[e];
 				this.join(e.toLowerCase());
 				index.zincrby('syndicate', 1, e, function(err,r){
-					console.log(r);
 					if (r == 1){	
-						console.log('subbin');
 						client.subscribe(e);
 					}
 				})
@@ -203,7 +193,6 @@ io.sockets.on('connection', function (socket) {
 	});
 
 	socket.on('unsubscribe', function(data){
-		console.log(data);
 		if(data.toLowerCase() == 'occupy'){
 		
 			tags = ['occupy:pub', 'ows:pub', '99percent:pub', 'occupywallst:pub', 'occupywallstreet:pub', 'generalstrike:pub']
@@ -212,9 +201,7 @@ io.sockets.on('connection', function (socket) {
 				this.subs = _.without(this.subs, e);
 				this.leave(e.toLowerCase());
 				index.zincrby('syndicate', -1, e, function(err,r){
-					console.log(r);
 					if (r == 0){	
-						console.log('unsubbin');
 						client.unsubscribe(e);
 					}
 				})
@@ -231,9 +218,7 @@ io.sockets.on('connection', function (socket) {
 				this.subs = _.without(this.subs, e);
 				this.leave(e.toLowerCase());
 				index.zincrby('syndicate', -1, e, function(err,r){
-					console.log(r);
 					if (r == 0){	
-						console.log('unsubbin');
 						client.unsubscribe(e);
 					}
 				})
@@ -242,13 +227,10 @@ io.sockets.on('connection', function (socket) {
 
 	});
 	client.on('subscribe', function(channel, count){
-		console.log('sub', channel, count)
 	});
 	client.on('unsubscribe', function(channel, count){
-		console.log('unsub', channel, count)
 	})
 	client.on('message', function (channel, message) {
-		console.log(channel, message.slice(0,100))
 //			socket.emit('news', message);
 		io.sockets.in(channel).emit('news', message)
 //		socket.broadcast.to(channel).emit('news', message) // can add channel to the emittance
